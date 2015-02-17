@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
@@ -50,7 +51,14 @@ public class GameSetupState extends BasicTWLGameState {
             public void run() {
                 Gorillas.player1 = txtName1.getText();
                 Gorillas.player2 = txtName2.getText();
-                game.enterState(Gorillas.GAMEPLAYSTATE);
+
+                String n1 = txtName1.getText();
+                String n2 = txtName2.getText();
+
+                if(!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13))
+                    game.enterState(Gorillas.GAMEPLAYSTATE);
+                else
+                    btnStart.setText("Err0r");
             }
         });
 
