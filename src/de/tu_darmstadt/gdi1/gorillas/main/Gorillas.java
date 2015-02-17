@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import de.matthiasmann.twl.slick.TWLStateBasedGame;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.AppGameContainer;
@@ -74,10 +75,12 @@ public class Gorillas extends TWLStateBasedGame {
 
         // Add states to the StateBasedGame
         this.addState(new MainMenuState(MAINMENUSTATE));
+        this.addState(new GameSetupState(GAMESETUPSTATE));
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
         StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
+        StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
         // TODO: Add the other states...
     }
 
