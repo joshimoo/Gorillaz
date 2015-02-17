@@ -8,6 +8,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,6 +19,7 @@ public class GameSetupState extends BasicTWLGameState {
     private StateBasedEntityManager entityManager;
     private RootPane rp;
 
+    private Image background;
     private Button btnStart;
     private EditField txtName1, txtName2;
 
@@ -34,6 +36,8 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
         rp = super.createRootPane();
+
+        background = new Image("assets/menu/background.png");
 
         txtName1 = new EditField();
         txtName2 = new EditField();
@@ -57,7 +61,7 @@ public class GameSetupState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-
+        graphics.drawImage(background, -10, -20);
     }
 
     @Override
