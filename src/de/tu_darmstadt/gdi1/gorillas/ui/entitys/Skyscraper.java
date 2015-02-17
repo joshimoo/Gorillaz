@@ -11,8 +11,8 @@ public class Skyscraper extends Entity{
     private int height;
     private Color color;
 
-    Skyscraper(int position){
-        x = position * Gorillas.FRAME_WIDTH;
+    public Skyscraper(int position){
+        x = position * Gorillas.FRAME_WIDTH/6;
         height = (int) (Math.random() * 450 + 50);
         y = Gorillas.FRAME_HEIGHT - height;
         color = new Color((int)(Math.random()*65536));
@@ -25,7 +25,7 @@ public class Skyscraper extends Entity{
     @Override
     public void render(Graphics graph) {
         graph.setColor(color);
-        graph.drawRect(x, y, Gorillas.FRAME_WIDTH / 6, height);
+        graph.fillRect(x, y, Gorillas.FRAME_WIDTH / 6, height);
     }
 
     @Override
