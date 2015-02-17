@@ -31,6 +31,9 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static final int TARGET_FRAME_RATE = 120;
 
+    public static String player1 = "Player1";
+    public static String player2 = "Player2";
+
     public static boolean debug = false;
 
     public Gorillas(boolean debug) {
