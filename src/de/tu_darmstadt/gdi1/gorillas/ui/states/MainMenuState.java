@@ -6,6 +6,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -13,6 +14,8 @@ public class MainMenuState extends BasicTWLGameState {
 
     private int stateID;
     private StateBasedEntityManager entityManager;
+
+    private Image background;
 
     private Button newGameButton;
 
@@ -23,7 +26,7 @@ public class MainMenuState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        // TODO Auto-generated method stub
+        background = new Image("assets/menu/background.png");
     }
 
     @Override
@@ -35,6 +38,7 @@ public class MainMenuState extends BasicTWLGameState {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 
+        g.drawImage(background, 0, 0);
         entityManager.renderEntities(container, game, g);
     }
 
