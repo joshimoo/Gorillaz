@@ -1,1 +1,8 @@
+branches:
+  only:
+    - master
+    - develop
+
 language: java
+jdk:
+  - oraclejdk8
