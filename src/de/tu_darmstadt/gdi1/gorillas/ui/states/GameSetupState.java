@@ -93,10 +93,8 @@ public class GameSetupState extends BasicTWLGameState {
         txtName2.setSize(256, 32);
         btnStart.setSize(256, 32);
 
-        int x = paneWidth + txtName1.getWidth();
-
-        // Embrace thy glorious operator :D
-        x >>>= 2;
+        // Removed shift operator, TODO: comment why we are dividing by 4!
+        int x = (paneWidth + txtName1.getWidth()) / 4;
 
         txtName1.setPosition(x,  40);
         txtName2.setPosition(x,  80);
