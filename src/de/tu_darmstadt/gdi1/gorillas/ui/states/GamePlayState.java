@@ -38,13 +38,7 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = new Image("assets/menu/background.png");
-        skys = new Skyscraper[6];
-        skys[0] = new Skyscraper(0);
-        skys[1] = new Skyscraper(1);
-        skys[2] = new Skyscraper(2);
-        skys[3] = new Skyscraper(3);
-        skys[4] = new Skyscraper(4);
-        skys[5] = new Skyscraper(5);
+        skys = new Skyscraper[] { new Skyscraper(0), new Skyscraper(1), new Skyscraper(2), new Skyscraper(3), new Skyscraper(4), new Skyscraper(5)};
 
         int x1 = (int)(Math.random() * 3 + 0);
         int x2 = (int)(Math.random() * 3 + 3);
