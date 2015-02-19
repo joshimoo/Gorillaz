@@ -1,6 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import com.sun.xml.internal.fastinfoset.util.CharArray;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
