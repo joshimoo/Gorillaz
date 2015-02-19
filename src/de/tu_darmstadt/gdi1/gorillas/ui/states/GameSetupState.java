@@ -48,16 +48,18 @@ public class GameSetupState extends BasicTWLGameState {
         btnStart = new Button("GO");
         btnStart.addCallback(new Runnable() {
             public void run() {
-                Gorillas.player1 = txtName1.getText();
-                Gorillas.player2 = txtName2.getText();
-
                 String n1 = txtName1.getText();
                 String n2 = txtName2.getText();
 
-                if(!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13))
+                if(!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
+                    // Only update player names, if we have valid inputs
+                    Gorillas.player1 = n1;
+                    Gorillas.player2 = n2;
                     game.enterState(Gorillas.GAMEPLAYSTATE);
-                else
-                    btnStart.setText("Err0r");
+                }
+                else {
+                    btnStart.setText("Error");
+                }
             }
         });
 
