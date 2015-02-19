@@ -1,4 +1,4 @@
-package de.tu_darmstadt.gdi1.gorillas.ui.entitys;
+package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.Color;

@@ -1,4 +1,4 @@
-package de.tu_darmstadt.gdi1.gorillas.ui.entitys;
+package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
