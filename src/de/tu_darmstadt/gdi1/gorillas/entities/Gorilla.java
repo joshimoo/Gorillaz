@@ -4,9 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-/**
- * Created by Tamara on 17.02.2015.
- */
 public class Gorilla extends Entity{
     public static  int WIDTH;
     public static  Image img;
@@ -30,7 +27,10 @@ public class Gorilla extends Entity{
     }
 
     @Override
-    public void update(int delta) {
+    public void update(int delta) { // TODO:
+    }
 
+    public Image getImage() {
+        return img;
     }
 }

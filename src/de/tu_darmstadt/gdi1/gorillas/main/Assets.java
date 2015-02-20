@@ -11,9 +11,9 @@ public class Assets {
     public static Image imgSunSmile     = loadImage(Gorillas.ASSETS + "sun/sun_smiling.png");
     public static Image imgSumSuprise   = loadImage(Gorillas.ASSETS + "sun/sun_astonished.png");
     public static Image imgDestruction  = loadImage(Gorillas.ASSETS + "destruction.png");
-    public static Image imgGorilla      = loadImage(Gorillas.ASSETS + "gorilla/gorilla.png");
-    public static Image imgGorillaLeft  = loadImage(Gorillas.ASSETS + "gorilla/gorilla_left_up.png");
-    public static Image imgGorillaRight = loadImage(Gorillas.ASSETS + "gorilla/gorilla_right_up.png");
+    public static Image imgGorilla      = loadImage(Gorillas.ASSETS + "gorillas/gorilla.png");
+    public static Image imgGorillaLeft  = loadImage(Gorillas.ASSETS + "gorillas/gorilla_left_up.png");
+    public static Image imgGorillaRight = loadImage(Gorillas.ASSETS + "gorillas/gorilla_right_up.png");
     public static Image imgGorillaHit   = loadImage(Gorillas.ASSETS + "gorillaHit.png");
 
 

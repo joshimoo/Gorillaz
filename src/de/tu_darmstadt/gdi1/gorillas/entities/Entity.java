@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 public abstract class Entity {
     float x;

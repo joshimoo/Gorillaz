@@ -42,8 +42,8 @@ public class GamePlayState extends BasicTWLGameState {
         int x1 = (int)(Math.random() * 3 + 0);
         int x2 = (int)(Math.random() * 3 + 3);
 
-        gorilla1 = new Gorilla(x1 * (Gorillas.FRAME_WIDTH/6) + Gorillas.FRAME_WIDTH/12, Gorillas.FRAME_HEIGHT - skys[x1].getHeigth());
-        gorilla2 = new Gorilla(x2 * (Gorillas.FRAME_WIDTH/6) + Gorillas.FRAME_WIDTH/12, Gorillas.FRAME_HEIGHT - skys[x2].getHeigth());
+        gorilla1 = new Gorilla(x1 * (Gorillas.FRAME_WIDTH/6) + Gorillas.FRAME_WIDTH/12, Gorillas.FRAME_HEIGHT - skys[x1].getHeight());
+        gorilla2 = new Gorilla(x2 * (Gorillas.FRAME_WIDTH/6) + Gorillas.FRAME_WIDTH/12, Gorillas.FRAME_HEIGHT - skys[x2].getHeight());
 
     }
 
