@@ -7,10 +7,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyscraper;
 import eea.engine.entity.StateBasedEntityManager;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -59,6 +56,11 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        Input in = gameContainer.getInput();
+        if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+            int x = in.getMouseX();
+                skys[x / (Gorillas.FRAME_WIDTH/6) ].destroy(in.getMouseX(), in.getMouseY());
+        }
 
     }
 }
