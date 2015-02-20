@@ -21,7 +21,7 @@ public class Skyline extends Entity{
         int hi = x + pow;   /* Boundscheck so explosions carry over buildings */
         int lo = x - pow;
         for(int i = (lo / BUILD_WIDTH ) ; i <= (hi / BUILD_WIDTH); ++i)
-            if(i < 0 && i > BUILD_COUNT) skyscrapers[i].destroy(x, y, pow);
+            if(i > 0 && i < BUILD_COUNT) skyscrapers[i].destroy(x, y, pow);
     }
 
     public int getHeight(final int n){
