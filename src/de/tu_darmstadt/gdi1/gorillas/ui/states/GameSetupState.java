@@ -90,8 +90,8 @@ public class GameSetupState extends BasicTWLGameState {
         txtName2.setSize(256, 32);
         btnStart.setSize(256, 32);
 
-        // Center the Textfields on the screen.
-        int x = (paneWidth + txtName1.getWidth()) / 4;
+        // Center the Textfields on the screen. Jetzt wird duch 2 geteilt :)
+        int x = (paneWidth - txtName1.getWidth()) >> 1;
 
         txtName1.setPosition(x,  40);
         txtName2.setPosition(x,  80);
