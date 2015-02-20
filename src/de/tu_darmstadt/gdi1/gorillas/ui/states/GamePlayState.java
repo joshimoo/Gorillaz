@@ -2,6 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyscraper;
@@ -35,7 +36,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        background = new Image("assets/menu/background.png");
+        background = Assets.imgBackground;
         skys = new Skyscraper[] { new Skyscraper(0), new Skyscraper(1), new Skyscraper(2), new Skyscraper(3), new Skyscraper(4), new Skyscraper(5)};
 
         int x1 = (int)(Math.random() * 3 + 0);

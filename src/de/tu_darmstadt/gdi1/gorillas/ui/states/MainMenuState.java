@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
@@ -28,7 +29,7 @@ public class MainMenuState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        background = new Image("assets/menu/background.png");
+        background = Assets.imgBackground;
 
         rp = super.createRootPane();
 
