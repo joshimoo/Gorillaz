@@ -124,4 +124,8 @@ public class GamePlayState extends BasicTWLGameState {
             skyline.destroy(in.getMouseX(), in.getMouseY(), 64);
     }
 
+    @Override
+    protected RootPane createRootPane() {
+        return rp;
+    }
 }
