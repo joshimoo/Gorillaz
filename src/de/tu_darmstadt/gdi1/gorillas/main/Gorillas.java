@@ -12,15 +12,24 @@ import java.net.URL;
 
 public class Gorillas extends TWLStateBasedGame {
 
+    /* State Definitions */
     public static final int MAINMENUSTATE   = 0;
     public static final int GAMESETUPSTATE  = 1;
     public static final int GAMEPLAYSTATE   = 2;
     public static final int HIGHSCORESTATE  = 3;
     public static final int OPTIONSTATE     = 4;
     public static final int TUTORIALSTATE   = 5;
-    public static final int FRAME_WIDTH = 800;
-    public static final int FRAME_HEIGHT = 600;
-    public static final int TARGET_FRAME_RATE = 120;
+
+    /* Global Parameters */
+    public static final int FRAME_WIDTH     = 800;
+    public static final int FRAME_HEIGHT    = 600;
+    public static final int TARGET_FPS      = 120;
+
+    public static final String THEME    = "/theme.xml";
+    public static final String NATIVE   = "/lib/lwjgl-2.9.1/native/";
+    public static final String ASSETS   = "/assets/gorillas/";
+
+    /* Global Variables */
     public static String player1 = "Player1";
     public static String player2 = "Player2";
 
@@ -38,13 +47,13 @@ public class Gorillas extends TWLStateBasedGame {
     public static void setNativePath(){
         // @formatter:off
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/windows");
+            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + NATIVE + "windows");
         }
         else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/macosx");
+            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + NATIVE + "macosx");
         }
         else {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/" + System.getProperty("os.name").toLowerCase());
+            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + NATIVE + System.getProperty("os.name").toLowerCase());
         }
 
         System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "false");
@@ -57,7 +66,7 @@ public class Gorillas extends TWLStateBasedGame {
         AppGameContainer app = new AppGameContainer(new Gorillas(false));
         app.setShowFPS(true);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
-        app.setTargetFrameRate(TARGET_FRAME_RATE);
+        app.setTargetFrameRate(TARGET_FPS);
         app.start();
     }
 
@@ -78,6 +87,6 @@ public class Gorillas extends TWLStateBasedGame {
 
     @Override
     protected URL getThemeURL() {
-        return getClass().getResource("/theme.xml");
+        return getClass().getResource(THEME);
     }
 }
