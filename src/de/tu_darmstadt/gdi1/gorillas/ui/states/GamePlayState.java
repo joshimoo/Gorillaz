@@ -1,30 +1,19 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import de.matthiasmann.twl.slick.BasicTWLGameState;
-import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
 import de.tu_darmstadt.gdi1.gorillas.main.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
-import de.tu_darmstadt.gdi1.gorillas.entities.Skyscraper;
-import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
-/**
- * Created by Tamara on 17.02.2015.
- */
 public class GamePlayState extends BasicTWLGameState {
 
-    private StateBasedEntityManager entityManager;
-    private RootPane rp;
-    private Skyscraper[] skys;
-    private Gorilla gorilla1;
-    private Gorilla gorilla2;
+    private Skyline skyline;
+    private Gorilla gorilla;  // Best Phun 4eva
+    private Gorilla gorillb;  // :D
     private Image background;
-
-    public GamePlayState() {
-        entityManager = StateBasedEntityManager.getInstance();
-    }
 
     @Override
     public int getID() {
@@ -32,35 +21,33 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     @Override
-    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+    public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         background = Assets.imgBackground;
-        skys = new Skyscraper[] { new Skyscraper(0), new Skyscraper(1), new Skyscraper(2), new Skyscraper(3), new Skyscraper(4), new Skyscraper(5)};
+        skyline = new Skyline(6);
 
         int x1 = (int)(Math.random() * 3 + 0);
         int x2 = (int)(Math.random() * 3 + 3);
 
-        gorilla1 = new Gorilla(x1 * (Gorillas.FRAME_WIDTH/6) + Gorillas.FRAME_WIDTH/12, Gorillas.FRAME_HEIGHT - skys[x1].getHeight());
-        gorilla2 = new Gorilla(x2 * (Gorillas.FRAME_WIDTH/6) + Gorillas.FRAME_WIDTH/12, Gorillas.FRAME_HEIGHT - skys[x2].getHeight());
+        int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
+        int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
 
+        gorilla = new Gorilla(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1));
+        gorillb = new Gorilla(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2));
     }
 
     @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        graphics.drawImage(background, -20, -10);
-        for(Skyscraper element:skys){
-            element.render(graphics);
-        }
-        gorilla1.render(graphics);
-        gorilla2.render(graphics);
+    public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+        g.drawImage(background, -20, -10);
+        skyline.render(g);
+        gorilla.render(g);
+        gorillb.render(g);
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        Input in = gameContainer.getInput();
-        if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-            int x = in.getMouseX();
-                skys[x / (Gorillas.FRAME_WIDTH/6) ].destroy(in.getMouseX(), in.getMouseY());
-        }
-
+    public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        Input in = gc.getInput();
+        if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+            skyline.destroy(in.getMouseX(), in.getMouseY(), 64);
     }
+
 }
