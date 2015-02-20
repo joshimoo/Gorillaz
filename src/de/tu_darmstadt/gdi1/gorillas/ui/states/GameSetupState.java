@@ -15,7 +15,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameSetupState extends BasicTWLGameState {
 
-    private int stateID;
     private StateBasedEntityManager entityManager;
     private RootPane rp;
 
@@ -23,14 +22,13 @@ public class GameSetupState extends BasicTWLGameState {
     private Button btnStart;
     private EditField txtName1, txtName2;
 
-    public GameSetupState(int sid) {
-        stateID = sid;
+    public GameSetupState() {
         entityManager = StateBasedEntityManager.getInstance();
     }
 
     @Override
     public int getID() {
-       return stateID;
+       return Gorillas.GAMESETUPSTATE;
     }
 
     @Override
@@ -74,9 +72,7 @@ public class GameSetupState extends BasicTWLGameState {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-
-    }
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {}
 
     @Override
     protected RootPane createRootPane() {
@@ -88,12 +84,12 @@ public class GameSetupState extends BasicTWLGameState {
         int paneHeight = this.getRootPane().getHeight();
         int paneWidth = this.getRootPane().getWidth();
 
-
+        // Layout subject to change
         txtName1.setSize(256, 32);
         txtName2.setSize(256, 32);
         btnStart.setSize(256, 32);
 
-        // Removed shift operator, TODO: comment why we are dividing by 4!
+        // Center the Textfields on the screen.
         int x = (paneWidth + txtName1.getWidth()) / 4;
 
         txtName1.setPosition(x,  40);

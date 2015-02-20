@@ -10,7 +10,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MainMenuState extends BasicTWLGameState {
 
-    private int stateID;
     private StateBasedEntityManager entityManager;
     private Image background;
     private Button btnNewGame;
@@ -18,9 +17,13 @@ public class MainMenuState extends BasicTWLGameState {
     private Button btnMute;
     private RootPane rp;
 
-    public MainMenuState(int sid) {
-        stateID = sid;
+    public MainMenuState() {
         entityManager = StateBasedEntityManager.getInstance();
+    }
+
+    @Override
+    public int getID() {
+        return Gorillas.MAINMENUSTATE;
     }
 
     @Override
@@ -65,11 +68,6 @@ public class MainMenuState extends BasicTWLGameState {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -10, -20);
         entityManager.renderEntities(container, game, g);
-    }
-
-    @Override
-    public int getID() {
-        return stateID;
     }
 
     @Override

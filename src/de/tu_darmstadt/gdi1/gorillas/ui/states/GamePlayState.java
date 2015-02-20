@@ -17,7 +17,6 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class GamePlayState extends BasicTWLGameState {
 
-    private int stateID;
     private StateBasedEntityManager entityManager;
     private RootPane rp;
     private Skyscraper[] skys;
@@ -25,14 +24,13 @@ public class GamePlayState extends BasicTWLGameState {
     private Gorilla gorilla2;
     private Image background;
 
-    public GamePlayState(int sid) {
-        stateID = sid;
+    public GamePlayState() {
         entityManager = StateBasedEntityManager.getInstance();
     }
 
     @Override
     public int getID() {
-        return stateID;
+        return Gorillas.GAMEPLAYSTATE;
     }
 
     @Override

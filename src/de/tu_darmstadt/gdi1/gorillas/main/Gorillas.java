@@ -35,7 +35,7 @@ public class Gorillas extends TWLStateBasedGame {
         debug = debuging;
     }
 
-    public static void setNativPath(){
+    public static void setNativePath(){
         // @formatter:off
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/windows");
@@ -53,7 +53,7 @@ public class Gorillas extends TWLStateBasedGame {
     }
 
     public static void main(String[] args) throws SlickException {
-        setNativPath();
+        setNativePath();
         AppGameContainer app = new AppGameContainer(new Gorillas(false));
         app.setShowFPS(true);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
@@ -64,9 +64,9 @@ public class Gorillas extends TWLStateBasedGame {
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         // Add states to the StateBasedGame
-        this.addState(new MainMenuState(MAINMENUSTATE));
-        this.addState(new GameSetupState(GAMESETUPSTATE));
-        this.addState(new GamePlayState(GAMEPLAYSTATE));
+        this.addState(new MainMenuState());
+        this.addState(new GameSetupState());
+        this.addState(new GamePlayState());
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager

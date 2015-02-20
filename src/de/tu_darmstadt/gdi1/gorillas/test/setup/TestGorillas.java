@@ -40,7 +40,7 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
 
         // Add states to the StateBasedGame
-        this.addState(new MainMenuState(MAINMENUSTATE));
+        this.addState(new MainMenuState());
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
