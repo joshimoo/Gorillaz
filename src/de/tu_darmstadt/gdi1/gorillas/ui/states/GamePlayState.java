@@ -75,25 +75,20 @@ public class GamePlayState extends BasicTWLGameState {
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
+
         btnThrow.addCallback(new Runnable() {
             public void run() {
                 // TODO: Umsetzung des Bananenwurfes
-                // Während des Fluges Eingaben deaktivieren
+
+                // During the flight disable inputs
                 btnThrow.setVisible(false);
                 if_speed.setEnabled(false);
                 if_angle.setEnabled(false);
 
                 System.out.println("Throw Banana s=" + if_speed.getValue()+
                                     " a="+ if_angle.getValue()  );
-                // Wurfsimulation
-                try {
-                    Thread.sleep(3000);
-                }
-                catch(InterruptedException e) {
-                    System.out.println("Bla");
-                }
 
-                // Nach dem Flug Eingaben reaktivieren
+                // after the flight reactivate inputs
                 btnThrow.setVisible(true);
                 if_speed.setEnabled(true);
                 if_angle.setEnabled(true);
@@ -101,12 +96,13 @@ public class GamePlayState extends BasicTWLGameState {
             }
         });
 		
-		// Set Size and Possition of the Input-Elements
+		// Set Size and Position of the Input-Elements
         int basic_x=20;
         int basic_y=10;
         int basic_x_c=35;
 
         /*
+        // Everything under each other
         int pos=0;
         l_speed.setSize(100, 20);
         l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
@@ -127,6 +123,7 @@ public class GamePlayState extends BasicTWLGameState {
         btnThrow.setPosition(basic_x+20, basic_y+basic_x_c*pos);
         */
 
+        // Labels next to the inputs because of place-conflict the the skyscraper
         int pos=0;
         l_speed.setSize(60, 20);
         l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
