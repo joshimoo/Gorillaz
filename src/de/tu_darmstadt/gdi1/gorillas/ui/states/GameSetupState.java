@@ -7,10 +7,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.StateBasedEntityManager;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 
@@ -47,18 +44,7 @@ public class GameSetupState extends BasicTWLGameState {
         btnStart = new Button("GO");
         btnStart.addCallback(new Runnable() {
             public void run() {
-                String n1 = txtName1.getText();
-                String n2 = txtName2.getText();
-
-                if(!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
-                    // Only update player names, if we have valid inputs
-                    Gorillas.player1 = n1;
-                    Gorillas.player2 = n2;
-                    game.enterState(Gorillas.GAMEPLAYSTATE);
-                }
-                else {
-                    btnStart.setText("Error");
-                }
+                saveNamesAndStartGame(game);
             }
         });
 
@@ -73,7 +59,18 @@ public class GameSetupState extends BasicTWLGameState {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {}
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        Input in_key = gameContainer.getInput();
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) saveNamesAndStartGame(stateBasedGame);
+        if (in_key.isKeyPressed(Input.KEY_TAB)) {
+            if (txtName1.hasKeyboardFocus()) {
+                txtName2.requestKeyboardFocus();
+            }
+            else {
+                txtName1.requestKeyboardFocus();
+            }
+        }
+    }
 
     @Override
     protected RootPane createRootPane() {
@@ -99,4 +96,23 @@ public class GameSetupState extends BasicTWLGameState {
 
     }
 
+    /**
+     * Stores the playernames and changes to the GAMEPLAYSTATE
+     * @param game StateBasedGame
+     */
+    private void saveNamesAndStartGame(StateBasedGame game)
+    {
+        String n1 = txtName1.getText();
+        String n2 = txtName2.getText();
+
+        if(!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
+            // Only update player names, if we have valid inputs
+            Gorillas.player1 = n1;
+            Gorillas.player2 = n2;
+            game.enterState(Gorillas.GAMEPLAYSTATE);
+        }
+        else {
+            btnStart.setText("Error");
+        }
+    }
 }
