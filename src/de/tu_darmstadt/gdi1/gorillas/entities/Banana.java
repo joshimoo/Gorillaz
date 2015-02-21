@@ -1,6 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
-import de.tu_darmstadt.gdi1.gorillas.main.Assets;
+import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -13,7 +13,7 @@ public class Banana extends Entity {
     public Banana(final float x, final float y){
         this.x = x;
         this.y = y;
-        img = Assets.imgBanana;
+        img = Assets.loadUniqueImage(Assets.Images.BANNA);
         img.setCenterOfRotation(img.getHeight()/ 2, img.getWidth() / 2);
     }
 

@@ -36,7 +36,7 @@ public class GameSetupState extends BasicTWLGameState {
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
         rp = super.createRootPane();
 
-        background = Assets.imgBackground;
+        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
 
         txtName1 = new EditField();
         txtName2 = new EditField();

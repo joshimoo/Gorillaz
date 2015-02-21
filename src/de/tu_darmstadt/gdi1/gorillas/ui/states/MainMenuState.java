@@ -29,7 +29,7 @@ public class MainMenuState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        background = Assets.imgBackground;
+        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
 
         rp = super.createRootPane();
 
