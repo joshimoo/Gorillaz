@@ -16,8 +16,6 @@ public final class Assets {
     private static final String ASSETS   = "/assets/gorillas/";
     private static Image ERROR_IMAGE;
 
-    public static Image imgBackground   = loadImage(ASSETS + "background.png");
-
     // Asset Collections
     private static Map<Images, Image> images = new EnumMap<Images, Image>(Images.class);
 
