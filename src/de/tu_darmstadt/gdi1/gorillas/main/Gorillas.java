@@ -4,6 +4,7 @@ import de.matthiasmann.twl.slick.TWLStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -26,7 +27,6 @@ public class Gorillas extends TWLStateBasedGame {
     public static final int TARGET_FPS      = 120;
 
     public static final String THEME    = "/theme.xml";
-    public static final String NATIVE   = "/lib/lwjgl-2.9.1/native/";
 
     /* Global Variables */
     public static String player1 = "Player1";
@@ -43,25 +43,8 @@ public class Gorillas extends TWLStateBasedGame {
         debug = debuging;
     }
 
-    public static void setNativePath(){
-        // @formatter:off
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + NATIVE + "windows");
-        }
-        else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + NATIVE + "macosx");
-        }
-        else {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + NATIVE + System.getProperty("os.name").toLowerCase());
-        }
-
-        System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "false");
-        System.err.println(System.getProperty("os.name") + ": " + System.getProperty("org.lwjgl.librarypath"));
-        // @formatter:on
-    }
-
     public static void main(String[] args) throws SlickException {
-        setNativePath();
+        Utils.setNativePath();
         AppGameContainer app = new AppGameContainer(new Gorillas(false));
         app.setShowFPS(true);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);

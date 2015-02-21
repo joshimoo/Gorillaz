@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -38,20 +39,7 @@ public class GorillasTestAdapterMinimal {
     public void initializeGame() {
 
         // Set the native library path (depending on the operating system)
-        // @formatter:off
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/windows");
-        }
-        else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/macosx");
-        }
-        else {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/" + System.getProperty("os.name").toLowerCase());
-        }
-
-        System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "false");
-        System.err.println(System.getProperty("os.name") + ": " + System.getProperty("org.lwjgl.librarypath"));
-        // @formatter:on
+        Utils.setNativePath();
 
         // Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
         gorillas = new TestGorillas(true);
