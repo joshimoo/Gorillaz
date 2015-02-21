@@ -120,6 +120,15 @@ public class GamePlayState extends BasicTWLGameState {
         skyline.render(g);
         gorilla.render(g);
         gorillb.render(g);
+
+        g.setColor(Color.black);    /* Dropshadow */
+        g.drawString(Gorillas.player2, gorillb.x - g.getFont().getWidth(Gorillas.player2) / 2 + 1, gorillb.y - 63);
+        g.drawString(Gorillas.player1, gorilla.x - g.getFont().getWidth(Gorillas.player1) / 2 + 1, gorilla.y - 63);
+
+        /* We could possibly change the name-color of the active player as an indication */
+        g.setColor(Color.white);
+        g.drawString(Gorillas.player2, gorillb.x - g.getFont().getWidth(Gorillas.player2) / 2, gorillb.y - 64);
+        g.drawString(Gorillas.player1, gorilla.x - g.getFont().getWidth(Gorillas.player1) / 2, gorilla.y - 64);
     }
 
     @Override
