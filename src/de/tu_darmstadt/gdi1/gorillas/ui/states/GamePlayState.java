@@ -21,13 +21,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Sun sun;
     private Image background;
 
-	// Input-Elements Speed and Angle
-	private RootPane rp;
-    private Button btnThrow;
-    private Label l_speed;
-    private ValueAdjusterInt if_speed;
-    private Label l_angle;
-    private ValueAdjusterInt if_angle;
+
     @Override
     public int getID() {
         return Gorillas.GAMEPLAYSTATE;
@@ -49,106 +43,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(400, 60);
 
-		// Needed for adding the new Input-Elements
-		rp = super.createRootPane();
-
-        // Create Input-Elements Speed and Angle
-        l_speed = new Label("Speed");
-        l_speed.setLabelFor(if_speed);
-        // TODO: Set text color WHITE
-        //l_speed.setForeground(Color.WHITE)
-
-        if_speed= new ValueAdjusterInt();
-        if_speed.setMinMaxValue(0,200);
-        if_speed.setValue(100);
-
-		
-        l_angle = new Label("Angle ");
-        l_angle.setLabelFor(if_angle);
-        // TODO: Set text color WHITE
-
-        if_angle = new ValueAdjusterInt();
-        if_angle.setMinMaxValue(0,180);
-        if_angle.setValue(120);
-
-        btnThrow = new Button("Throw");
-
-        // Wirkungslos
-        btnThrow.setAlignment(Alignment.CENTER);
-
-        btnThrow.addCallback(new Runnable() {
-            public void run() {
-                // TODO: Umsetzung des Bananenwurfes
-
-                // During the flight disable inputs
-                btnThrow.setVisible(false);
-                if_speed.setEnabled(false);
-                if_angle.setEnabled(false);
-
-                System.out.println("Throw Banana s=" + if_speed.getValue()+
-                                    " a="+ if_angle.getValue()  );
-
-                // after the flight reactivate inputs
-                btnThrow.setVisible(true);
-                if_speed.setEnabled(true);
-                if_angle.setEnabled(true);
-
-            }
-        });
-		
-		// Set Size and Position of the Input-Elements
-        int basic_x=20;
-        int basic_y=10;
-        int basic_x_c=35;
-
-        /*
-        // Everything under each other
-        int pos=0;
-        l_speed.setSize(100, 20);
-        l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
-
-        if_speed.setSize(100, 25);
-        if_speed.setPosition(basic_x, basic_y+basic_x_c*pos+25);
-
-        pos=1;
-        l_angle.setSize(100, 20);
-        l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
-
-        if_angle.setSize(100, 25);
-        if_angle.setPosition(basic_x, basic_y+basic_x_c*pos+25);
-
-        pos=2;
-        // Button kleiner und verschoben
-        btnThrow.setSize(50, 25);
-        btnThrow.setPosition(basic_x+20, basic_y+basic_x_c*pos);
-        */
-
-        // Labels next to the inputs because of place-conflict the the skyscraper
-        int pos=0;
-        l_speed.setSize(60, 20);
-        l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
-
-        if_speed.setSize(100, 25);
-        if_speed.setPosition(basic_x+60, basic_y+basic_x_c*pos);
-
-        pos=1;
-        l_angle.setSize(60, 20);
-        l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
-
-        if_angle.setSize(100, 25);
-        if_angle.setPosition(basic_x+60, basic_y+basic_x_c*pos);
-
-        pos=2;
-        // Button kleiner und verschoben
-        btnThrow.setSize(50, 25);
-        btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
-
-		// Add the Input-Elements to the RootPane
-        rp.add(l_speed);
-        rp.add(if_speed);
-        rp.add(l_angle);
-        rp.add(if_angle);
-        rp.add(btnThrow);
+        this.createRootPane();
     }
 
     @Override
@@ -181,6 +76,105 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     protected RootPane createRootPane() {
+        // Needed for adding the new Input-Elements
+        RootPane rp = super.createRootPane();
+
+        // Create Input-Elements Speed and Angle
+        Label l_speed = new Label("Speed");
+        Label l_angle = new Label("Angle ");
+        ValueAdjusterInt if_speed= new ValueAdjusterInt();
+        ValueAdjusterInt if_angle = new ValueAdjusterInt();
+        Button btnThrow = new Button("Throw");
+
+        l_speed.setLabelFor(if_speed);
+        // TODO: Set text color WHITE
+        //l_speed.setForeground(Color.WHITE)
+        l_angle.setLabelFor(if_angle);
+        // TODO: Set text color WHITE
+
+        if_speed.setMinMaxValue(0,200);
+        if_speed.setValue(100);
+
+        if_angle.setMinMaxValue(0,180);
+        if_angle.setValue(120);
+
+        // Wirkungslos
+        btnThrow.setAlignment(Alignment.CENTER);
+
+        btnThrow.addCallback(new Runnable() {
+            public void run() {
+                // TODO: Umsetzung des Bananenwurfes
+
+                // During the flight disable inputs
+                btnThrow.setVisible(false);
+                if_speed.setEnabled(false);
+                if_angle.setEnabled(false);
+
+                System.out.println("Throw Banana s=" + if_speed.getValue()+
+                        " a="+ if_angle.getValue()  );
+
+                // after the flight reactivate inputs
+                btnThrow.setVisible(true);
+                if_speed.setEnabled(true);
+                if_angle.setEnabled(true);
+
+            }
+        });
+
+        // Set Size and Position of the Input-Elements
+        int basic_x=20;
+        int basic_y=10;
+        int basic_x_c=35;
+
+        /*
+        // Everything under each other
+        int pos=0;
+        l_speed.setSize(100, 20);
+        l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
+
+        if_speed.setSize(100, 25);
+        if_speed.setPosition(basic_x, basic_y+basic_x_c*pos+25);
+
+        pos=1;
+        l_angle.setSize(100, 20);
+        l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
+
+        if_angle.setSize(100, 25);
+        if_angle.setPosition(basic_x, basic_y+basic_x_c*pos+25);
+
+        pos=2;
+        // Button kleiner und verschoben
+        btnThrow.setSize(50, 25);
+        btnThrow.setPosition(basic_x+20, basic_y+basic_x_c*pos);
+        */
+
+        // Labels next to the inputs because of place-conflict the the skyscraper
+        int pos=0;
+        l_speed.setSize(60, 20);
+        l_speed.setPosition(basic_x, basic_y + basic_x_c * pos);
+
+        if_speed.setSize(100, 25);
+        if_speed.setPosition(basic_x+60, basic_y+basic_x_c*pos);
+
+        pos=1;
+        l_angle.setSize(60, 20);
+        l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
+
+        if_angle.setSize(100, 25);
+        if_angle.setPosition(basic_x+60, basic_y+basic_x_c*pos);
+
+        pos=2;
+        // Button kleiner und verschoben
+        btnThrow.setSize(50, 25);
+        btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
+
+        // Add the Input-Elements to the RootPane
+        rp.add(l_speed);
+        rp.add(if_speed);
+        rp.add(l_angle);
+        rp.add(if_angle);
+        rp.add(btnThrow);
+
         return rp;
     }
 }
