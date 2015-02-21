@@ -104,6 +104,7 @@ public final class Assets {
     public static enum Images {
         // Menu
         MAINMENU_BACKGROUND(ASSETS + "background.png"),
+        SETUPMENU_BACKGROUND(ASSETS + "menusetup.png"),
         GAMEPLAY_BACKGROUND(ASSETS + "background.png"),
 
         // Sun
