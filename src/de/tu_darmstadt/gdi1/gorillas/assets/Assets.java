@@ -117,7 +117,7 @@ public final class Assets {
         GORRILA_HIT(ASSETS + "gorillaHit.png"),
 
         // Projectiles
-        BANNA(ASSETS + "banana.png"),
+        BANANA(ASSETS + "banana.png"),
         SNICKERS(ASSETS + "snickers.png"),
         DESTRUCTION_OVERLAY(ASSETS + "destruction.png");
 
