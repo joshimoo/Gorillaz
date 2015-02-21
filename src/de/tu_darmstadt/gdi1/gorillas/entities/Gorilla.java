@@ -1,6 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
-import de.tu_darmstadt.gdi1.gorillas.main.Assets;
+import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -20,9 +20,9 @@ public class Gorilla extends Entity {
         animation = new Animation();
         animation.setLooping(true);
         animation.setSpeed(ANIMATION_SPEED);
-        animation.addFrame(Assets.imgGorilla,      FRAME_LENGTH);
-        animation.addFrame(Assets.imgGorillaLeft,  FRAME_LENGTH);
-        animation.addFrame(Assets.imgGorillaRight, FRAME_LENGTH);
+        animation.addFrame(Assets.loadImage(Assets.Images.GORRILA),      FRAME_LENGTH);
+        animation.addFrame(Assets.loadImage(Assets.Images.GORRILA_LEFT),  FRAME_LENGTH);
+        animation.addFrame(Assets.loadImage(Assets.Images.GORRILA_RIGHT), FRAME_LENGTH);
     }
 
     @Override

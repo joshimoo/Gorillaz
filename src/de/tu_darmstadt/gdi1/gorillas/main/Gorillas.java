@@ -27,7 +27,6 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static final String THEME    = "/theme.xml";
     public static final String NATIVE   = "/lib/lwjgl-2.9.1/native/";
-    public static final String ASSETS   = "/assets/gorillas/";
 
     /* Global Variables */
     public static String player1 = "Player1";

@@ -4,7 +4,7 @@ import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.gorillas.main.Assets;
+import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
@@ -36,7 +36,7 @@ public class GameSetupState extends BasicTWLGameState {
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
         rp = super.createRootPane();
 
-        background = Assets.imgBackground;
+        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
 
         txtName1 = new EditField();
         txtName2 = new EditField();
