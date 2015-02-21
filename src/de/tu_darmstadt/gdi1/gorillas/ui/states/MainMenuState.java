@@ -52,6 +52,7 @@ public class MainMenuState extends BasicTWLGameState {
         btnMute.addCallback(new Runnable() {
             public void run() {
                 // TODO: Mute me :)
+                System.out.println("Mute");
             }
         });
 
@@ -63,6 +64,10 @@ public class MainMenuState extends BasicTWLGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         entityManager.updateEntities(container, game, delta);
+        Input in_key = container.getInput();
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
+        if (in_key.isKeyPressed(Input.KEY_M)) {/* TODO: Mute me :) */ System.out.println("Mute");}
     }
 
     @Override
