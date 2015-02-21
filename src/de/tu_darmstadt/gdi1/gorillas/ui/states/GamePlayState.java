@@ -119,6 +119,9 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        gorilla.update(delta);
+        gorillb.update(delta);
+
         Input in = gc.getInput();
         if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON))
             skyline.destroy(in.getMouseX(), in.getMouseY(), 64);

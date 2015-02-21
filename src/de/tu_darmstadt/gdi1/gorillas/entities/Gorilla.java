@@ -1,36 +1,50 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Assets;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 
-public class Gorilla extends Entity{
-    public static  int WIDTH;
-    public static  Image img;
+public class Gorilla extends Entity {
 
-    public Gorilla(int x, int y){
+    /* How fast should the Animation be */
+    public static final float ANIMATION_SPEED = 1.0f;
+    /* How long a single frame should be displayed [ms] */
+    public static final int   FRAME_LENGTH    = 1000;
+
+    public Animation animation;
+
+    public Gorilla(int x, int y) {
         this.x = x;
         this.y = y;
-        try {
-            img = new Image("assets/gorillas/gorillas/gorilla.png");
-        }
-        catch (SlickException e) {
-            img = null;
-            e.printStackTrace();
-        }
-        WIDTH = img.getWidth();
+        animation = new Animation();
+        animation.setLooping(true);
+        animation.setSpeed(ANIMATION_SPEED);
+        animation.addFrame(Assets.imgGorilla,      FRAME_LENGTH);
+        animation.addFrame(Assets.imgGorillaLeft,  FRAME_LENGTH);
+        animation.addFrame(Assets.imgGorillaRight, FRAME_LENGTH);
     }
+
     @Override
     public void render(Graphics graph) {
-        graph.drawImage(img, x - WIDTH / 2, y - img.getHeight());
-
+        graph.drawImage(animation.getCurrentFrame(), x - getHeight() / 2, y - getHeight());
     }
 
     @Override
-    public void update(int delta) { // TODO:
+    public void update(int delta) {
+        animation.update(delta);
     }
 
     public Image getImage() {
-        return img;
+        return animation.getCurrentFrame();
     }
+
+    public int getWidth() {
+        return getImage().getWidth();
+    }
+
+    public int getHeight() {
+        return getImage().getHeight();
+    }
+
 }
