@@ -1,3 +1,5 @@
+package de.tu_darmstadt.gdi1.gorillas.utils;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
