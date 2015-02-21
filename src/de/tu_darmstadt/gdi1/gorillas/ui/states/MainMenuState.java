@@ -16,7 +16,7 @@ public class MainMenuState extends BasicTWLGameState {
     private Button btnNewGame;
     private Button btnExit;
     private Button btnMute;
-    private RootPane rp;
+    private StateBasedGame game;
 
     public MainMenuState() {
         entityManager = StateBasedEntityManager.getInstance();
@@ -31,7 +31,24 @@ public class MainMenuState extends BasicTWLGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
 
-        rp = super.createRootPane();
+        this.createRootPane();
+        this.game = game;
+    }
+
+    @Override
+    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+        entityManager.updateEntities(container, game, delta);
+    }
+
+    @Override
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        g.drawImage(background, -10, -20);
+        entityManager.renderEntities(container, game, g);
+    }
+
+    @Override
+    protected RootPane createRootPane() {
+        RootPane rp = super.createRootPane();
 
         btnNewGame = new Button("New Game");
         btnNewGame.addCallback(new Runnable() {
@@ -58,21 +75,7 @@ public class MainMenuState extends BasicTWLGameState {
         rp.add(btnNewGame);
         rp.add(btnExit);
         rp.add(btnMute);
-    }
 
-    @Override
-    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        entityManager.updateEntities(container, game, delta);
-    }
-
-    @Override
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.drawImage(background, -10, -20);
-        entityManager.renderEntities(container, game, g);
-    }
-
-    @Override
-    protected RootPane createRootPane() {
         return rp;
     }
 

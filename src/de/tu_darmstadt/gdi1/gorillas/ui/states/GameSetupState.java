@@ -17,11 +17,11 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameSetupState extends BasicTWLGameState {
 
     private StateBasedEntityManager entityManager;
-    private RootPane rp;
 
     private Image background;
     private Button btnStart;
     private EditField txtName1, txtName2;
+    private StateBasedGame game;
 
     public GameSetupState() {
         entityManager = StateBasedEntityManager.getInstance();
@@ -34,17 +34,26 @@ public class GameSetupState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
-        rp = super.createRootPane();
-
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+        this.createRootPane();
+        this.game=game;
+    }
 
+    @Override
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        graphics.drawImage(background, -10, -20);
+    }
+
+    @Override
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {}
+
+    @Override
+    protected RootPane createRootPane() {
+        RootPane rp = super.createRootPane();
         txtName1 = new EditField();
         txtName2 = new EditField();
-
-        txtName1.setText(Gorillas.player1);
-        txtName2.setText(Gorillas.player2);
-
         btnStart = new Button("GO");
+
         btnStart.addCallback(new Runnable() {
             public void run() {
                 String n1 = txtName1.getText();
@@ -62,21 +71,12 @@ public class GameSetupState extends BasicTWLGameState {
             }
         });
 
+        txtName1.setText(Gorillas.player1);
+        txtName2.setText(Gorillas.player2);
+
         rp.add(txtName1);
         rp.add(txtName2);
         rp.add(btnStart);
-    }
-
-    @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        graphics.drawImage(background, -10, -20);
-    }
-
-    @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {}
-
-    @Override
-    protected RootPane createRootPane() {
         return rp;
     }
 
