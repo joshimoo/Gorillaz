@@ -1,8 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.Label;
-import de.matthiasmann.twl.ValueAdjusterInt;
+import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
@@ -11,7 +9,9 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
 import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.state.StateBasedGame;
+
 
 public class GamePlayState extends BasicTWLGameState {
 
@@ -71,39 +71,80 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle.setMinMaxValue(0,180);
         if_angle.setValue(120);
 
-        btnThrow = new Button("Throw Banana");
+        btnThrow = new Button("Throw");
+
+        // Wirkungslos
+        btnThrow.setAlignment(Alignment.CENTER);
         btnThrow.addCallback(new Runnable() {
             public void run() {
                 // TODO: Umsetzung des Bananenwurfes
+                // Während des Fluges Eingaben deaktivieren
+                btnThrow.setVisible(false);
+                if_speed.setEnabled(false);
+                if_angle.setEnabled(false);
+
                 System.out.println("Throw Banana s=" + if_speed.getValue()+
                                     " a="+ if_angle.getValue()  );
+                // Wurfsimulation
+                try {
+                    Thread.sleep(3000);
+                }
+                catch(InterruptedException e) {
+                    System.out.println("Bla");
+                }
+
+                // Nach dem Flug Eingaben reaktivieren
+                btnThrow.setVisible(true);
+                if_speed.setEnabled(true);
+                if_angle.setEnabled(true);
+
             }
         });
 		
 		// Set Size and Possition of the Input-Elements
         int basic_x=20;
-        int basic_y=20;
-        int basic_x_c=64;
+        int basic_y=10;
+        int basic_x_c=35;
 
+        /*
         int pos=0;
-        l_speed.setSize(128, 20);
+        l_speed.setSize(100, 20);
         l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
 
-        if_speed.setSize(128, 32);
+        if_speed.setSize(100, 25);
         if_speed.setPosition(basic_x, basic_y+basic_x_c*pos+25);
 
         pos=1;
-        l_angle.setSize(128, 20);
+        l_angle.setSize(100, 20);
         l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
 
-        if_angle.setSize(128, 32);
+        if_angle.setSize(100, 25);
         if_angle.setPosition(basic_x, basic_y+basic_x_c*pos+25);
 
         pos=2;
-        btnThrow.setSize(128, 32);
-        btnThrow.setPosition(basic_x, basic_y+basic_x_c*pos);
+        // Button kleiner und verschoben
+        btnThrow.setSize(50, 25);
+        btnThrow.setPosition(basic_x+20, basic_y+basic_x_c*pos);
+        */
 
+        int pos=0;
+        l_speed.setSize(60, 20);
+        l_speed.setPosition(basic_x, basic_y+basic_x_c*pos);
 
+        if_speed.setSize(100, 25);
+        if_speed.setPosition(basic_x+60, basic_y+basic_x_c*pos);
+
+        pos=1;
+        l_angle.setSize(60, 20);
+        l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
+
+        if_angle.setSize(100, 25);
+        if_angle.setPosition(basic_x+60, basic_y+basic_x_c*pos);
+
+        pos=2;
+        // Button kleiner und verschoben
+        btnThrow.setSize(50, 25);
+        btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
 
 		// Add the Input-Elements to the RootPane
         rp.add(l_speed);
