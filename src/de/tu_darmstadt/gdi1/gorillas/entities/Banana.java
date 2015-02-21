@@ -13,7 +13,7 @@ public class Banana extends Entity {
     public Banana(final float x, final float y){
         this.x = x;
         this.y = y;
-        img = Assets.loadUniqueImage(Assets.Images.BANNA);
+        img = Assets.loadUniqueImage(Assets.Images.BANANA);
         img.setCenterOfRotation(img.getHeight()/ 2, img.getWidth() / 2);
     }
 
