@@ -6,6 +6,7 @@ import de.matthiasmann.twl.ValueAdjusterInt;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
+import de.tu_darmstadt.gdi1.gorillas.entities.Sun;
 import de.tu_darmstadt.gdi1.gorillas.main.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
@@ -17,6 +18,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Skyline skyline;
     private Gorilla gorilla;  // Best Phun 4eva
     private Gorilla gorillb;  // :D
+    private Sun sun;
     private Image background;
 
 	// Input-Elements Speed and Angle
@@ -44,7 +46,9 @@ public class GamePlayState extends BasicTWLGameState {
 
         gorilla = new Gorilla(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1));
         gorillb = new Gorilla(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2));
-		
+
+        sun = new Sun(400, 60);
+
 		// Needed for adding the new Input-Elements
 		rp = super.createRootPane();
 
@@ -112,6 +116,7 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -20, -10);
+        sun.render(g);
         skyline.render(g);
         gorilla.render(g);
         gorillb.render(g);
@@ -119,6 +124,9 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        gorilla.update(delta);
+        gorillb.update(delta);
+
         Input in = gc.getInput();
         if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON))
             skyline.destroy(in.getMouseX(), in.getMouseY(), 64);
