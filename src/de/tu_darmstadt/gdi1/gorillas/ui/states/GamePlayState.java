@@ -7,7 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
 import de.tu_darmstadt.gdi1.gorillas.entities.Sun;
-import de.tu_darmstadt.gdi1.gorillas.main.Assets;
+import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
 import org.newdawn.slick.*;

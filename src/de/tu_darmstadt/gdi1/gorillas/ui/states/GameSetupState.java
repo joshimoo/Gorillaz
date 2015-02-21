@@ -4,7 +4,7 @@ import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.gorillas.main.Assets;
+import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
