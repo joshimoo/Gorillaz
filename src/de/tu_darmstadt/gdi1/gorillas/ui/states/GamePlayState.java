@@ -6,11 +6,14 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
 import de.tu_darmstadt.gdi1.gorillas.entities.Sun;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.state.StateBasedGame;
+
+import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player1;
+import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player2;
 
 
 public class GamePlayState extends BasicTWLGameState {
@@ -54,14 +57,14 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla.render(g);
         gorillb.render(g);
 
-        g.setColor(Color.black);    /* Dropshadow */
-        g.drawString(Gorillas.player2, gorillb.x - g.getFont().getWidth(Gorillas.player2) / 2 + 1, gorillb.y - 63);
-        g.drawString(Gorillas.player1, gorilla.x - g.getFont().getWidth(Gorillas.player1) / 2 + 1, gorilla.y - 63);
+        g.setColor(Color.black);    /* Dropshadow TODO: maybe translucent background */
+        g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2 + 1, gorillb.y - 63);
+        g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2 + 1, gorilla.y - 63);
 
         /* We could possibly change the name-color of the active player as an indication */
         g.setColor(Color.white);
-        g.drawString(Gorillas.player2, gorillb.x - g.getFont().getWidth(Gorillas.player2) / 2, gorillb.y - 64);
-        g.drawString(Gorillas.player1, gorilla.x - g.getFont().getWidth(Gorillas.player1) / 2, gorilla.y - 64);
+        g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2, gorillb.y - 64);
+        g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2, gorilla.y - 64);
     }
 
     @Override

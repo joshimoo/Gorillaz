@@ -4,6 +4,7 @@ import de.matthiasmann.twl.slick.TWLStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.Player;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.AppGameContainer;
@@ -29,8 +30,8 @@ public class Gorillas extends TWLStateBasedGame {
     public static final String THEME    = "/theme.xml";
 
     /* Global Variables */
-    public static String player1 = "Player1";
-    public static String player2 = "Player2";
+    public static Player player1;
+    public static Player player2;
 
     public static boolean debug = false;
 
