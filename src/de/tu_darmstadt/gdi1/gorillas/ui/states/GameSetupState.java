@@ -7,24 +7,18 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 
 public class GameSetupState extends BasicTWLGameState {
 
-    private StateBasedEntityManager entityManager;
     private RootPane rp;
 
     private Image background;
     private Button btnStart;
     private EditField txtName1, txtName2;
     private Label lError;
-
-    public GameSetupState() {
-        entityManager = StateBasedEntityManager.getInstance();
-    }
 
     @Override
     public int getID() {
@@ -118,18 +112,10 @@ public class GameSetupState extends BasicTWLGameState {
             Gorillas.player1 = n1;
             Gorillas.player2 = n2;
             game.enterState(Gorillas.GAMEPLAYSTATE);
-        }
-        else {
-            // Detailed errors
-            if (n1.equals(n2)) {
-                lError.setText("Both names are equal. Please enter a different name.");
-            }
-            else if (n1.isEmpty() || n1.length() > 13) {
-                lError.setText("Please enter a new name for Player 1.");
-            }
-            else {
-                lError.setText("Please enter a new name for Player 2.");
-            }
+        } else {
+            if (n1.equals(n2)) lError.setText("Both names are equal. Please enter a different name.");
+            else if (n1.isEmpty() || n1.length() > 12) lError.setText("Please enter a new name for Player 1.");
+            else lError.setText("Please enter a new name for Player 2.");
         }
     }
 }
