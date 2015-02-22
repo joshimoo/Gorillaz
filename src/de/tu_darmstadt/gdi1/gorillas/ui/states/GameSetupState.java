@@ -59,10 +59,10 @@ public class GameSetupState extends BasicTWLGameState {
                 String n1 = txtName1.getText();
                 String n2 = txtName2.getText();
 
-                if(!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
+                if (!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
                     // Only update player names, if we have valid inputs
-                    Gorillas.player1 = n1;
-                    Gorillas.player2 = n2;
+                    Gorillas.player1 = new Player(n1);
+                    Gorillas.player2 = new Player(n2);
                     game.enterState(Gorillas.GAMEPLAYSTATE);
                 }
                 else {
@@ -71,8 +71,9 @@ public class GameSetupState extends BasicTWLGameState {
             }
         });
 
-        txtName1.setText(Gorillas.player1);
-        txtName2.setText(Gorillas.player2);
+        // TODO: Maybe Random name genertion?
+        txtName1.setText("Player1");
+        txtName2.setText("Player2");
 
         rp.add(txtName1);
         rp.add(txtName2);
