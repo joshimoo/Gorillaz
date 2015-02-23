@@ -18,8 +18,6 @@ public class HelpState extends BasicTWLGameState {
     private Label helpText;
 
     private StateBasedGame game;
-    private GameContainer cont;
-
 
     @Override
     public int getID() {
@@ -31,7 +29,6 @@ public class HelpState extends BasicTWLGameState {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
         this.createRootPane();
         this.game = game;
-        this.cont = gameContainer;
     }
 
     @Override
