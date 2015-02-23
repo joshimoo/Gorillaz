@@ -52,8 +52,9 @@ public class HelpState extends BasicTWLGameState {
                 "Mainmenue\n" +
                 "\n" +
                 "    Enter -> new Game\n" +
+                "    H -> Help\n" +
                 "    ESC -> Exit\n" +
-                "    m -> Mute\n" +
+                "    M -> Mute\n" +
                 "\n" +
                 "Game-Setup\n" +
                 "\n" +
@@ -61,11 +62,13 @@ public class HelpState extends BasicTWLGameState {
                 "    Tab -> Txt1 - Txt2 - Go-Button (Space aktiviert Button)\n" +
                 "\n" +
                 "Game-State\n" +
-                "ESC / P -> Pause\n" +
-                "WASD und Pfeiltasten -> Speed und Winkel\n" +
+                "\n" +
+                "    ESC / P -> Pause\n" +
+                "    WASD und Pfeiltasten -> Speed und Winkel\n" +
                 "\n" +
                 "Pause\n" +
-                "ESC / P -> Game"
+                "\n" +
+                "    ESC / P -> Game"
         );
 
         rp.add(helpText);
@@ -101,6 +104,6 @@ public class HelpState extends BasicTWLGameState {
         int x = (paneWidth - helpText.getWidth()) >> 1;
 
         helpText.setPosition(x, 80);
-        btnStart.setPosition(x, 450);
+        btnStart.setPosition(x, 500);
     }
 }
