@@ -1,15 +1,13 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import de.matthiasmann.twl.slick.TWLStateBasedGame;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.Player;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+
 import java.net.URL;
 
 public class Gorillas extends TWLStateBasedGame {
@@ -21,7 +19,7 @@ public class Gorillas extends TWLStateBasedGame {
     public static final int HIGHSCORESTATE  = 3;
     public static final int OPTIONSTATE     = 4;
     public static final int TUTORIALSTATE   = 5;
-    public static final int PAUSESTATE      = 6;
+    public static final int INGAMEPAUSE      = 6;
 
     /* Global Parameters */
     public static final int FRAME_WIDTH     = 800;
@@ -60,12 +58,14 @@ public class Gorillas extends TWLStateBasedGame {
         this.addState(new MainMenuState());
         this.addState(new GameSetupState());
         this.addState(new GamePlayState());
+        this.addState(new InGamePause());
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
         StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
         StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
         StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
+        StateBasedEntityManager.getInstance().addState(INGAMEPAUSE);
         // TODO: Add the other states...
     }
 
