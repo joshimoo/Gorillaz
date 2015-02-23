@@ -20,10 +20,10 @@ import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player2;
 
 public class GamePlayState extends BasicTWLGameState {
 
-    private Skyline skyline;
-    private Gorilla gorilla;  // Best Phun 4eva
-    private Gorilla gorillb;  // :D
-    private Sun sun;
+    private static Skyline skyline;
+    private static Gorilla gorilla;  // Best Phun 4eva
+    private static Gorilla gorillb;  // :D
+    private static Sun sun;
     private Image background;
 
     private ValueAdjusterInt if_speed;
@@ -34,6 +34,23 @@ public class GamePlayState extends BasicTWLGameState {
     public int getID() {
         return Gorillas.GAMEPLAYSTATE;
     }
+
+    public static Skyline getSkyline(){
+        return skyline;
+    }
+
+    public static Gorilla getGorilla(int num){
+        if(num == 0)
+            return gorilla;
+        else
+            return gorillb;
+    }
+
+    public static Sun getSun(){
+        return sun;
+    }
+
+
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -84,7 +101,7 @@ public class GamePlayState extends BasicTWLGameState {
         // Keyboardcontroll
         Input in_key = gc.getInput();
         if(in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P))
-            game.enterState(Gorillas.PAUSESTATE);
+            game.enterState(Gorillas.INGAMEPAUSE);
         else {
             if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_SPACE)) throwBanana();
             if (in_key.isKeyPressed(Input.KEY_RIGHT) || in_key.isKeyPressed(Input.KEY_D)) if_speed.setValue(if_speed.getValue() + 5);
