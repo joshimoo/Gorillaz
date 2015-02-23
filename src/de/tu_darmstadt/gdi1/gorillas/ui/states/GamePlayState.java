@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import de.matthiasmann.twl.*;
+
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
@@ -10,6 +11,7 @@ import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player1;
@@ -24,6 +26,9 @@ public class GamePlayState extends BasicTWLGameState {
     private Sun sun;
     private Image background;
 
+    private ValueAdjusterInt if_speed;
+    private ValueAdjusterInt if_angle;
+    private Button btnThrow;
 
     @Override
     public int getID() {
@@ -75,6 +80,20 @@ public class GamePlayState extends BasicTWLGameState {
         Input in = gc.getInput();
         if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON))
             skyline.destroy(in.getMouseX(), in.getMouseY(), 64);
+
+        // Keyboardcontroll
+        Input in_key = gc.getInput();
+        if(in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P))
+            game.enterState(Gorillas.PAUSESTATE);
+        else {
+            if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_SPACE)) throwBanana();
+            if (in_key.isKeyPressed(Input.KEY_RIGHT) || in_key.isKeyPressed(Input.KEY_D)) if_speed.setValue(if_speed.getValue() + 5);
+            if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)) if_speed.setValue(if_speed.getValue() - 5);
+            if (in_key.isKeyPressed(Input.KEY_UP) || in_key.isKeyPressed(Input.KEY_W)) if_angle.setValue(if_angle.getValue() + 5);
+            //if (in_key.isKeyDown(Input.KEY_UP)) if_angle.setValue(if_angle.getValue() + 1);
+            if (in_key.isKeyPressed(Input.KEY_DOWN) || in_key.isKeyPressed(Input.KEY_S)) if_angle.setValue(if_angle.getValue() - 5);
+
+        }
     }
 
     @Override
@@ -82,12 +101,14 @@ public class GamePlayState extends BasicTWLGameState {
         // Needed for adding the new Input-Elements
         RootPane rp = super.createRootPane();
 
+        if_speed= new ValueAdjusterInt();
+        if_angle = new ValueAdjusterInt();
+        btnThrow = new Button("Throw");
+
         // Create Input-Elements Speed and Angle
         Label l_speed = new Label("Speed");
         Label l_angle = new Label("Angle ");
-        ValueAdjusterInt if_speed= new ValueAdjusterInt();
-        ValueAdjusterInt if_angle = new ValueAdjusterInt();
-        Button btnThrow = new Button("Throw");
+
 
         l_speed.setLabelFor(if_speed);
         // TODO: Set text color WHITE
@@ -106,21 +127,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         btnThrow.addCallback(new Runnable() {
             public void run() {
-                // TODO: Umsetzung des Bananenwurfes
-
-                // During the flight disable inputs
-                btnThrow.setVisible(false);
-                if_speed.setEnabled(false);
-                if_angle.setEnabled(false);
-
-                System.out.println("Throw Banana s=" + if_speed.getValue()+
-                        " a="+ if_angle.getValue()  );
-
-                // after the flight reactivate inputs
-                btnThrow.setVisible(true);
-                if_speed.setEnabled(true);
-                if_angle.setEnabled(true);
-
+               throwBanana();
             }
         });
 
@@ -177,7 +184,28 @@ public class GamePlayState extends BasicTWLGameState {
         rp.add(l_angle);
         rp.add(if_angle);
         rp.add(btnThrow);
-
         return rp;
+    }
+
+    /**
+     * Is called if a banana should thrown
+     */
+    private void throwBanana()
+    {
+        // TODO: Umsetzung des Bananenwurfes
+
+        // During the flight disable inputs
+        btnThrow.setVisible(false);
+        if_speed.setEnabled(false);
+        if_angle.setEnabled(false);
+
+        System.out.println("Throw Banana s=" + if_speed.getValue()+
+                " a="+ if_angle.getValue()  );
+
+        // after the flight reactivate inputs
+        btnThrow.setVisible(true);
+        if_speed.setEnabled(true);
+        if_angle.setEnabled(true);
+
     }
 }
