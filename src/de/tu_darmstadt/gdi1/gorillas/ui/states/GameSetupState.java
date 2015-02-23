@@ -10,7 +10,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
-
 public class GameSetupState extends BasicTWLGameState {
 
     private Image background;
@@ -19,7 +18,6 @@ public class GameSetupState extends BasicTWLGameState {
 
     private StateBasedGame game;
     private Label lError;
-
 
     @Override
     public int getID() {
@@ -74,7 +72,6 @@ public class GameSetupState extends BasicTWLGameState {
             else txtName1.requestKeyboardFocus();
         }
     }
-
 
     @Override
     protected void layoutRootPane() {
