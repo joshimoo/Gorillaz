@@ -148,6 +148,11 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
+                if(activePlayer == player1)
+                    activePlayer = player2;
+                else
+                    activePlayer = player1;
+
                 state = STATES.INPUT;
                 break;
             case VICTORY:
@@ -231,7 +236,7 @@ public class GamePlayState extends BasicTWLGameState {
         if (activePlayer == player1)
             banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue());
         else
-            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), if_angle.getValue(), if_speed.getValue());
+            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180-if_angle.getValue(), if_speed.getValue());
 
         state = STATES.THROW;
     }
