@@ -148,18 +148,22 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
-                if(activePlayer == player1)
+                if(activePlayer == player1) {
                     activePlayer = player2;
-                else
+                    if_speed.setValue(activePlayer.getLastSpeed());
+                    if_angle.setValue(activePlayer.getLastAngle());
+                }
+                else {
                     activePlayer = player1;
+                    if_speed.setValue(activePlayer.getLastSpeed());
+                    if_angle.setValue(activePlayer.getLastAngle());
+                }
 
                 state = STATES.INPUT;
                 break;
             case VICTORY:
                 break;
         }
-
-
     }
 
     @Override
@@ -233,10 +237,14 @@ public class GamePlayState extends BasicTWLGameState {
     /** Generates a Banana at the current Player */
     private void throwBanana() {
         System.out.println("Throw Banana " + if_speed.getValue() + " " + if_angle.getValue());
+
+        activePlayer.setLastSpeed(if_speed.getValue());
+        activePlayer.setLastAngle(if_angle.getValue());
+
         if (activePlayer == player1)
             banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue());
         else
-            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180-if_angle.getValue(), if_speed.getValue());
+            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue(), if_speed.getValue());
 
         state = STATES.THROW;
     }
