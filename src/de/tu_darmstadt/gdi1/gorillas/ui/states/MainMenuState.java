@@ -36,17 +36,6 @@ public class MainMenuState extends BasicTWLGameState {
     }
 
     @Override
-    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        entityManager.updateEntities(container, game, delta);
-    }
-
-    @Override
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.drawImage(background, -10, -20);
-        entityManager.renderEntities(container, game, g);
-    }
-
-    @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
 
@@ -69,16 +58,32 @@ public class MainMenuState extends BasicTWLGameState {
         btnMute.addCallback(new Runnable() {
             public void run() {
                 // TODO: Mute me :)
+                System.out.println("Mute");
             }
         });
 
         rp.add(btnNewGame);
         rp.add(btnExit);
         rp.add(btnMute);
-
-        return rp;
+		return rp;
     }
 
+    @Override
+    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+        entityManager.updateEntities(container, game, delta);
+        Input in_key = container.getInput();
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
+        if (in_key.isKeyPressed(Input.KEY_M)) {/* TODO: Mute me :) */ System.out.println("Mute");}
+    }
+
+	@Override
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        g.drawImage(background, -10, -20);
+        entityManager.renderEntities(container, game, g);
+    }
+	
+   
     @Override
     protected void layoutRootPane() {
         int paneHeight = this.getRootPane().getHeight();
