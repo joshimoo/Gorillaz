@@ -9,12 +9,15 @@ public class Player {
     private final String name;
     private int health;
     private int score;
+    private int lastSpeed, lastAngle;
 
     /** Create a new Player with the given name, a score of zero and MAX_HEALTH */
     public Player(final String name){
         this.name   = name;
         this.health = MAX_HEALTH;
         this.score  = 0;
+        this.lastSpeed = 80;
+        this.lastAngle = 60;
     }
 
     /** Return the Players name */
@@ -50,9 +53,34 @@ public class Player {
             this.score += n;
     }
 
-    /** @return the current Playerscore */
+    /** Returns the current Playerscore */
     public int getScore(){
         return this.score;
     }
 
+    /** Sets the last speed value of the players throw */
+    public void setLastSpeed(int speed) {
+        if (speed > 200) lastSpeed = 200;
+        else if (speed < 0) lastSpeed = 0;
+        else lastSpeed = speed;
+    }
+
+    /** Sets the last angle value of the players throw */
+    public void setLastAngle(int angle)
+    {
+        if (angle > 180) lastAngle = 180;
+        else if(angle < 0) lastAngle = 0;
+        else lastAngle =angle;
+    }
+
+    /** Gets the last speed value of the players throw */
+    public int getLastSpeed() {
+        return lastSpeed;
+    }
+
+    /** Gets the last angle value of the players throw */
+    public int getLastAngle()
+    {
+        return lastAngle;
+    }
 }
