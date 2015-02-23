@@ -1,9 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.Label;
-import de.matthiasmann.twl.TextArea;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
@@ -43,8 +41,8 @@ public class HelpState extends BasicTWLGameState {
             }
         });
 
-        // TODO: Maybe Random name genertion?
-        helpText.setEnabled(false);
+        // TODO: Other label theme
+        //helpText.setTheme("/theme_help.xml");
         helpText.setText(
                 "Mainmenue\n" +
                 "\n" +
