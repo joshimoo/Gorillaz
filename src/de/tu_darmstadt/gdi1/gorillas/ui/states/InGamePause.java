@@ -48,7 +48,7 @@ public class InGamePause extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
-        if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
+        if(container.getInput().isKeyPressed(Input.KEY_ESCAPE) || container.getInput().isKeyPressed(Input.KEY_P)){
             game.enterState(Gorillas.GAMEPLAYSTATE);
         }
         Input in_key = container.getInput();
