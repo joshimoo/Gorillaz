@@ -17,6 +17,7 @@ public class GameSetupState extends BasicTWLGameState {
     private EditField txtName1, txtName2;
 
     private StateBasedGame game;
+    private GameContainer cont;
     private Label lError;
 
     @Override
@@ -28,7 +29,8 @@ public class GameSetupState extends BasicTWLGameState {
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
         this.createRootPane();
-        this.game=game;
+        this.game = game;
+        this.cont = gameContainer;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class GameSetupState extends BasicTWLGameState {
 
         btnStart.addCallback(new Runnable() {
             public void run() {
-                saveNamesAndStartGame(game);
+                saveNamesAndStartGame(game, cont);
             }
         });
 
@@ -64,7 +66,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) { saveNamesAndStartGame(stateBasedGame); }
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) { saveNamesAndStartGame(stateBasedGame, cont); }
         if (in_key.isKeyPressed(Input.KEY_TAB))
         {
             if (txtName1.hasKeyboardFocus()) txtName2.requestKeyboardFocus();
@@ -98,7 +100,7 @@ public class GameSetupState extends BasicTWLGameState {
      *
      * @param game StateBasedGame
      */
-    private void saveNamesAndStartGame(StateBasedGame game) {
+    private void saveNamesAndStartGame(StateBasedGame game, GameContainer cont) {
         String n1 = txtName1.getText();
         String n2 = txtName2.getText();
 
@@ -106,6 +108,8 @@ public class GameSetupState extends BasicTWLGameState {
             // Only update player names, if we have valid inputs
             Gorillas.player1 = new Player(n1);
             Gorillas.player2 = new Player(n2);
+            try { game.getState(Gorillas.GAMEPLAYSTATE).init(cont, game); }
+            catch (SlickException e) { e.printStackTrace(); }
             game.enterState(Gorillas.GAMEPLAYSTATE);
         } else {
             if (n1.equals(n2)) lError.setText("Both names are equal. Please enter a different name.");

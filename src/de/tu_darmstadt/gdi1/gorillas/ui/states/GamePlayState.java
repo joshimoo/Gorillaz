@@ -109,6 +109,10 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla.update(delta);
         gorillb.update(delta);
 
+        /* DEBUG: Reroll the LevelGeneration */
+        if(input.isKeyPressed(Input.KEY_Q))
+            init(gc, game);
+
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))
             game.enterState(Gorillas.INGAMEPAUSE);
