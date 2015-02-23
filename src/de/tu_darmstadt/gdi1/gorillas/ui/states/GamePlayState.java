@@ -123,15 +123,8 @@ public class GamePlayState extends BasicTWLGameState {
                 if_speed.setEnabled(true);
                 if_angle.setEnabled(true);
 
-                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE)) {
-                    System.out.println("Throw Banana " + if_speed.getValue() + " " + if_angle.getValue());
-                    if (activePlayer == player1)
-                        banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue());
-                    else
-                        banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), if_angle.getValue(), if_speed.getValue());
-
-                    state = STATES.THROW;
-                }
+                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
+                    throwBanana();
                 if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D))
                     if_speed.setValue(if_speed.getValue() + 5);
                 if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A))
@@ -140,7 +133,6 @@ public class GamePlayState extends BasicTWLGameState {
                     if_angle.setValue(if_angle.getValue() + 5);
                 if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S))
                     if_angle.setValue(if_angle.getValue() - 5);
-
                 break;
             case THROW:
                 // During the flight disable inputs
@@ -177,7 +169,6 @@ public class GamePlayState extends BasicTWLGameState {
         // Create Input-Elements Speed and Angle
         Label l_speed = new Label("Speed");
         Label l_angle = new Label("Angle ");
-
 
         l_speed.setLabelFor(if_speed);
         // TODO: Set text color WHITE
@@ -236,7 +227,12 @@ public class GamePlayState extends BasicTWLGameState {
 
     /** Generates a Banana at the current Player */
     private void throwBanana() {
+        System.out.println("Throw Banana " + if_speed.getValue() + " " + if_angle.getValue());
+        if (activePlayer == player1)
+            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue());
+        else
+            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), if_angle.getValue(), if_speed.getValue());
 
-
+        state = STATES.THROW;
     }
 }
