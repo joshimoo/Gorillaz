@@ -14,6 +14,7 @@ public class MainMenuState extends BasicTWLGameState {
     private StateBasedEntityManager entityManager;
     private Image background;
     private Button btnNewGame;
+    private Button btnHelp;
     private Button btnExit;
     private Button btnMute;
     private StateBasedGame game;
@@ -46,6 +47,13 @@ public class MainMenuState extends BasicTWLGameState {
             }
         });
 
+        btnHelp = new Button("Help");
+        btnHelp.addCallback(new Runnable() {
+            public void run() {
+                game.enterState(Gorillas.HELPSTATE);
+            }
+        });
+
         btnExit = new Button("Exit Game");
         btnExit.addCallback(new Runnable() {
             public void run() {
@@ -63,6 +71,7 @@ public class MainMenuState extends BasicTWLGameState {
         });
 
         rp.add(btnNewGame);
+        rp.add(btnHelp);
         rp.add(btnExit);
         rp.add(btnMute);
 		return rp;
@@ -93,8 +102,11 @@ public class MainMenuState extends BasicTWLGameState {
         btnNewGame.setSize(128, 32);
         btnNewGame.setPosition(20, 20);
 
+        btnHelp.setSize(128, 32);
+        btnHelp.setPosition(20, 60);
+
         btnExit.setSize(128, 32);
-        btnExit.setPosition(20, 60);
+        btnExit.setPosition(20, 100);
 
         btnMute.setSize(64, 64);
         btnMute.setPosition(0, paneHeight - btnMute.getHeight());
