@@ -1,12 +1,16 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.util.BufferedImageUtil;
 
 import java.awt.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Skyscraper extends Entity{
 
@@ -15,6 +19,9 @@ public class Skyscraper extends Entity{
 
     private final int width;
     private final int height;
+
+    private org.newdawn.slick.geom.Shape collMask;
+    private java.util.List<Circle> collList;
 
     public Skyscraper(int position, int width){
         this.height  = (int) (Math.random() * 450 + 50);
@@ -52,6 +59,8 @@ public class Skyscraper extends Entity{
             slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
         } catch (IOException e) { e.printStackTrace();}
 
+        collMask = new Rectangle(x, y, getWidth(), getHeight());
+        collList = new ArrayList<>(32);
     }
 
     @Override
@@ -59,6 +68,9 @@ public class Skyscraper extends Entity{
         // Stupid pointless incompatibility between atw.BuffImg & slick.Img
         // Why cant we just draw the BuffImg, in OpenGL we could use textures.
         graph.drawImage(slickImg, x, y);
+        graph.draw(collMask);
+        for(Shape s : collList)
+            graph.draw(s);
     }
 
     public void destroy(final int x, final int y, final int pow){
@@ -67,17 +79,45 @@ public class Skyscraper extends Entity{
 
         // We don't need a destruction map. This way we could even use different weapons
         // or randomized damage.
-        graphic.fillOval( (int) (x - this.x) - pow/2 , (int) (y - this.y) - pow/2, pow, pow);
+        graphic.fillOval( (int) (x - this.x) - pow, (int) (y - this.y) - pow, pow*2, pow*2);
 
         // still need to update this :/
         // TODO: Switch to OGL Textruedrawing for improved Performance
         try {
             slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
         } catch (IOException e) { e.printStackTrace();}
+
+        /* Füge eine neue antishape ein:*/
+        collList.add(new Circle(x, y, pow));
     }
 
     public int getHeight(){ return height; }
     public int getWidth() { return width;  }
+
+    @Override
+    public boolean isCollidding(Banana b) {
+        boolean a = false;
+        boolean containing = false;
+        if(collMask.intersects(b.getColMask())) {
+            a = true;
+            for (Circle c : collList) {
+                containing |= fullyContains(c, (Circle)b.getColMask());
+            }
+        }
+        return a && !containing;
+    }
+
+    private boolean fullyContains(Circle c1, Circle c2){
+        if(c1.intersects(c2)){
+            float dist = (float) Math.sqrt(
+                    Math.pow(c1.getCenterX() - c2.getCenterX(), 2)
+                  + Math.pow(c1.getCenterY() - c2.getCenterY(), 2));
+
+            return dist < (c1.getRadius() - c2.getRadius());
+        }
+        return false;
+    }
+
 
     /* Not needed here */
     @Override public void update(int delta) {}

@@ -34,5 +34,13 @@ public class Skyline extends Entity{
             s.render(g);
     }
 
+    @Override
+    public boolean isCollidding(Banana b) {
+        boolean a = false;
+        for(Skyscraper s: skyscrapers)
+            a |= s.isCollidding(b);
+        return a;
+    }
+
     /* not needed */ @Override public void update(int delta) {}
 }
