@@ -34,6 +34,8 @@ public class GamePlayState extends BasicTWLGameState {
     private STATES state;
     private RootPane rp;
 
+    private boolean inverseControlKeys = false;
+
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
      *  Banane geworfen wird, wechseln wir nach THROW. Hier wird die Banane nach den Physikalichen
@@ -134,14 +136,19 @@ public class GamePlayState extends BasicTWLGameState {
 
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
                     throwBanana();
-                if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D))
-                    if_angle.setValue(if_angle.getValue() + 5);
-                if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A))
-                    if_angle.setValue(if_angle.getValue() - 5);
-                if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W))
-                    if_speed.setValue(if_speed.getValue() + 5);
-                if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S))
-                    if_speed.setValue(if_speed.getValue() - 5);
+                if(inverseControlKeys) {
+                    if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_angle.setValue(if_angle.getValue() + 5);
+                    if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_angle.setValue(if_angle.getValue() - 5);
+                    if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_speed.setValue(if_speed.getValue() + 5);
+                    if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_speed.setValue(if_speed.getValue() - 5);
+                }
+                else
+                {
+                    if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_speed.setValue(if_speed.getValue() + 5);
+                    if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_speed.setValue(if_speed.getValue() - 5);
+                    if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_angle.setValue(if_angle.getValue() + 5);
+                    if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_angle.setValue(if_angle.getValue() - 5);
+                }
                 break;
             case THROW:
                 // During the flight disable inputs
