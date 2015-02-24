@@ -76,6 +76,8 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(400, 60);
 
+        banana = null;
+
         this.createRootPane();
 
         activePlayer = player1;
