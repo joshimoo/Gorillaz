@@ -30,6 +30,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Player activePlayer;
     private Banana banana;
     private STATES state;
+    private RootPane rp;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
@@ -77,8 +78,8 @@ public class GamePlayState extends BasicTWLGameState {
         sun = new Sun(400, 60);
 
         banana = null;
-
-        this.createRootPane();
+        if (rp == null)
+            this.createRootPane();
 
         activePlayer = player1;
         state = STATES.INPUT;
@@ -189,7 +190,7 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     protected RootPane createRootPane() {
         // Needed for adding the new Input-Elements
-        RootPane rp = super.createRootPane();
+        rp = super.createRootPane();
 
         if_speed= new ValueAdjusterInt();
         if_angle = new ValueAdjusterInt();
