@@ -25,6 +25,8 @@ public class GamePlayState extends BasicTWLGameState {
 
     private ValueAdjusterInt if_speed;
     private ValueAdjusterInt if_angle;
+    private Label l_speed;
+    private Label l_angle;
     private Button btnThrow;
 
     private Player activePlayer;
@@ -125,6 +127,10 @@ public class GamePlayState extends BasicTWLGameState {
                 btnThrow.setVisible(true);
                 if_speed.setEnabled(true);
                 if_angle.setEnabled(true);
+                if_speed.setVisible(true);
+                if_angle.setVisible(true);
+                l_speed.setVisible(true);
+                l_angle.setVisible(true);
 
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
                     throwBanana();
@@ -142,6 +148,10 @@ public class GamePlayState extends BasicTWLGameState {
                 btnThrow.setVisible(false);
                 if_speed.setEnabled(false);
                 if_angle.setEnabled(false);
+                if_speed.setVisible(false);
+                if_angle.setVisible(false);
+                l_speed.setVisible(false);
+                l_angle.setVisible(false);
 
                 banana.update(delta);
 
@@ -197,8 +207,8 @@ public class GamePlayState extends BasicTWLGameState {
         btnThrow = new Button("Throw");
 
         // Create Input-Elements Speed and Angle
-        Label l_speed = new Label("Speed");
-        Label l_angle = new Label("Angle ");
+        l_speed = new Label("Speed");
+        l_angle = new Label("Angle ");
 
         l_speed.setLabelFor(if_speed);
         // TODO: Set text color WHITE
