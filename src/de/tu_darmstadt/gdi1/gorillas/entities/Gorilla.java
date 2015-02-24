@@ -26,6 +26,11 @@ public class Gorilla extends Entity {
     }
 
     @Override
+    public boolean isCollidding(Banana b) {
+        return false;
+    }
+
+    @Override
     public void render(Graphics graph) {
         graph.drawImage(animation.getCurrentFrame(), x - getHeight() / 2, y - getHeight());
     }
