@@ -43,7 +43,7 @@ public class GamePlayState extends BasicTWLGameState {
      *  DMAMGE gewechselt, der schaden berechnet, auf Sieg geprüft und  zu INPUT oder VICTORY
      *  gewechselt.
      */
-    private static enum STATES{ INPUT, THROW, DAMAGE, VICTORY }
+    private static enum STATES{ INPUT, THROW, DAMAGE, ROUNDVICTORY, VICTORY, DEFAULT }
 
     @Override
     public int getID() {
@@ -168,27 +168,33 @@ public class GamePlayState extends BasicTWLGameState {
                     || banana.getColMask().getMinY() > Gorillas.FRAME_HEIGHT)
                     state = STATES.DAMAGE;
 
-                if(activePlayer == player2 && gorilla.isCollidding(banana))
-                    state = STATES.DAMAGE;
+                if(activePlayer == player2 && gorilla.isCollidding(banana)) {
+                    state = STATES.ROUNDVICTORY;
+                    System.out.println("Hit Player 2");
+                }
 
-                if(activePlayer == player1 && gorillb.isCollidding(banana))
-                    state = STATES.DAMAGE;
+                if(activePlayer == player1 && gorillb.isCollidding(banana)) {
+                    state = STATES.ROUNDVICTORY;
+                    System.out.println("Hit Player 1");
+                }
 
                 if(skyline.isCollidding(banana))
                     state = STATES.DAMAGE;
 
                 break;
             case DAMAGE:
+                activePlayer.setThrow();
+                System.out.println("Throw " + activePlayer.getName() + " Nr" +activePlayer.getThrow());
+
                 if(activePlayer == player1) {
                     activePlayer = player2;
-                    if_speed.setValue(activePlayer.getLastSpeed());
-                    if_angle.setValue(activePlayer.getLastAngle());
                 }
                 else {
                     activePlayer = player1;
-                    if_speed.setValue(activePlayer.getLastSpeed());
-                    if_angle.setValue(activePlayer.getLastAngle());
                 }
+
+                if_speed.setValue(activePlayer.getLastSpeed());
+                if_angle.setValue(activePlayer.getLastAngle());
 
                 skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
                 banana = null;
@@ -199,8 +205,41 @@ public class GamePlayState extends BasicTWLGameState {
 
                 state = STATES.INPUT;
                 break;
-            case VICTORY:
+            case ROUNDVICTORY:
+                activePlayer.setWin(1);
+
+                if(activePlayer.getWin() == 3)
+                    state = STATES.VICTORY;
+                else {
+                    btnThrow.setVisible(false);
+                    if_speed.setEnabled(false);
+                    if_angle.setEnabled(false);
+                    if_speed.setVisible(false);
+                    if_angle.setVisible(false);
+                    l_speed.setVisible(true);
+                    l_angle.setVisible(false);
+                    l_speed.setText("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !");
+                    System.out.println("Win Nr" +activePlayer.getWin());
+                    // Restart Game
+                    //game.enterState(Gorillas.GAMESETUPSTATE);
+                }
                 break;
+            case VICTORY:
+                // TODO: VICTORY
+                // Sample
+                btnThrow.setVisible(false);
+                if_speed.setEnabled(false);
+                if_angle.setEnabled(false);
+                if_speed.setVisible(false);
+                if_angle.setVisible(false);
+                l_speed.setVisible(true);
+                l_angle.setVisible(false);
+                l_speed.setText("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben das Spiel gewonnen !");
+                System.out.println("Win Nr" +activePlayer.getWin());
+                state = STATES.DEFAULT;
+                break;
+            default:
+                // Does nothing, active if you have won.
         }
     }
 
