@@ -28,6 +28,8 @@ public class Banana extends Entity {
         t  = 0;
         this.x = (float) x0;
         this.y = (float) y0;
+
+        if(angle > 90) rotationSpeed = -rotationSpeed;
     }
 
     public float getCenterX(){ return x + img.getCenterOfRotationX(); }
