@@ -42,7 +42,7 @@ public class HelpState extends BasicTWLGameState {
         });
 
         // TODO: Other label theme
-        //helpText.setTheme("/theme_help.xml");
+        //helpText.setTheme("/state"+this.getID()+".xml");
         helpText.setText(
                 "Mainmenue\n" +
                 "\n" +

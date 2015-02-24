@@ -105,9 +105,24 @@ public class GameSetupState extends BasicTWLGameState {
         String n2 = txtName2.getText();
 
         if (!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
+            int temp_wins1 = 0;
+            int temp_wins2 = 0;
+
+            // Save former Wins
+            if(Gorillas.player1 != null && Gorillas.player2 != null) {
+                temp_wins1 = Gorillas.player1.getWin();
+                temp_wins2 = Gorillas.player2.getWin();
+            }
+
             // Only update player names, if we have valid inputs
             Gorillas.player1 = new Player(n1);
             Gorillas.player2 = new Player(n2);
+
+            // Restore former Wins
+            Gorillas.player1.setWin(temp_wins1);
+            Gorillas.player2.setWin(temp_wins2);
+
+
             try { game.getState(Gorillas.GAMEPLAYSTATE).init(cont, game); }
             catch (SlickException e) { e.printStackTrace(); }
             game.enterState(Gorillas.GAMEPLAYSTATE);

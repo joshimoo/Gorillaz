@@ -10,6 +10,8 @@ public class Player {
     private int health;
     private int score;
     private int lastSpeed, lastAngle;
+    private int numberOfThrows = 0;
+    private int numberOfWins = 0;
 
     /** Create a new Player with the given name, a score of zero and MAX_HEALTH */
     public Player(final String name){
@@ -83,4 +85,16 @@ public class Player {
     {
         return lastAngle;
     }
+
+    /** Increase number of throws */
+    public void setThrow() { numberOfThrows += 1; }
+
+    /** Get number of throws */
+    public int getThrow() { return numberOfThrows;}
+
+    /** Increase number of wins about the value of number */
+    public void setWin(int number) { numberOfWins += number; }
+
+    /** Get number of throws */
+    public int getWin() { return numberOfWins;}
 }
