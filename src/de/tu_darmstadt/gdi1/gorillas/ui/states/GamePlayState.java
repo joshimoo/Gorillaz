@@ -159,7 +159,8 @@ public class GamePlayState extends BasicTWLGameState {
                     if_angle.setValue(activePlayer.getLastAngle());
                 }
 
-                skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 64);
+                skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
+                banana = null;
 
                 state = STATES.INPUT;
                 break;
