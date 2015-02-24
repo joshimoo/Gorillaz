@@ -24,4 +24,8 @@ public class Sun extends Entity{
         // TODO: Implement sun face-change on collision.
     }
 
+    @Override
+    public boolean isCollidding(Banana b) {
+        return false; // TODO:
+    }
 }
