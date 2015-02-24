@@ -1,6 +1,8 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import org.newdawn.slick.geom.*;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.util.BufferedImageUtil;
 
 import java.awt.*;
@@ -15,6 +17,8 @@ public class Skyscraper extends Entity{
 
     private final int width;
     private final int height;
+
+    private org.newdawn.slick.geom.Shape collMask;
 
     public Skyscraper(int position, int width){
         this.height  = (int) (Math.random() * 450 + 50);
@@ -52,6 +56,8 @@ public class Skyscraper extends Entity{
             slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
         } catch (IOException e) { e.printStackTrace();}
 
+        collMask = new Rectangle(x, y, getWidth(), getHeight());
+
     }
 
     @Override
@@ -78,6 +84,11 @@ public class Skyscraper extends Entity{
 
     public int getHeight(){ return height; }
     public int getWidth() { return width;  }
+
+    @Override
+    public boolean isCollidding(Banana b) {
+        return collMask.intersects(b.getColMask());
+    }
 
     /* Not needed here */
     @Override public void update(int delta) {}

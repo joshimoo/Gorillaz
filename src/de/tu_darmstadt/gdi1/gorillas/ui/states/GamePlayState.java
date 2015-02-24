@@ -143,7 +143,7 @@ public class GamePlayState extends BasicTWLGameState {
                 banana.update(delta);
 
                 // TODO: Collision
-                if(banana.y > 600)
+                if(skyline.isCollidding(banana))
                     state = STATES.DAMAGE;
 
                 break;
@@ -158,6 +158,8 @@ public class GamePlayState extends BasicTWLGameState {
                     if_speed.setValue(activePlayer.getLastSpeed());
                     if_angle.setValue(activePlayer.getLastAngle());
                 }
+
+                skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 64);
 
                 state = STATES.INPUT;
                 break;
