@@ -142,7 +142,12 @@ public class GamePlayState extends BasicTWLGameState {
 
                 banana.update(delta);
 
-                // TODO: Collision
+                if(activePlayer == player2 && gorilla.isCollidding(banana))
+                    state = STATES.DAMAGE;
+
+                if(activePlayer == player1 && gorillb.isCollidding(banana))
+                    state = STATES.DAMAGE;
+
                 if(skyline.isCollidding(banana))
                     state = STATES.DAMAGE;
 
@@ -161,6 +166,10 @@ public class GamePlayState extends BasicTWLGameState {
 
                 skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
                 banana = null;
+
+                // TODO: Claculate PlayerDamage
+                // player1.damage(calcPlayerDamage(banana.getCenterX(), banana.getCenterY(), gorilla));
+                // player2.damage(calcPlayerDamage(banana.getCenterX(), banana.getCenterY(), gorillb));
 
                 state = STATES.INPUT;
                 break;
