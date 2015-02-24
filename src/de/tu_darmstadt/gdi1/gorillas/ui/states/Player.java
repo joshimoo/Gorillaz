@@ -68,7 +68,7 @@ public class Player {
     /** Sets the last angle value of the players throw */
     public void setLastAngle(int angle)
     {
-        if (angle > 180) lastAngle = 180;
+        if (angle > 360) lastAngle = 360;
         else if(angle < 0) lastAngle = 0;
         else lastAngle =angle;
     }
