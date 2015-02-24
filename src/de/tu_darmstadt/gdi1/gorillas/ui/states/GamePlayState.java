@@ -142,6 +142,12 @@ public class GamePlayState extends BasicTWLGameState {
 
                 banana.update(delta);
 
+                /* Banane verlässt das Spielfeld */
+                if(banana.getColMask().getMinX() > Gorillas.FRAME_WIDTH
+                    || banana.getColMask().getMaxX() < 0
+                    || banana.getColMask().getMinY() > Gorillas.FRAME_HEIGHT)
+                    state = STATES.DAMAGE;
+
                 if(activePlayer == player2 && gorilla.isCollidding(banana))
                     state = STATES.DAMAGE;
 
