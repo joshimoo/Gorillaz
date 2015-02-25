@@ -33,6 +33,7 @@ public class GamePlayState extends BasicTWLGameState {
     private RootPane rp;
 
     private boolean inverseControlKeys = false;
+    private boolean admin = true;
     private int keyPressDelay = 0;
     private String throwNumber = null;
 
@@ -118,7 +119,7 @@ public class GamePlayState extends BasicTWLGameState {
         g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2, gorilla.y - 64);
 
         if(state != STATES.THROW) {
-            g.setColor(Color.red);
+            g.setColor(Color.blue);
             // Description for the buttons
             g.drawString("Speed", 20, 10);
             g.drawString("Angle ", 20, 50);
@@ -137,18 +138,20 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla.update(delta);
         gorillb.update(delta);
 
+        if(admin) {
         /* DEBUG: Reroll the LevelGeneration */
-        if(input.isKeyPressed(Input.KEY_Q))
-            init(gc, game);
-
+            if (input.isKeyPressed(Input.KEY_Q))
+                init(gc, game);
+            // Win the Game
+            if (input.isKeyPressed(Input.KEY_V) ) {
+                activePlayer.setWin(3);
+                state = STATES.VICTORY;
+                System.out.println("V Cheat");
+            }
+        }
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))
             game.enterState(Gorillas.INGAMEPAUSE);
-
-        // Cheat for Admins ;-)
-        if (input.isKeyPressed(Input.KEY_V) ) {activePlayer.setWin(3);
-            state = STATES.VICTORY;
-            System.out.println("V Cheat"); }
 
         switch (state) {
             case INPUT:
@@ -161,7 +164,6 @@ public class GamePlayState extends BasicTWLGameState {
 
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
                     throwBanana();
-
 
                 if(keyPressDelay == 0) {
 
@@ -228,9 +230,12 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
+                // Save new throw
                 activePlayer.setThrow();
+
                 System.out.println("Throw " + activePlayer.getName() + " Nr" + activePlayer.getThrow());
                 throwNumber = "Throw Nr " + activePlayer.getThrow(); // Ueberfluessig
+                
                 if(activePlayer == player1) {
                     activePlayer = player2;
                 }
