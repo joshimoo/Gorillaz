@@ -315,9 +315,7 @@ public class GamePlayState extends BasicTWLGameState {
         btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
 
         // Add the Input-Elements to the RootPane
-        //rp.add(l_speed);
         rp.add(if_speed);
-        //rp.add(l_angle);
         rp.add(if_angle);
         rp.add(btnThrow);
         return rp;
