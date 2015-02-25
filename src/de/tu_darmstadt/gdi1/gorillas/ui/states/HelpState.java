@@ -49,7 +49,7 @@ public class HelpState extends BasicTWLGameState {
         graphics.drawImage(background, -10, -20);
         graphics.setColor(new Color(50,50,50,150));
         graphics.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
-        graphics.setColor(Color.green);
+        graphics.setColor(Color.yellow);
         graphics.drawString(
                 "Mainmenue\n" +
                         "\n" +
@@ -71,7 +71,7 @@ public class HelpState extends BasicTWLGameState {
                         "Pause\n" +
                         "\n" +
                         "    ESC / P -> Game"
-                ,100,80);
+                ,100,50);
     }
 
     @Override
