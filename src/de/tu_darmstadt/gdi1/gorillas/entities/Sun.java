@@ -14,13 +14,14 @@ public class Sun extends Entity{
         this.x = x;
         this.y = y;
         img = Assets.loadImage(Assets.Images.SUN_SMILING);
+        collCircle = new Circle(x - img.getWidth()/2, y - img.getHeight()/2,img.getHeight()/2);
     }
 
     @Override
     public void render(Graphics g) {
 
         g.drawImage(img, x - img.getWidth(), y - img.getHeight());
-        collCircle = new Circle(x,y,img.getHeight()/2);
+        //g.draw(collCircle);
     }
 
     @Override
