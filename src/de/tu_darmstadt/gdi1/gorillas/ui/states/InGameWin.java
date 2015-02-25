@@ -41,6 +41,15 @@ public class InGameWin extends BasicTWLGameState {
         GamePlayState.getSun().render(g);
         g.setColor(color);
         g.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
+
+        if(GamePlayState.getActivePlayer() != null) {
+            Player player = GamePlayState.getActivePlayer();
+            if(player != null)
+            {
+                g.setColor(Color.yellow);
+                g.drawString("Herzlichen Glückwunsch " + player.getName() + "\nSie haben die Runde gewonnen !\nSie benötigten " + player.getThrow() + " Würfe.",100,80);
+            }
+        }
     }
 
     @Override
@@ -74,13 +83,7 @@ public class InGameWin extends BasicTWLGameState {
 
         lWin = new Label("");
 
-        if(GamePlayState.getActivePlayer() != null) {
-            Player player = GamePlayState.getActivePlayer();
-            if(player != null)
-            {
-                lWin.setText("Herzlichen Glückwunsch " + player.getName() +"\nSie haben die Runde gewonnen !\nSie benötigten "+ player.getThrow() + " Würfe.");
-            }
-        }
+
 
 
         btnNewGame = new Button("New Game");
