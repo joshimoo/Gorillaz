@@ -11,12 +11,12 @@ import java.util.ArrayList;
  */
 public class SqlLiteDb
 {
-    private static String databaseFile = "data_gorillas.db";
+    private static String databaseFile = "data_gorillas.hsc";
     private static final boolean debug = true;
     private static Connection c = ConnectingToDatabase();
 
     /**
-     * Constructor for a SQL-Lite database: default table "Gorillas" and db-file "data_gorillas.db"
+     * Constructor for a SQL-Lite database: default table "Gorillas" and db-file "data_gorillas.hsc"
      */
     public SqlLiteDb()
     {
@@ -34,7 +34,7 @@ public class SqlLiteDb
     }
 
     /**
-     * Constructor for a SQL-Lite database: default db-file "data_gorillas.db"
+     * Constructor for a SQL-Lite database: default db-file "data_gorillas.hsc"
      *
      * @param Table
      */
