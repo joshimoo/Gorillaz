@@ -35,6 +35,7 @@ public class GamePlayState extends BasicTWLGameState {
     private RootPane rp;
 
     private boolean inverseControlKeys = false;
+    private int keyPressDelay = 0;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
@@ -143,19 +144,39 @@ public class GamePlayState extends BasicTWLGameState {
 
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
                     throwBanana();
-                if(inverseControlKeys) {
-                    if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_angle.setValue(if_angle.getValue() + 5);
-                    if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_angle.setValue(if_angle.getValue() - 5);
-                    if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_speed.setValue(if_speed.getValue() + 5);
-                    if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_speed.setValue(if_speed.getValue() - 5);
+
+
+                if(keyPressDelay == 0) {
+
+                    if (inverseControlKeys) {
+                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay = 50; }
+                    }
+                    else {
+                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay = 50; }
+                    }
+                    /*
+                    if (inverseControlKeys) {
+                        if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_angle.setValue(if_angle.getValue() + 5);
+                        if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_angle.setValue(if_angle.getValue() - 5);
+                        if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_speed.setValue(if_speed.getValue() + 5);
+                        if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_speed.setValue(if_speed.getValue() - 5);
+                    }
+                    else {
+                        if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_speed.setValue(if_speed.getValue() + 5);
+                        if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_speed.setValue(if_speed.getValue() - 5);
+                        if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_angle.setValue(if_angle.getValue() + 5);
+                        if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_angle.setValue(if_angle.getValue() - 5);
+                    }
+                    */
                 }
                 else
-                {
-                    if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_speed.setValue(if_speed.getValue() + 5);
-                    if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_speed.setValue(if_speed.getValue() - 5);
-                    if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_angle.setValue(if_angle.getValue() + 5);
-                    if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_angle.setValue(if_angle.getValue() - 5);
-                }
+                    keyPressDelay -= 1;
                 break;
             case THROW:
                 // During the flight disable inputs
