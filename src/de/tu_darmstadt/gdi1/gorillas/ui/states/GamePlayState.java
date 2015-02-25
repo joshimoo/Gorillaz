@@ -25,8 +25,6 @@ public class GamePlayState extends BasicTWLGameState {
 
     private ValueAdjusterInt if_speed;
     private ValueAdjusterInt if_angle;
-    private Label l_speed;
-    private Label l_angle;
     private Button btnThrow;
 
     private static Player activePlayer;
@@ -36,6 +34,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     private boolean inverseControlKeys = false;
     private int keyPressDelay = 0;
+    private String throwNumber = null;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
@@ -107,9 +106,28 @@ public class GamePlayState extends BasicTWLGameState {
         g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2 + 1, gorilla.y - 63);
 
         /* We could possibly change the name-color of the active player as an indication */
-        g.setColor(Color.white);
+        if(activePlayer == player1)
+            g.setColor(Color.white);
+        else
+            g.setColor(Color.yellow);
         g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2, gorillb.y - 64);
+        if(activePlayer == player1)
+            g.setColor(Color.yellow);
+        else
+            g.setColor(Color.white);
         g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2, gorilla.y - 64);
+
+        if(state != STATES.THROW) {
+            g.setColor(Color.red);
+            // Description for the buttons
+            g.drawString("Speed", 20, 10);
+            g.drawString("Angle ", 20, 50);
+        }
+        if(throwNumber != null)
+        {
+            g.setColor(Color.white);
+            g.drawString(throwNumber,this.getRootPane().getWidth()-110,20);
+        }
     }
 
     @Override
@@ -134,13 +152,12 @@ public class GamePlayState extends BasicTWLGameState {
 
         switch (state) {
             case INPUT:
+                throwNumber = "Throw Nr " + activePlayer.getThrow();
                 btnThrow.setVisible(true);
                 if_speed.setEnabled(true);
                 if_angle.setEnabled(true);
                 if_speed.setVisible(true);
                 if_angle.setVisible(true);
-                l_speed.setVisible(true);
-                l_angle.setVisible(true);
 
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
                     throwBanana();
@@ -179,14 +196,13 @@ public class GamePlayState extends BasicTWLGameState {
                     keyPressDelay -= 1;
                 break;
             case THROW:
+                throwNumber = "Throw Nr " + (activePlayer.getThrow() + 1 );
                 // During the flight disable inputs
                 btnThrow.setVisible(false);
                 if_speed.setEnabled(false);
                 if_angle.setEnabled(false);
                 if_speed.setVisible(false);
                 if_angle.setVisible(false);
-                l_speed.setVisible(false);
-                l_angle.setVisible(false);
 
                 banana.update(delta);
                 sun.isCollidding(banana);
@@ -213,8 +229,8 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
             case DAMAGE:
                 activePlayer.setThrow();
-                System.out.println("Throw " + activePlayer.getName() + " Nr" +activePlayer.getThrow());
-
+                System.out.println("Throw " + activePlayer.getName() + " Nr" + activePlayer.getThrow());
+                throwNumber = "Throw Nr " + activePlayer.getThrow(); // Ueberfluessig
                 if(activePlayer == player1) {
                     activePlayer = player2;
                 }
@@ -264,16 +280,6 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle = new ValueAdjusterInt();
         btnThrow = new Button("Throw");
 
-        // Create Input-Elements Speed and Angle
-        l_speed = new Label("Speed");
-        l_angle = new Label("Angle ");
-
-        l_speed.setLabelFor(if_speed);
-        // TODO: Set text color WHITE
-        //l_speed.setForeground(Color.WHITE)
-        l_angle.setLabelFor(if_angle);
-        // TODO: Set text color WHITE
-
         if_speed.setMinMaxValue(0,200);
         if_speed.setValue(80);
 
@@ -296,16 +302,10 @@ public class GamePlayState extends BasicTWLGameState {
 
         // Labels next to the inputs because of place-conflict the the skyscraper
         int pos=0;
-        l_speed.setSize(60, 20);
-        l_speed.setPosition(basic_x, basic_y + basic_x_c * pos);
-
         if_speed.setSize(100, 25);
         if_speed.setPosition(basic_x+60, basic_y+basic_x_c*pos);
 
         pos=1;
-        l_angle.setSize(60, 20);
-        l_angle.setPosition(basic_x, basic_y+basic_x_c*pos);
-
         if_angle.setSize(100, 25);
         if_angle.setPosition(basic_x+60, basic_y+basic_x_c*pos);
 
@@ -315,9 +315,9 @@ public class GamePlayState extends BasicTWLGameState {
         btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
 
         // Add the Input-Elements to the RootPane
-        rp.add(l_speed);
+        //rp.add(l_speed);
         rp.add(if_speed);
-        rp.add(l_angle);
+        //rp.add(l_angle);
         rp.add(if_angle);
         rp.add(btnThrow);
         return rp;
