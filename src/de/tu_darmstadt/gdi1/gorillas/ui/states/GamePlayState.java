@@ -29,7 +29,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Label l_angle;
     private Button btnThrow;
 
-    private Player activePlayer;
+    private static Player activePlayer;
     private Banana banana;
     private STATES state;
     private RootPane rp;
@@ -43,7 +43,7 @@ public class GamePlayState extends BasicTWLGameState {
      *  DMAMGE gewechselt, der schaden berechnet, auf Sieg geprüft und  zu INPUT oder VICTORY
      *  gewechselt.
      */
-    private static enum STATES{ INPUT, THROW, DAMAGE, VICTORY }
+    private static enum STATES{ INPUT, THROW, DAMAGE, ROUNDVICTORY, VICTORY }
 
     @Override
     public int getID() {
@@ -64,6 +64,8 @@ public class GamePlayState extends BasicTWLGameState {
     public static Sun getSun(){
         return sun;
     }
+
+    public static Player getActivePlayer() { return activePlayer; }
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -124,6 +126,11 @@ public class GamePlayState extends BasicTWLGameState {
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))
             game.enterState(Gorillas.INGAMEPAUSE);
 
+        // Cheat for Admins ;-)
+        if (input.isKeyPressed(Input.KEY_V) ) {activePlayer.setWin(3);
+            state = STATES.VICTORY;
+            System.out.println("V Cheat"); }
+
         switch (state) {
             case INPUT:
                 btnThrow.setVisible(true);
@@ -169,27 +176,33 @@ public class GamePlayState extends BasicTWLGameState {
                     || banana.getColMask().getMinY() > Gorillas.FRAME_HEIGHT)
                     state = STATES.DAMAGE;
 
-                if(activePlayer == player2 && gorilla.isCollidding(banana))
-                    state = STATES.DAMAGE;
+                if(activePlayer == player2 && gorilla.isCollidding(banana)) {
+                    state = STATES.ROUNDVICTORY;
+                    System.out.println("Hit Player 1");
+                }
 
-                if(activePlayer == player1 && gorillb.isCollidding(banana))
-                    state = STATES.DAMAGE;
+                if(activePlayer == player1 && gorillb.isCollidding(banana)) {
+                    state = STATES.ROUNDVICTORY;
+                    System.out.println("Hit Player 2");
+                }
 
                 if(skyline.isCollidding(banana))
                     state = STATES.DAMAGE;
 
                 break;
             case DAMAGE:
+                activePlayer.setThrow();
+                System.out.println("Throw " + activePlayer.getName() + " Nr" +activePlayer.getThrow());
+
                 if(activePlayer == player1) {
                     activePlayer = player2;
-                    if_speed.setValue(activePlayer.getLastSpeed());
-                    if_angle.setValue(activePlayer.getLastAngle());
                 }
                 else {
                     activePlayer = player1;
-                    if_speed.setValue(activePlayer.getLastSpeed());
-                    if_angle.setValue(activePlayer.getLastAngle());
                 }
+
+                if_speed.setValue(activePlayer.getLastSpeed());
+                if_angle.setValue(activePlayer.getLastAngle());
 
                 skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
                 banana = null;
@@ -200,7 +213,23 @@ public class GamePlayState extends BasicTWLGameState {
 
                 state = STATES.INPUT;
                 break;
+            case ROUNDVICTORY:
+                activePlayer.setWin(1);
+
+                if(activePlayer.getWin() > 2)
+                    state = STATES.VICTORY;
+                else {
+                    System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !");
+                    System.out.println("Win Nr" +activePlayer.getWin());
+                    // Restart Game
+                    init(gc, game);
+                }
+                break;
             case VICTORY:
+                // TODO: VICTORY
+                System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben das Spiel gewonnen !");
+                System.out.println("Win Nr" +activePlayer.getWin());
+                game.enterState(Gorillas.INGAMEWIN);
                 break;
         }
     }
@@ -287,4 +316,6 @@ public class GamePlayState extends BasicTWLGameState {
 
         state = STATES.THROW;
     }
+
+
 }
