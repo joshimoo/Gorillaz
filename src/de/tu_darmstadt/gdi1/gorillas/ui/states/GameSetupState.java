@@ -108,6 +108,7 @@ public class GameSetupState extends BasicTWLGameState {
             // Only update player names, if we have valid inputs
             Gorillas.player1 = new Player(n1);
             Gorillas.player2 = new Player(n2);
+
             try { game.getState(Gorillas.GAMEPLAYSTATE).init(cont, game); }
             catch (SlickException e) { e.printStackTrace(); }
             game.enterState(Gorillas.GAMEPLAYSTATE);
