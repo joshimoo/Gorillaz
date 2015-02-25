@@ -3,10 +3,12 @@ package de.tu_darmstadt.gdi1.gorillas.entities;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Circle;
 
 public class Sun extends Entity{
 
     private Image img;
+    private Circle collCircle;
 
     public Sun(final float x, final float y){
         this.x = x;
@@ -16,7 +18,9 @@ public class Sun extends Entity{
 
     @Override
     public void render(Graphics g) {
+
         g.drawImage(img, x - img.getWidth(), y - img.getHeight());
+        collCircle = new Circle(x,y,img.getHeight()/2);
     }
 
     @Override
@@ -26,6 +30,11 @@ public class Sun extends Entity{
 
     @Override
     public boolean isCollidding(Banana b) {
-        return false; // TODO:
+        boolean bool = collCircle.intersects(b.getColMask());
+        if(bool)
+            img = Assets.loadImage(Assets.Images.SUN_ASTONISHED);
+        else
+            img = Assets.loadImage(Assets.Images.SUN_SMILING);
+        return bool;
     }
 }

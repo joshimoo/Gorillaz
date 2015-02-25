@@ -161,6 +161,7 @@ public class GamePlayState extends BasicTWLGameState {
                 l_angle.setVisible(false);
 
                 banana.update(delta);
+                sun.isCollidding(banana);
 
                 /* Banane verlässt das Spielfeld */
                 if(banana.getColMask().getMinX() > Gorillas.FRAME_WIDTH
