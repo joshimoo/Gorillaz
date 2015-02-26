@@ -1,37 +1,38 @@
 package de.tu_darmstadt.gdi1.gorillas.assets;
 
+import de.tu_darmstadt.gdi1.gorillas.utils.FakeSound;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+
 import java.util.EnumMap;
 import java.util.Map;
 
 /**
  * The Asset Class is responsible for all Asset Loading/Unloading
  * It will Lazily load and Cache all requested Assets
- *
- * TODO: Do the same processing/handling for sounds
  */
 public final class Assets {
-    private static final String ASSETS   = "/assets/gorillas/";
+
+    private static final String IMAGE_PATH   = "/assets/img/";
+    private static final String SOUND_PATH   = "/assets/snd/";
+
     private static Image ERROR_IMAGE;
+    private static Sound ERROR_SOUND;
 
-    // Asset Collections
-    private static Map<Images, Image> images = new EnumMap<Images, Image>(Images.class);
+    // Asset Collections, so beautiful *-*
+    private static Map<Images, Image> images = new EnumMap<>(Images.class);
+    private static Map<Sounds, Sound> sounds = new EnumMap<>(Sounds.class);
 
-
-    /**
-     * This class should never be instantiated
-     */
-    private Assets() {}
+    /** This class should never be instantiated */ private Assets() {}
 
     /**
      * Generate an Error Image in Memory, since this will always proceed.
      * @return the generated ERROR_IMAGE or the cached version
      */
     private static Image createErrorImage() {
-        if (ERROR_IMAGE == null)
-        {
+        if (ERROR_IMAGE == null){
             ImageBuffer buf = new ImageBuffer(32, 32);
 
             // Flood Fill Magenta
@@ -79,7 +80,7 @@ public final class Assets {
      * @param id The image to load
      * @return The requested image or a default error image
      */
-    public static Image loadImage(Images id) {
+    public static Image loadImage(final Images id) {
         if (!images.containsKey(id)) {
             images.put(id, loadImage(id.getPath()));
         }
@@ -92,39 +93,82 @@ public final class Assets {
      * @param id The image to load
      * @return a copy of the requested image or a copy of the default error image
      */
-    public static Image loadUniqueImage(Images id) {
+    public static Image loadUniqueImage(final Images id) {
         return loadImage(id).copy();
     }
 
+    /** Generate an Sound in Memory, since this will always proceed.
+     * @return the generated ERROR_SOUND or the cached version
+     */
+    private static Sound createErrorSound(){
+        if(ERROR_SOUND == null){
+            ERROR_SOUND = null; // FIXME: ;(
+        }
+        return ERROR_SOUND;
+    }
+
+    /** Load the Soundfile File from Disk
+     * @param path path to the soundfile
+     * @return the loaded Sound or a default error Sound
+     */
+    private static Sound loadSound(final String path){
+        try {
+            return new Sound(path);
+        } catch (SlickException e) {
+            System.err.println("Missing Sound: " + path);
+            return createErrorSound();
+        }
+    }
+
+    /** Lazily load and cache all sounds
+     * Future calls will use the cached sound.
+     *
+     * @param id The Sound to load (Assets.Sounds)
+     * @return The requested Sound or a default error Sound
+     */
+    public static Sound loadSound(final Sounds id){
+        if (!sounds.containsKey(id)) {
+            sounds.put(id, loadSound(id.getPath()));
+        }
+        return sounds.get(id);
+    }
+
+    /*********************************************************************************************/
 
     /**
      * Contains all Image Assets that are used by the game.
      * Order is not important, but it looks nicer when related assets are together.
      */
     public static enum Images {
-        // Menu
-        MAINMENU_BACKGROUND(ASSETS + "background.png"),
-        GAMEPLAY_BACKGROUND(ASSETS + "background.png"),
+        MAINMENU_BACKGROUND("background.png"),
+        GAMEPLAY_BACKGROUND("background.png"),
 
-        // Sun
-        SUN_SMILING(ASSETS + "sun/sun_smiling.png"),
-        SUN_ASTONISHED(ASSETS + "sun/sun_astonished.png"),
+        SUN_SMILING("sun/sun_smiling.png"),
+        SUN_ASTONISHED("sun/sun_astonished.png"),
 
-        // Gorillas
-        GORRILA(ASSETS + "gorillas/gorilla.png"),
-        GORRILA_LEFT(ASSETS + "gorillas/gorilla_left_up.png"),
-        GORRILA_RIGHT(ASSETS + "gorillas/gorilla_right_up.png"),
-        GORRILA_HIT(ASSETS + "gorillaHit.png"),
+        GORRILA("gorillas/gorilla.png"),
+        GORRILA_LEFT("gorillas/gorilla_left_up.png"),
+        GORRILA_RIGHT("gorillas/gorilla_right_up.png"),
+        GORRILA_HIT("gorillaHit.png"),
 
-        // Projectiles
-        BANANA(ASSETS + "banana.png"),
-        SNICKERS(ASSETS + "snickers.png"),
-        DESTRUCTION_OVERLAY(ASSETS + "destruction.png"),
-        ARROW(ASSETS + "arrow.png");
+        BANANA("banana.png"),
+        SNICKERS("snickers.png"),
+        DESTRUCTION_OVERLAY("destruction.png"),
+        ARROW("arrow.png");
 
         private final String path;
         public String getPath() { return path; }
-        Images(String path) { this.path = path; }
+        Images(String path) { this.path = IMAGE_PATH + path; }
     }
 
+    /** Contains all Soundfiles used in this Game */
+    public static enum Sounds {
+        EXPLOSION("explosion.ogg");
+
+        private final String path;
+        public String getPath() { return path; }
+        Sounds(String path) { this.path = SOUND_PATH + path; }
+    }
+
+    /*********************************************************************************************/
 }

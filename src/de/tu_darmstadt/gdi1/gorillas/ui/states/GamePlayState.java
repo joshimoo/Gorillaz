@@ -251,6 +251,7 @@ public class GamePlayState extends BasicTWLGameState {
                 if_angle.setValue(activePlayer.getLastAngle());
 
                 skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
+                Assets.loadSound(Assets.Sounds.EXPLOSION).play();
                 banana = null;
 
                 // TODO: Claculate PlayerDamage
