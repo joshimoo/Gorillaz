@@ -100,7 +100,11 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla.render(g);
         gorillb.render(g);
 
-        if(banana != null) banana.render(g);
+        if(banana != null) {
+            banana.render(g);
+            if(banana.getColMask().getMaxY() < 0)
+                g.drawImage(Assets.loadImage(Assets.Images.ARROW), banana.x - 8, 0);
+        }
 
         g.setColor(Color.black);    /* Dropshadow TODO: maybe translucent background */
         g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2 + 1, gorillb.y - 63);
