@@ -119,8 +119,8 @@ public final class Assets {
         // Projectiles
         BANANA(ASSETS + "banana.png"),
         SNICKERS(ASSETS + "snickers.png"),
-        DESTRUCTION_OVERLAY(ASSETS + "destruction.png");
-
+        DESTRUCTION_OVERLAY(ASSETS + "destruction.png"),
+        ARROW(ASSETS + "arrow.png");
 
         private final String path;
         public String getPath() { return path; }
