@@ -281,6 +281,12 @@ public class GamePlayState extends BasicTWLGameState {
                     // Restart Game
                     player1.resetThrow();
                     player2.resetThrow();
+                    player1.setLastAngle(120);
+                    player2.setLastAngle(120);
+                    player1.setLastSpeed(80);
+                    player2.setLastSpeed(80);
+                    if_speed.setValue(activePlayer.getLastSpeed());
+                    if_angle.setValue(activePlayer.getLastAngle());
                     init(gc, game);
                 }
                 break;
