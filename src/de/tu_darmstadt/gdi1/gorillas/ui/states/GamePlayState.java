@@ -256,8 +256,8 @@ public class GamePlayState extends BasicTWLGameState {
 
                     // TODO: Save Win and Throw-Number
                     // Restart Game
-                    player1.resertThrow();
-                    player2.resertThrow();
+                    player1.resetThrow();
+                    player2.resetThrow();
                     init(gc, game);
                 }
                 break;

@@ -93,7 +93,7 @@ public class Player {
     public int getThrow() { return numberOfThrows;}
 
     /** Reset the number of throws  to 0 */
-    public void resertThrow() { numberOfThrows = 0;}
+    public void resetThrow() { numberOfThrows = 0;}
 
     /** Increase number of wins about the value of number */
     public void setWin() { numberOfWins += 1; }
