@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
@@ -33,13 +34,13 @@ public class Banana extends Entity {
     public float getCenterX(){ return x + img.getCenterOfRotationX(); }
     public float getCenterY(){ return y + img.getCenterOfRotationY(); }
 
-    public Shape getColMask(){ return new Circle(getCenterX(), getCenterY(), 12); }
+    public Shape getColMask(){ return new Circle(getCenterX(), getCenterY(), 10); }
 
 
     @Override
     public void render(Graphics graph) {
         graph.drawImage(img, x, y);
-        graph.draw(getColMask());
+        if(Gorillas.debug) graph.draw(getColMask());
     }
 
     @Override
