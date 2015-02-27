@@ -34,7 +34,8 @@ public class GamePlayState extends BasicTWLGameState {
 
     private boolean inverseControlKeys = false;
     private boolean admin = true;
-    private int keyPressDelay = 0;
+    private int keyPressDelay_counter = 0;
+    private int keyPressDelay = 40;
     private String throwNumber = null;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
@@ -143,12 +144,14 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.update(delta);
 
         if(admin) {
-        /* DEBUG: Reroll the LevelGeneration */
+            /* DEBUG: Reroll the LevelGeneration */
             if (input.isKeyPressed(Input.KEY_Q))
                 init(gc, game);
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
-                activePlayer.setWin(3);
+                activePlayer.setWin();
+                activePlayer.setWin();
+                activePlayer.setWin();
                 state = STATES.VICTORY;
                 System.out.println("V Cheat");
             }
@@ -169,40 +172,25 @@ public class GamePlayState extends BasicTWLGameState {
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
                     throwBanana();
 
-                if(keyPressDelay == 0) {
-
+                if(keyPressDelay_counter == 0) {
                     if (inverseControlKeys) {
-                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay = 50; }
-                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay = 50; }
-                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay = 50; }
-                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
                     }
                     else {
-                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay = 50; }
-                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay = 50; }
-                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay = 50; }
-                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay = 50; }
+                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
                     }
-                    /*
-                    if (inverseControlKeys) {
-                        if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_angle.setValue(if_angle.getValue() + 5);
-                        if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_angle.setValue(if_angle.getValue() - 5);
-                        if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_speed.setValue(if_speed.getValue() + 5);
-                        if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_speed.setValue(if_speed.getValue() - 5);
-                    }
-                    else {
-                        if (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) if_speed.setValue(if_speed.getValue() + 5);
-                        if (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) if_speed.setValue(if_speed.getValue() - 5);
-                        if (input.isKeyPressed(Input.KEY_UP) || input.isKeyPressed(Input.KEY_W)) if_angle.setValue(if_angle.getValue() + 5);
-                        if (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) if_angle.setValue(if_angle.getValue() - 5);
-                    }
-                    */
                 }
                 else
-                    keyPressDelay -= 1;
+                    keyPressDelay_counter -= 1;
                 break;
             case THROW:
-                throwNumber = "Throw Nr " + (activePlayer.getThrow() + 1 );
+                throwNumber = "Throw Nr " + activePlayer.getThrow();
                 // During the flight disable inputs
                 btnThrow.setVisible(false);
                 if_speed.setEnabled(false);
@@ -234,9 +222,6 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
-                // Save new throw
-                activePlayer.setThrow();
-
                 System.out.println("Throw " + activePlayer.getName() + " Nr" + activePlayer.getThrow());
                 throwNumber = "Throw Nr " + activePlayer.getThrow(); // Ueberfluessig
                 
@@ -261,14 +246,18 @@ public class GamePlayState extends BasicTWLGameState {
                 state = STATES.INPUT;
                 break;
             case ROUNDVICTORY:
-                activePlayer.setWin(1);
+                activePlayer.setWin();
 
                 if(activePlayer.getWin() > 2)
                     state = STATES.VICTORY;
                 else {
                     System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !");
                     System.out.println("Win Nr" +activePlayer.getWin());
+
+                    // TODO: Save Win and Throw-Number
                     // Restart Game
+                    player1.resertThrow();
+                    player2.resertThrow();
                     init(gc, game);
                 }
                 break;
@@ -333,6 +322,9 @@ public class GamePlayState extends BasicTWLGameState {
 
     /** Generates a Banana at the current Player */
     private void throwBanana() {
+        // Save new throw
+        activePlayer.setThrow();
+
         System.out.println("Throw Banana " + if_speed.getValue() + " " + if_angle.getValue());
 
         activePlayer.setLastSpeed(if_speed.getValue());
@@ -345,6 +337,4 @@ public class GamePlayState extends BasicTWLGameState {
 
         state = STATES.THROW;
     }
-
-
 }
