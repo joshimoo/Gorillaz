@@ -31,14 +31,19 @@ public class GamePlayState extends BasicTWLGameState {
     private Banana banana;
     private STATES state;
     private RootPane rp;
+
+    // Values
     //Erdbeschleunigung
     public static float gravity = 9.80665f;
 
-    private boolean inverseControlKeys = false;
-    private boolean admin = true;
     private int keyPressDelay_counter = 0;
     private int keyPressDelay = 40;
     private String throwNumber = null;
+
+    // Switchs
+    private boolean inverseControlKeys = false;
+    private boolean admin = true;
+    private static boolean mute = false;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
@@ -165,6 +170,8 @@ public class GamePlayState extends BasicTWLGameState {
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))
             game.enterState(Gorillas.INGAMEPAUSE);
+        if(input.isKeyPressed(Input.KEY_M))
+            setMute();
 
         switch (state) {
             case INPUT:
@@ -242,7 +249,8 @@ public class GamePlayState extends BasicTWLGameState {
                 if_angle.setValue(activePlayer.getLastAngle());
 
                 skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
-                Assets.loadSound(Assets.Sounds.EXPLOSION).play();
+                if(!mute)
+                    Assets.loadSound(Assets.Sounds.EXPLOSION).play();
                 banana = null;
 
                 // TODO: Claculate PlayerDamage
@@ -342,5 +350,15 @@ public class GamePlayState extends BasicTWLGameState {
             banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue(), if_speed.getValue(), gravity);
 
         state = STATES.THROW;
+    }
+
+    public static void setMute()
+    {
+        if(mute) {
+            mute = false;
+        }
+        else {
+            mute = true;
+        }
     }
 }

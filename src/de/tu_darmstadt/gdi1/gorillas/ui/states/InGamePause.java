@@ -97,7 +97,7 @@ public class InGamePause extends BasicTWLGameState {
         btnMute = new Button("Mute");
         btnMute.addCallback(new Runnable() {
             public void run() {
-                // TODO: Mute me :)
+                GamePlayState.setMute();
                 System.out.println("Mute");
             }
         });
