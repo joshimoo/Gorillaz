@@ -31,6 +31,8 @@ public class GamePlayState extends BasicTWLGameState {
     private Banana banana;
     private STATES state;
     private RootPane rp;
+    //Erdbeschleunigung
+    public static float gravity = 9.80665f;
 
     private boolean inverseControlKeys = false;
     private boolean admin = true;
@@ -67,6 +69,10 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     public static Player getActivePlayer() { return activePlayer; }
+
+    public static void setGravity(float g){
+        gravity = g;
+    }
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -339,9 +345,9 @@ public class GamePlayState extends BasicTWLGameState {
         activePlayer.setLastAngle(if_angle.getValue());
 
         if (activePlayer == player1)
-            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue());
+            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue(), gravity);
         else
-            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue(), if_speed.getValue());
+            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue(), if_speed.getValue(), gravity);
 
         state = STATES.THROW;
     }

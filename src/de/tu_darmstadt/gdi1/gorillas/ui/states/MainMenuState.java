@@ -15,6 +15,7 @@ public class MainMenuState extends BasicTWLGameState {
     private Image background;
     private Button btnNewGame;
     private Button btnHelp;
+    private Button btnOptions;
     private Button btnExit;
     private Button btnMute;
     private StateBasedGame game;
@@ -54,6 +55,11 @@ public class MainMenuState extends BasicTWLGameState {
             }
         });
 
+        btnOptions = new Button("Options");
+        btnOptions.addCallback(new Runnable(){
+            public void run(){ game.enterState(Gorillas.OPTIONSTATE);}
+        });
+
         btnExit = new Button("Exit Game");
         btnExit.addCallback(new Runnable() {
             public void run() {
@@ -72,6 +78,7 @@ public class MainMenuState extends BasicTWLGameState {
 
         rp.add(btnNewGame);
         rp.add(btnHelp);
+        rp.add(btnOptions);
         rp.add(btnExit);
         rp.add(btnMute);
 		return rp;
@@ -85,6 +92,7 @@ public class MainMenuState extends BasicTWLGameState {
         if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
         if (in_key.isKeyPressed(Input.KEY_M)) {/* TODO: Mute me :) */ System.out.println("Mute");}
         if (in_key.isKeyPressed(Input.KEY_H)) game.enterState(Gorillas.HELPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_M)) game.enterState(Gorillas.OPTIONSTATE);
     }
 
 	@Override
@@ -105,8 +113,11 @@ public class MainMenuState extends BasicTWLGameState {
         btnHelp.setSize(128, 32);
         btnHelp.setPosition(20, 60);
 
+        btnOptions.setSize(128, 32);
+        btnOptions.setPosition(20, 100);
+
         btnExit.setSize(128, 32);
-        btnExit.setPosition(20, 100);
+        btnExit.setPosition(20, 140);
 
         btnMute.setSize(64, 64);
         btnMute.setPosition(0, paneHeight - btnMute.getHeight());
