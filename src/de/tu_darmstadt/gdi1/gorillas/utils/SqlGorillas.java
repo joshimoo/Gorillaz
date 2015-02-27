@@ -17,8 +17,8 @@ public class SqlGorillas
      */
     public SqlGorillas()
     {
-        db = new SqlLiteDb();
         table = "Gorillas";
+        db = new SqlLiteDb();
     }
 
     public SqlGorillas(String Table)
@@ -30,14 +30,16 @@ public class SqlGorillas
     /**
      * Inserts a new highscore
      *
-     * @param Name
-     * @param Score
+     * @param PlayerName
+     * @param NumberRounds
+     * @param NumberWinRounds
+     * @param NumberThrows
      */
-    public void insertHighScore(String Name, int Score)
+    public void insertHighScore(String PlayerName, int NumberRounds, int NumberWinRounds, int NumberThrows)
     {
         String sql = "INSERT INTO " + table +
-                "(ID,Name,Score,Text,Percent) " +
-                "VALUES (NULL, '" + Name + "', " + Score + ", 'NONE', " + (int) (((double) Score / maxScore) * 100) + " );";
+                "(ID, PlayerName, NumberRounds, NumberWinRounds, NumberThrows) " +
+                "VALUES ( NULL, '" + PlayerName + "', " + NumberRounds + "," + NumberWinRounds + "," + NumberThrows + " );";
         System.out.println(sql);
         db.update(sql);
     }
@@ -49,16 +51,19 @@ public class SqlGorillas
      */
     public String[][] getHighScore()
     {
-        String sql = "SELECT Name,Score FROM " + table + " ORDER BY Score DESC LIMIT 0,10;";
+        String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds, (NumberWinRounds / NumberRounds) AS WinRate, (NumberThrows / 3) AS HitRate FROM " + table + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
         ArrayList list = db.queryArrayList(sql);
 
-        String[][] out = new String[list.size()][2];
+        String[][] out = new String[list.size()][5];
 
         for (int i = 0; i < list.size(); i++)
         {
-            ArrayList a = (ArrayList) list.get(i);
-            out[i][0] = (String) a.get(0);
-            out[i][1] = a.get(1).toString();
+            ArrayList resultList = (ArrayList) list.get(i);
+            out[i][0] = (String) resultList.get(0);
+            out[i][1] = resultList.get(1).toString();
+            out[i][2] = resultList.get(2).toString(); // int
+            out[i][3] = resultList.get(3).toString(); // double
+            out[i][4] = resultList.get(4).toString(); // double
         }
         return out;
     }
@@ -73,19 +78,23 @@ public class SqlGorillas
         SqlGorillas db = new SqlGorillas();
 
         boolean newI = false;
+        //boolean newI = true;
         if (newI)
         {
-            db.insertHighScore("Georg", (int) (Math.random() * 100));
+            db.insertHighScore("Georg", 5,3,9);
 
-            db.insertHighScore("Tami", (int) (Math.random() * 100));
+            db.insertHighScore("Tami", 4,3,21);
 
-            db.insertHighScore("Gabriel", (int) (Math.random() * 100));
+            db.insertHighScore("Gabriel", 3,3,30);
         }
 
-        String[][] a = db.getHighScore();
-        for (int i = 0; i < a.length; i++)
+        String[][] highScore_list = db.getHighScore();
+        for (int i = 0; i < highScore_list.length; i++)
         {
-            System.out.println(a[i][0] + " hat " + a[i][1]);
+            for (int j = 0; j < 5; j++) {
+                System.out.print(highScore_list[i][j] + " ");
+            }
+            System.out.print("\n");
         }
     }
 }

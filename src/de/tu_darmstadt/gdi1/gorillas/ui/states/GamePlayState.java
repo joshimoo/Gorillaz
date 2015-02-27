@@ -9,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.entities.Sun;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
@@ -45,6 +46,9 @@ public class GamePlayState extends BasicTWLGameState {
     private static boolean inverseControlKeys = false;
     private boolean admin = true;
     private static boolean mute = false;
+
+    // Counter
+    private int totalRoundCounter = 0;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
@@ -267,6 +271,7 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
             case ROUNDVICTORY:
                 activePlayer.setWin();
+                totalRoundCounter += 1;
 
                 if(activePlayer.getWin() > 2)
                     state = STATES.VICTORY;
@@ -295,6 +300,13 @@ public class GamePlayState extends BasicTWLGameState {
                 System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben das Spiel gewonnen !");
                 System.out.println("Win Nr" +activePlayer.getWin());
                 game.enterState(Gorillas.INGAMEWIN);
+
+                // Store Win to SQL-DB
+                SqlGorillas db = new SqlGorillas();
+                db.insertHighScore(activePlayer.getName(), totalRoundCounter, activePlayer.getWin(), player1.getThrow());
+
+                // Reset Values
+                totalRoundCounter = 0;
                 break;
         }
     }

@@ -25,11 +25,11 @@ public class SqlLiteDb
         String sql = "CREATE TABLE IF NOT EXISTS " + table +
                 " (" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " Name TEXT NOT NULL, " +
-                " Score INT NOT NULL, " +
-                " Text CHAR(50), " +
-                " Percent REAL" +
-                ")";
+                "PlayerName TEXT NOT NULL," +
+                "NumberRounds INT NOT NULL," +
+                "NumberWinRounds INT NOT NULL," +
+                "NumberThrows INT NOT NULL" +
+                ");";
         update(sql);
     }
 
@@ -46,11 +46,11 @@ public class SqlLiteDb
         String sql = "CREATE TABLE IF NOT EXISTS " + table +
                 " (" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " Name TEXT NOT NULL, " +
-                " Score INT NOT NULL, " +
-                " Text CHAR(50), " +
-                " Percent REAL" +
-                ")";
+                "PlayerName TEXT NOT NULL," +
+                "NumberRounds INT NOT NULL," +
+                "NumberWinRounds INT NOT NULL," +
+                "NumberThrows INT NOT NULL" +
+                ");";
         update(sql);
     }
 
@@ -69,68 +69,12 @@ public class SqlLiteDb
         String sql = "CREATE TABLE IF NOT EXISTS " + table +
                 " (" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " Name TEXT NOT NULL, " +
-                " Score INT NOT NULL, " +
-                " Text CHAR(50), " +
-                " Percent REAL" +
-                ")";
+                "PlayerName TEXT NOT NULL," +
+                "NumberRounds INT NOT NULL," +
+                "NumberWinRounds INT NOT NULL," +
+                "NumberThrows INT NOT NULL" +
+                ");";
         update(sql);
-    }
-
-    /**
-     * Demo Method showing some use cases
-     *
-     * @param Table
-     */
-    public void Demo(String Table)
-    {
-        String table = Table;
-
-        /**
-         *  Check table already exists
-         */
-        String sql = "CREATE TABLE IF NOT EXISTS " + table +
-                " (" +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " Name TEXT NOT NULL, " +
-                " Score INT NOT NULL, " +
-                " Text CHAR(50), " +
-                " Percent REAL" +
-                ")";
-        update(sql);
-
-
-        int w = 0;
-
-        switch (w)
-        {
-            case 0:
-
-                break;
-            case 1:
-                sql = "INSERT INTO " + table +
-                        "(ID,Name,Score,Text,Percent) " +
-                        "VALUES (NULL, 'Gabriel', 32, 'NONE', 100.00 );";
-                break;
-            case 2:
-                sql = "UPDATE " + table +
-                        " set Score = 25000 where ID=1;";
-                break;
-            case 3:
-                sql = "DELETE from " + table + " where ID=2;";
-                break;
-            case 4:
-                sql = "DROP TABLE " + table + ";";
-                break;
-        }
-
-        if (debug)
-            System.out.println("Run :" + sql);
-
-        update(sql);
-
-        sql = "SELECT * FROM " + table + " LIMIT 0,10;";
-        query(sql);
     }
 
     /**
@@ -212,8 +156,8 @@ public class SqlLiteDb
 
                 try
                 {
-                    result.getString("Name");
-                    column.add(result.getString("Name"));
+                    result.getString("PlayerName");
+                    column.add(result.getString("PlayerName"));
                 } catch (Exception e)
                 {
                     // ID not set, that is ok
@@ -221,13 +165,41 @@ public class SqlLiteDb
 
                 try
                 {
-                    result.getInt("Score");
-                    column.add(result.getInt("Score"));
+                    result.getInt("NumberRounds");
+                    column.add(result.getInt("NumberRounds"));
                 } catch (Exception e)
                 {
                     // Score not set, that is ok
                 }
 
+                try
+                {
+                    result.getInt("NumberWinRounds");
+                    column.add(result.getInt("NumberWinRounds"));
+                } catch (Exception e)
+                {
+                    // Score not set, that is ok
+                }
+
+                try
+                {
+                    result.getDouble("WinRate");
+                    column.add(result.getInt("WinRate"));
+                } catch (Exception e)
+                {
+                    // Score not set, that is ok
+                }
+
+                try
+                {
+                    result.getDouble("HitRate");
+                    column.add(result.getInt("HitRate"));
+                } catch (Exception e)
+                {
+                    // Score not set, that is ok
+                }
+
+                /*
                 try
                 {
                     result.getString("Text");
@@ -236,15 +208,7 @@ public class SqlLiteDb
                 {
                     // Score not set, that is ok
                 }
-
-                try
-                {
-                    result.getInt("Percent");
-                    column.add(result.getFloat("Percent"));
-                } catch (Exception e)
-                {
-                    // Score not set, that is ok
-                }
+                */
                 if (column.size() > 0)
                     out.add(column);
                 column = new ArrayList();
