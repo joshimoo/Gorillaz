@@ -92,8 +92,11 @@ public class Player {
     /** Get number of throws */
     public int getThrow() { return numberOfThrows;}
 
+    /** Reset the number of throws  to 0 */
+    public void resetThrow() { numberOfThrows = 0;}
+
     /** Increase number of wins about the value of number */
-    public void setWin(int number) { numberOfWins += number; }
+    public void setWin() { numberOfWins += 1; }
 
     /** Get number of throws */
     public int getWin() { return numberOfWins;}
