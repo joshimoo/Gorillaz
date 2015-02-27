@@ -92,7 +92,7 @@ public class MainMenuState extends BasicTWLGameState {
         if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
         if (in_key.isKeyPressed(Input.KEY_M)) {GamePlayState.setMute(); System.out.println("Mute");}
         if (in_key.isKeyPressed(Input.KEY_H)) game.enterState(Gorillas.HELPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_M)) game.enterState(Gorillas.OPTIONSTATE);
+        if (in_key.isKeyPressed(Input.KEY_O)) game.enterState(Gorillas.OPTIONSTATE);
     }
 
 	@Override
