@@ -1,23 +1,20 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.geom.Vector2f;
 
 public class Banana extends Entity {
 
-    public static final float GRAVITY   = 9.80665f;
+    private float gravity   = 9.80665f;
     public static final float SPEED_MOD = 0.8f;
     private Image img;
     private float rotationSpeed, t;
     private final double vx, vy, x0, y0;
 
-    public Banana(final float x, final float y, final int angle, final int speed){
+    public Banana(final float x, final float y, final int angle, final int speed, float g){
         img = Assets.loadUniqueImage(Assets.Images.BANANA);
         img.setCenterOfRotation(img.getHeight()/ 2, img.getWidth() / 2);
         rotationSpeed = (speed * 0.02f) * 360f / 1000f;
@@ -28,6 +25,7 @@ public class Banana extends Entity {
         t  = 0;
         this.x = (float) x0;
         this.y = (float) y0;
+        gravity = g;
 
         if(angle > 90) rotationSpeed = -rotationSpeed;
     }
@@ -51,7 +49,7 @@ public class Banana extends Entity {
         /* Move the Banana */
         t = t + delta / 400f;
         x = (float) (x0 + (vx * t));
-        y = (float) (y0 - (vy * t) + ( GRAVITY /2 * t * t) ) ;
+        y = (float) (y0 - (vy * t) + ( gravity /2 * t * t) ) ;
     }
 
     /* Inception sound Playing :D */  @Override public boolean isCollidding(Banana b){return false;}

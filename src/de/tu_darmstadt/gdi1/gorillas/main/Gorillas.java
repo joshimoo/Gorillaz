@@ -63,6 +63,7 @@ public class Gorillas extends TWLStateBasedGame {
         this.addState(new InGamePause());
         this.addState(new HelpState());
         this.addState(new InGameWin());
+        this.addState(new OptionState());
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
@@ -72,6 +73,7 @@ public class Gorillas extends TWLStateBasedGame {
         StateBasedEntityManager.getInstance().addState(INGAMEPAUSE);
         StateBasedEntityManager.getInstance().addState(HELPSTATE);
         StateBasedEntityManager.getInstance().addState(INGAMEWIN);
+        StateBasedEntityManager.getInstance().addState(OPTIONSTATE);
         // TODO: Add the other states...
     }
 
