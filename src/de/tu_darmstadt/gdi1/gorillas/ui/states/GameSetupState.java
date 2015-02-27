@@ -108,14 +108,18 @@ public class GameSetupState extends BasicTWLGameState {
             // Only update player names, if we have valid inputs
             Gorillas.player1 = new Player(n1);
             Gorillas.player2 = new Player(n2);
+            lError.setVisible(false);
 
             try { game.getState(Gorillas.GAMEPLAYSTATE).init(cont, game); }
             catch (SlickException e) { e.printStackTrace(); }
             game.enterState(Gorillas.GAMEPLAYSTATE);
         } else {
             if (n1.equals(n2)) lError.setText("Both names are equal. Please enter a different name.");
-            else if (n1.isEmpty() || n1.length() > 12) lError.setText("Please enter a new name for Player 1.");
-            else lError.setText("Please enter a new name for Player 2.");
+            else if (n1.isEmpty()) lError.setText("Please enter a name for Player 1.");
+            else if (n1.length() > 12) lError.setText("Name of Player 1 is too long.");
+            else if(n2.isEmpty()) lError.setText("Please enter a name for Player 2.");
+            else lError.setText("Name of Player 2 is too long.");
+            lError.setVisible(true);
         }
     }
 }
