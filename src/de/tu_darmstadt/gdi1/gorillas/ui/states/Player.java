@@ -94,10 +94,7 @@ public class Player {
     public int getThrow() { return numberOfThrows;}
 
     /** Get total number of throws and resets current number*/
-    public int getTotalThrows() {
-        resetThrow();
-        return totalNumberOfThrows;
-    }
+    public int getTotalThrows() { return totalNumberOfThrows + numberOfThrows;}
 
     /** Reset the number of throws  to 0 */
     public void resetThrow() {
