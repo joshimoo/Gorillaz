@@ -323,7 +323,7 @@ public class GamePlayState extends BasicTWLGameState {
         if_speed.setMinMaxValue(0,200);
         if_speed.setValue(80);
 
-        if_angle.setMinMaxValue(0,360);
+        if_angle.setMinMaxValue(0,180);
         if_angle.setValue(120);
 
         // Wirkungslos
