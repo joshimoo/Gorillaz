@@ -48,7 +48,7 @@ public class GamePlayState extends BasicTWLGameState {
     private static boolean mute = false;
 
     // Counter
-    private int totalRoundCounter = 0;
+    private static int totalRoundCounter = 0;
 
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
@@ -303,7 +303,7 @@ public class GamePlayState extends BasicTWLGameState {
 
                 // Store Win to SQL-DB
                 SqlGorillas db = new SqlGorillas();
-                db.insertHighScore(activePlayer.getName(), totalRoundCounter, activePlayer.getWin(), player1.getThrow());
+                db.insertHighScore(activePlayer.getName(), totalRoundCounter, activePlayer.getWin(), activePlayer.getTotalThrow());
 
                 // Reset Values
                 totalRoundCounter = 0;
