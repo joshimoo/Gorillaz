@@ -37,11 +37,12 @@ public class GamePlayState extends BasicTWLGameState {
     public static float gravity = 9.80665f;
 
     private int keyPressDelay_counter = 0;
-    private int keyPressDelay = 40;
+    private final int keyPressDelay = 20;
     private String throwNumber = null;
+    private String roundWinMessage = null;
 
     // Switchs
-    private boolean inverseControlKeys = false;
+    private static boolean inverseControlKeys = false;
     private boolean admin = true;
     private static boolean mute = false;
 
@@ -145,6 +146,11 @@ public class GamePlayState extends BasicTWLGameState {
             g.setColor(Color.white);
             g.drawString(throwNumber,this.getRootPane().getWidth()-110,20);
         }
+        if(roundWinMessage != null)
+        {
+            g.setColor(Color.red);
+            g.drawString(roundWinMessage,this.getRootPane().getWidth()/2 - 150,100);
+        }
     }
 
     @Override
@@ -187,16 +193,16 @@ public class GamePlayState extends BasicTWLGameState {
 
                 if(keyPressDelay_counter == 0) {
                     if (inverseControlKeys) {
-                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
                     }
                     else {
-                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 5); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 5); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
+                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
                     }
                 }
                 else
@@ -268,6 +274,9 @@ public class GamePlayState extends BasicTWLGameState {
                     System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !");
                     System.out.println("Win Nr" +activePlayer.getWin());
 
+                    roundWinMessage = "Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !\n" +
+                                        "Sieg Nummer " + activePlayer.getWin() + ".\n"+
+                                        "Sie benötigten " + activePlayer.getThrow() + " Würfe.";
                     // TODO: Save Win and Throw-Number
                     // Restart Game
                     player1.resetThrow();
@@ -297,7 +306,7 @@ public class GamePlayState extends BasicTWLGameState {
         if_speed.setValue(80);
 
         if_angle.setMinMaxValue(0,360);
-        if_angle.setValue(60);
+        if_angle.setValue(120);
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
@@ -345,9 +354,12 @@ public class GamePlayState extends BasicTWLGameState {
         activePlayer.setLastAngle(if_angle.getValue());
 
         if (activePlayer == player1)
-            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue(), if_speed.getValue(), gravity);
+            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue() - 90, if_speed.getValue(), gravity);
         else
-            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue(), if_speed.getValue(), gravity);
+            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue() + 90, if_speed.getValue(), gravity);
+
+        // Remove Win-Message
+        roundWinMessage = null;
 
         state = STATES.THROW;
     }
@@ -360,5 +372,15 @@ public class GamePlayState extends BasicTWLGameState {
         else {
             mute = true;
         }
+    }
+
+    public static void setInverseControlKeys(boolean x)
+    {
+        inverseControlKeys = x;
+    }
+
+    public static boolean getInverseControlKeys()
+    {
+        return inverseControlKeys;
     }
 }

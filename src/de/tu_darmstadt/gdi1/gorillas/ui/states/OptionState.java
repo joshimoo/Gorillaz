@@ -18,6 +18,7 @@ public class OptionState extends BasicTWLGameState {
     private Button btnOK;
     private Label lError;
     private StateBasedGame game;
+    private Button btnInvertKeyControl;
 
     @Override
     public int getID() {
@@ -36,15 +37,35 @@ public class OptionState extends BasicTWLGameState {
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
         valueGravity = new ValueAdjusterFloat();
+        btnInvertKeyControl = new Button("");
 
         btnOK = new Button("OK");
         lError = new Label("");
 
+        if(GamePlayState.getInverseControlKeys())
+            btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
+        else
+            btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
+
         btnOK.addCallback(new Runnable() {
             public void run() {
-
                 GamePlayState.setGravity(valueGravity.getValue());
                 game.enterState(Gorillas.MAINMENUSTATE);
+            }
+        });
+
+        btnInvertKeyControl.addCallback(new Runnable() {
+            public void run() {
+                if(GamePlayState.getInverseControlKeys())
+                {
+                    btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
+                    GamePlayState.setInverseControlKeys(false);
+                }
+                else
+                {
+                    btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
+                    GamePlayState.setInverseControlKeys(true);
+                }
             }
         });
 
@@ -53,6 +74,7 @@ public class OptionState extends BasicTWLGameState {
         valueGravity.setValue(9.80665f);
 
         rp.add(valueGravity);
+        rp.add(btnInvertKeyControl);
         rp.add(btnOK);
         rp.add(lError);
         return rp;
@@ -66,12 +88,14 @@ public class OptionState extends BasicTWLGameState {
         valueGravity.setSize(128, 32);
         valueGravity.setPosition(20, 20);
 
+        btnInvertKeyControl.setSize(255, 32);
+        btnInvertKeyControl.setPosition(20, 60);
+
         lError.setSize(128, 32);
-        lError.setPosition(20, 60);
+        lError.setPosition(20, 100);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(20, 100);
-
+        btnOK.setPosition(20, 140);
     }
 
     @Override
@@ -82,11 +106,11 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
-        Input in = container.getInput();
-        if (in.isKeyPressed(Input.KEY_ESCAPE)) {
+        Input in_key = container.getInput();
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O)) {
             GamePlayState.setGravity(valueGravity.getValue());
             game.enterState(Gorillas.MAINMENUSTATE);
         }
-
+        if (in_key.isKeyPressed(Input.KEY_M)) {GamePlayState.setMute(); System.out.println("Mute");}
     }
 }

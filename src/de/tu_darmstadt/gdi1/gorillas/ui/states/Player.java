@@ -19,7 +19,7 @@ public class Player {
         this.health = MAX_HEALTH;
         this.score  = 0;
         this.lastSpeed = 80;
-        this.lastAngle = 60;
+        this.lastAngle = 120;
     }
 
     /** Return the Players name */
