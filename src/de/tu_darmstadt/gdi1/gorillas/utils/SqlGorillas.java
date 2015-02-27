@@ -51,7 +51,7 @@ public class SqlGorillas
      */
     public String[][] getHighScore()
     {
-        String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds, (NumberWinRounds / NumberRounds) AS WinRate, (NumberThrows / 3) AS HitRate FROM " + table + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
+        String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds, ROUND((CAST(NumberWinRounds as real) / NumberRounds) * 100,0)  AS WinRate, ROUND((CAST(NumberThrows as real) / NumberWinRounds),2) AS HitRate FROM " + table + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
         ArrayList list = db.queryArrayList(sql);
 
         String[][] out = new String[list.size()][5];

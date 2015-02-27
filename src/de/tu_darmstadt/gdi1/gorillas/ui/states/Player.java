@@ -10,8 +10,9 @@ public class Player {
     private int health;
     private int score;
     private int lastSpeed, lastAngle;
-    private int numberOfThrows = 0;
     private int numberOfWins = 0;
+    private int numberOfThrows = 0;
+    private int totalNumberOfThrows = 0;
 
     /** Create a new Player with the given name, a score of zero and MAX_HEALTH */
     public Player(final String name){
@@ -92,8 +93,14 @@ public class Player {
     /** Get number of throws */
     public int getThrow() { return numberOfThrows;}
 
+    /** Get total number of throws */
+    public int getTotalThrow() { return totalNumberOfThrows;}
+
     /** Reset the number of throws  to 0 */
-    public void resetThrow() { numberOfThrows = 0;}
+    public void resetThrow() {
+        totalNumberOfThrows += numberOfThrows;
+        numberOfThrows = 0;
+    }
 
     /** Increase number of wins about the value of number */
     public void setWin() { numberOfWins += 1; }

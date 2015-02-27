@@ -184,7 +184,7 @@ public class SqlLiteDb
                 try
                 {
                     result.getDouble("WinRate");
-                    column.add(result.getInt("WinRate"));
+                    column.add(result.getDouble("WinRate"));
                 } catch (Exception e)
                 {
                     // Score not set, that is ok
@@ -193,7 +193,7 @@ public class SqlLiteDb
                 try
                 {
                     result.getDouble("HitRate");
-                    column.add(result.getInt("HitRate"));
+                    column.add(result.getDouble("HitRate"));
                 } catch (Exception e)
                 {
                     // Score not set, that is ok
