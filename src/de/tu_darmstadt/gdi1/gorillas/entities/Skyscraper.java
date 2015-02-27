@@ -68,9 +68,13 @@ public class Skyscraper extends Entity{
         // Stupid pointless incompatibility between atw.BuffImg & slick.Img
         // Why cant we just draw the BuffImg, in OpenGL we could use textures.
         graph.drawImage(slickImg, x, y);
-        graph.draw(collMask);
-        for(Shape s : collList)
-            graph.draw(s);
+
+        if (Gorillas.debug) {
+            graph.draw(collMask);
+            for (Shape s : collList)
+                graph.draw(s);
+        }
+
     }
 
     public void destroy(final int x, final int y, final int pow){
