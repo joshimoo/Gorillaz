@@ -83,9 +83,6 @@ public class InGameWin extends BasicTWLGameState {
 
         lWin = new Label("");
 
-
-
-
         btnNewGame = new Button("New Game");
         btnNewGame.addCallback(new Runnable() {
             public void run() {
