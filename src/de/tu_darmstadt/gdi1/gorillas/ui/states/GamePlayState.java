@@ -39,8 +39,10 @@ public class GamePlayState extends BasicTWLGameState {
     //Erdbeschleunigung
     public static float gravity = 9.80665f;
 
-    private int keyPressDelay_counter = 0;
-    private final int keyPressDelay = 20;
+    // Key Handling
+    private float keyPressDelay = 0;
+    private final float keyPressWaitTime = 0.1f; // wait 100 ms TODO: experiment with these
+
     private String throwNumber = null;
     private String roundWinMessage = null;
 
@@ -130,8 +132,7 @@ public class GamePlayState extends BasicTWLGameState {
         /* We could possibly change the name-color of the active player as an indication */
         if(activePlayer == player1)
             g.setColor(Color.white);
-        else
-            g.setColor(Color.yellow);
+        else g.setColor(Color.yellow);
         g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2, gorillb.y - 64);
         if(activePlayer == player1)
             g.setColor(Color.yellow);
@@ -154,6 +155,26 @@ public class GamePlayState extends BasicTWLGameState {
         {
             g.setColor(Color.red);
             g.drawString(roundWinMessage,this.getRootPane().getWidth()/2 - 150,100);
+        }
+    }
+
+    // TODO: more refactoring
+    private final float MS_TO_S = 1.0f / 1000;
+    private void updateThrowParameters(Input input, int delta) {
+        if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE)) { throwBanana(); }
+
+        if(keyPressDelay > 0) { keyPressDelay -= delta * MS_TO_S; }
+        else if (inverseControlKeys) {
+            if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay = keyPressWaitTime; }
+            if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay = keyPressWaitTime; }
+            if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay = keyPressWaitTime; }
+            if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 1); keyPressDelay = keyPressWaitTime; }
+        }
+        else {
+            if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay = keyPressWaitTime; }
+            if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 1); keyPressDelay = keyPressWaitTime; }
+            if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay = keyPressWaitTime; }
+            if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay = keyPressWaitTime; }
         }
     }
 
@@ -182,42 +203,15 @@ public class GamePlayState extends BasicTWLGameState {
         if(input.isKeyPressed(Input.KEY_M)) toggleMute();
 
         switch (state) {
-            case INPUT: // TODO: Refactor Hotkey Handling into it's own methods
+            case INPUT:
                 throwNumber = "Throw Nr " + activePlayer.getThrow(); // FIXME: null pointer, if init is not called after creating new players
-                btnThrow.setVisible(true);
-                if_speed.setEnabled(true);
-                if_angle.setEnabled(true);
-                if_speed.setVisible(true);
-                if_angle.setVisible(true);
-
-                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE))
-                    throwBanana();
-
-                if(keyPressDelay_counter == 0) {
-                    if (inverseControlKeys) {
-                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_speed.setValue(if_speed.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
-                    }
-                    else {
-                        if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_speed.setValue(if_speed.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay_counter = keyPressDelay; }
-                        if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay_counter = keyPressDelay; }
-                    }
-                }
-                else
-                    keyPressDelay_counter -= 1;
+                toggleUI(true);
+                updateThrowParameters(input, delta);
                 break;
             case THROW: // TODO: Refactor Collision Detection into it's own methods
                 throwNumber = "Throw Nr " + activePlayer.getThrow();
                 // During the flight disable inputs
-                btnThrow.setVisible(false);
-                if_speed.setEnabled(false);
-                if_angle.setEnabled(false);
-                if_speed.setVisible(false);
-                if_angle.setVisible(false);
+                toggleUI(false);
 
                 banana.update(delta);
                 sun.isCollidding(banana);
@@ -309,6 +303,7 @@ public class GamePlayState extends BasicTWLGameState {
         }
     }
 
+
     @Override
     protected RootPane createRootPane() {
         // Needed for adding the new Input-Elements
@@ -360,6 +355,14 @@ public class GamePlayState extends BasicTWLGameState {
         // Button kleiner und verschoben
         btnThrow.setSize(50, 25);
         btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
+    }
+
+    private void toggleUI(Boolean enable) {
+        btnThrow.setVisible(enable);
+        if_speed.setEnabled(enable);
+        if_angle.setEnabled(enable);
+        if_speed.setVisible(enable);
+        if_angle.setVisible(enable);
     }
 
     /** Generates a Banana at the current Player */
