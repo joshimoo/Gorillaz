@@ -14,6 +14,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
+
+import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.debug;
 import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player1;
 import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player2;
 
@@ -178,14 +180,12 @@ public class GamePlayState extends BasicTWLGameState {
             }
         }
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
-        if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))
-            game.enterState(Gorillas.INGAMEPAUSE);
-        if(input.isKeyPressed(Input.KEY_M))
-            setMute();
+        if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Gorillas.INGAMEPAUSE);
+        if(input.isKeyPressed(Input.KEY_M)) toggleMute();
 
         switch (state) {
             case INPUT:
-                throwNumber = "Throw Nr " + activePlayer.getThrow();
+                throwNumber = "Throw Nr " + activePlayer.getThrow(); // FIXME: null pointer, if init is not called after creating new players
                 btnThrow.setVisible(true);
                 if_speed.setEnabled(true);
                 if_angle.setEnabled(true);
@@ -382,16 +382,13 @@ public class GamePlayState extends BasicTWLGameState {
         state = STATES.THROW;
     }
 
-    public static void setMute()
-    {
-        if(mute) {
-            mute = false;
-        }
-        else {
-            mute = true;
-        }
+    // TODO: Move this out of this state, it does not belong here.
+    public static void toggleMute() {
+        mute = !mute;
+        if(debug) System.out.println("Mute: " + mute);
     }
 
+    // TODO: Move this out of this state, it does not belong here.
     public static void setInverseControlKeys(boolean x)
     {
         inverseControlKeys = x;
