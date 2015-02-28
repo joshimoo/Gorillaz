@@ -182,7 +182,7 @@ public class GamePlayState extends BasicTWLGameState {
         if(input.isKeyPressed(Input.KEY_M)) toggleMute();
 
         switch (state) {
-            case INPUT:
+            case INPUT: // TODO: Refactor Hotkey Handling into it's own methods
                 throwNumber = "Throw Nr " + activePlayer.getThrow(); // FIXME: null pointer, if init is not called after creating new players
                 btnThrow.setVisible(true);
                 if_speed.setEnabled(true);
@@ -210,7 +210,7 @@ public class GamePlayState extends BasicTWLGameState {
                 else
                     keyPressDelay_counter -= 1;
                 break;
-            case THROW:
+            case THROW: // TODO: Refactor Collision Detection into it's own methods
                 throwNumber = "Throw Nr " + activePlayer.getThrow();
                 // During the flight disable inputs
                 btnThrow.setVisible(false);
