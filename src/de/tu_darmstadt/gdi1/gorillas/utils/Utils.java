@@ -4,10 +4,7 @@ public final class Utils {
 
     private static final String LIB_LWJGL_NATIVE = "/lib/lwjgl-2.9.1/native/";
 
-    /**
-     * This class should never be instantiated
-     */
-    private Utils() {}
+    /** This class should never be instantiated */ private Utils() {}
 
     /**
      * This sets the Native path for lwjgl
@@ -29,4 +26,18 @@ public final class Utils {
         System.err.println(System.getProperty("os.name") + ": " + System.getProperty("org.lwjgl.librarypath"));
         // @formatter:on
     }
+
+    /** [R]andom [N]ame [G]enerator */
+    public static final String[] RNG = {
+        "Friedolien", "Hans", "Gunter", "Mr. Mega", "Heinrich", "Franz", "Billy Willy",
+        "Luci", "Jan Peters", "Teekanne", "Charlie", "Bobo", "AND-Gate", "Toastbrot",
+        "Dinkelberg", "BigSmoke", "Doland", "Gooby", "Falk", "Fedor"
+    };
+    // TODO: More funny names
+
+    /** Return a Random name between 4 - 12 characters. */
+    public static String getRandomName(){
+        return RNG[ (int) (java.lang.Math.random() * RNG.length) ];
+    }
+
 }
