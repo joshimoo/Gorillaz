@@ -111,6 +111,6 @@ public class OptionState extends BasicTWLGameState {
             GamePlayState.setGravity(valueGravity.getValue());
             game.enterState(Gorillas.MAINMENUSTATE);
         }
-        if (in_key.isKeyPressed(Input.KEY_M)) {GamePlayState.setMute(); System.out.println("Mute");}
+        if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
     }
 }
