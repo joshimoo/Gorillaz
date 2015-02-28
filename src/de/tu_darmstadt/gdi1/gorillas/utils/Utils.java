@@ -6,9 +6,8 @@ public final class Utils {
 
     /** This class should never be instantiated */ private Utils() {}
 
-    /**
-     * This sets the Native path for lwjgl
-     * it evaluates the OS to load the appropriate native implementation library
+    /** This sets the Native path for lwjgl
+     *  it evaluates the OS to load the appropriate native implementation library
      */
     public static void setNativePath() {
         // @formatter:off
@@ -29,9 +28,11 @@ public final class Utils {
 
     /** [R]andom [N]ame [G]enerator */
     public static final String[] RNG = {
-        "Friedolien", "Hans", "Gunter", "Mr. Mega", "Heinrich", "Franz", "Billy Willy",
-        "Luci", "Jan Peters", "Teekanne", "Charlie", "Bobo", "AND-Gate", "Toastbrot",
-        "Dinkelberg", "BigSmoke", "Doland", "Gooby", "Falk", "Fedor"
+            "Friedolien", "Hans", "Gunter", "Mr. Mega", "Heinrich", "Franz", "Billy Willy",
+            "Luci", "Jan Peters", "Teekanne", "Charlie", "Bobo", "AND-Gate", "Toastbrot",
+            "Dinkelberg", "BigSmoke", "Doland", "Gooby", "Falk", "Fedor", "OR-Gate", "FlipFlop",
+            "UgaUgaa", "Skrillex", "Bob Marley", "Stalin", "BrokObamer", "Putin", "Mittwoch",
+            "Freitag", "Uganda", "Kony2012", "D120", "Kumar", "Jim Carry", "Jon Snow", "Dexter"
     };
     // TODO: More funny names
 
