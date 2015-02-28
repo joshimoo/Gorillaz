@@ -71,12 +71,10 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     public static Gorilla getGorilla(int num){
-        if(num == 0)
-            return gorilla;
-        else
-            return gorillb;
+        return num == 0 ? gorilla : gorillb;
     }
 
+    // FIXME: There is to much static in this room :)
     public static Sun getSun(){
         return sun;
     }
@@ -335,6 +333,15 @@ public class GamePlayState extends BasicTWLGameState {
             }
         });
 
+        // Add the Input-Elements to the RootPane
+        rp.add(if_speed);
+        rp.add(if_angle);
+        rp.add(btnThrow);
+        return rp;
+    }
+
+    @Override
+    protected void layoutRootPane() {
         // Set Size and Position of the Input-Elements
         int basic_x=20;
         int basic_y=10;
@@ -353,12 +360,6 @@ public class GamePlayState extends BasicTWLGameState {
         // Button kleiner und verschoben
         btnThrow.setSize(50, 25);
         btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
-
-        // Add the Input-Elements to the RootPane
-        rp.add(if_speed);
-        rp.add(if_angle);
-        rp.add(btnThrow);
-        return rp;
     }
 
     /** Generates a Banana at the current Player */
