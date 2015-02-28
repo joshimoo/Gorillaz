@@ -7,6 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -29,7 +30,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-        // this.createRootPane();
+        this.createRootPane();
         this.game = game;
         this.cont = gameContainer;
     }
@@ -49,9 +50,8 @@ public class GameSetupState extends BasicTWLGameState {
             }
         });
 
-        // TODO: Maybe Random name genertion?
-        txtName1.setText("Player1");
-        txtName2.setText("Player2");
+        txtName1.setText(Utils.getRandomName());
+        txtName2.setText(Utils.getRandomName());
 
         rp.add(txtName1);
         rp.add(txtName2);
@@ -64,6 +64,13 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.drawImage(background, -10, -20);
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        txtName1.setText(Utils.getRandomName());
+        txtName2.setText(Utils.getRandomName());
     }
 
     @Override
