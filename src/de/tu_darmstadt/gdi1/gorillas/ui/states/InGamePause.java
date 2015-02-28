@@ -51,7 +51,7 @@ public class InGamePause extends BasicTWLGameState {
         Input in_key = container.getInput();
         if(in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) game.enterState(Gorillas.GAMEPLAYSTATE);
         if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_M)) {GamePlayState.setMute(); System.out.println("Mute");}
+        if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
     }
 
     @Override
@@ -94,8 +94,7 @@ public class InGamePause extends BasicTWLGameState {
         btnMute = new Button("Mute");
         btnMute.addCallback(new Runnable() {
             public void run() {
-                GamePlayState.setMute();
-                System.out.println("Mute");
+                GamePlayState.toggleMute();
             }
         });
 

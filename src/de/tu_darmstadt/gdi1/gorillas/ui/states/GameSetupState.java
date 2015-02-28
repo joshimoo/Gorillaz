@@ -18,7 +18,8 @@ public class GameSetupState extends BasicTWLGameState {
 
     private StateBasedGame game;
     private GameContainer cont;
-    private Label lError;
+    private Label lPlayer1Error;
+    private Label lPlayer2Error;
 
     @Override
     public int getID() {
@@ -28,7 +29,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-        this.createRootPane();
+        // this.createRootPane();
         this.game = game;
         this.cont = gameContainer;
     }
@@ -39,7 +40,8 @@ public class GameSetupState extends BasicTWLGameState {
         txtName1 = new EditField();
         txtName2 = new EditField();
         btnStart = new Button("GO");
-        lError = new Label("");
+        lPlayer1Error = new Label("");
+        lPlayer2Error = new Label("");
 
         btnStart.addCallback(new Runnable() {
             public void run() {
@@ -54,7 +56,8 @@ public class GameSetupState extends BasicTWLGameState {
         rp.add(txtName1);
         rp.add(txtName2);
         rp.add(btnStart);
-        rp.add(lError);
+        rp.add(lPlayer1Error);
+        rp.add(lPlayer2Error);
         return rp;
     }
 
@@ -81,19 +84,71 @@ public class GameSetupState extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         // Layout subject to change
-        txtName1.setSize(256, 32);
-        txtName2.setSize(256, 32);
-        btnStart.setSize(256, 32);
-        lError.setSize(256, 32);
-        // Center the Textfields on the screen. Jetzt wird duch 2 geteilt :)
-        int x = (paneWidth - txtName1.getWidth()) >> 1;
+        txtName1.setSize(64, 32);
+        txtName2.setSize(64, 32);
+        btnStart.setSize(64, 32);
+        lPlayer1Error.setSize(64, 32);
+        lPlayer2Error.setSize(64, 32);
+
+        // Center the Textfields on the screen.
+        int x = (paneWidth - txtName1.getWidth()) / 2;
 
         txtName1.setPosition(x, 40);
-        txtName2.setPosition(x, 80);
-        btnStart.setPosition(x, 120);
-        lError.setPosition(x, 160);
+        lPlayer1Error.setPosition(x + 64, 40);
 
+        txtName2.setPosition(x, 80);
+        lPlayer2Error.setPosition(x + 64, 80);
+
+        btnStart.setPosition(x, 120);
     }
+
+    // Placeholder Implementation TODO: Add Translator Support
+    public static final String ERROR_DUPLICATE = "Names are equal, You must enter different names.";
+    public static final String ERROR_IS_EMPTY = "Name must not be empty.";
+    public static final String ERROR_TO_LONG = "Name is to long.";
+
+    /**
+     * Will only set the new player names if they are valid,
+     * @see de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState#checkValidPlayerNames(String, String)
+     * @param n1 name of player 1
+     * @param n2 name of player 2
+     * @return true when both names are valid
+     */
+    public Boolean setPlayerNames(String n1, String n2) {
+        if (checkValidPlayerNames(n1,n2)) {
+            Gorillas.player1 = new Player(n1);
+            Gorillas.player2 = new Player(n2);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the passed names are valid
+     * Sets error messages, when inputs are not valid
+     * @param n1 name of player 1
+     * @param n2 name of player 2
+     * @return true when both names are valid
+     */
+    private Boolean checkValidPlayerNames(String n1, String n2) {
+        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : n1.length() > 12 ? ERROR_TO_LONG : "");
+        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : n2.length() > 12 ? ERROR_TO_LONG : "");
+
+        // Only check for duplicates if we have valid inputs
+        if (!n1.isEmpty() && n1.equals(n2)) {
+            setPlayer1Error(ERROR_DUPLICATE);
+            setPlayer2Error(ERROR_DUPLICATE);
+        }
+
+        return getPlayer1Error().isEmpty() && getPlayer2Error().isEmpty();
+    }
+
+    // Wrap the internal label
+    public void setPlayer1Error(String error) {lPlayer1Error.setText(error);}
+    public void setPlayer2Error(String error) {lPlayer2Error.setText(error);}
+    public String getPlayer1Error() { return lPlayer1Error.getText(); }
+    public String getPlayer2Error() { return lPlayer2Error.getText(); }
 
     /**
      * Stores the playernames and changes to the GAMEPLAYSTATE
@@ -104,22 +159,18 @@ public class GameSetupState extends BasicTWLGameState {
         String n1 = txtName1.getText();
         String n2 = txtName2.getText();
 
-        if (!(n1.isEmpty()) && !(n2.isEmpty()) && !(n1.equals(n2)) && (n1.length() < 13) && (n2.length() < 13)) {
-            // Only update player names, if we have valid inputs
-            Gorillas.player1 = new Player(n1);
-            Gorillas.player2 = new Player(n2);
-            lError.setVisible(false);
+        if (setPlayerNames(n1, n2)) {
+            lPlayer1Error.setVisible(false);
+            lPlayer2Error.setVisible(false);
 
+            // TODO: should not be necessary since StateBasedGame should call all init methods for the each entry in the init states list
             try { game.getState(Gorillas.GAMEPLAYSTATE).init(cont, game); }
             catch (SlickException e) { e.printStackTrace(); }
             game.enterState(Gorillas.GAMEPLAYSTATE);
+
         } else {
-            if (n1.equals(n2)) lError.setText("Both names are equal. Please enter a different name.");
-            else if (n1.isEmpty()) lError.setText("Please enter a name for Player 1.");
-            else if (n1.length() > 12) lError.setText("Name of Player 1 is too long.");
-            else if(n2.isEmpty()) lError.setText("Please enter a name for Player 2.");
-            else lError.setText("Name of Player 2 is too long.");
-            lError.setVisible(true);
+            lPlayer1Error.setVisible(!getPlayer1Error().isEmpty());
+            lPlayer2Error.setVisible(!getPlayer2Error().isEmpty());
         }
     }
 }
