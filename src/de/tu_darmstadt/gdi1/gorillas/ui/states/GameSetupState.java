@@ -91,8 +91,8 @@ public class GameSetupState extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         // Layout subject to change
-        txtName1.setSize(64, 32);
-        txtName2.setSize(64, 32);
+        txtName1.setSize(96, 32);
+        txtName2.setSize(96, 32);
         btnStart.setSize(64, 32);
         lPlayer1Error.setSize(64, 32);
         lPlayer2Error.setSize(64, 32);
@@ -101,10 +101,10 @@ public class GameSetupState extends BasicTWLGameState {
         int x = (paneWidth - txtName1.getWidth()) / 2;
 
         txtName1.setPosition(x, 40);
-        lPlayer1Error.setPosition(x + 64, 40);
+        lPlayer1Error.setPosition(x + 96, 40);
 
         txtName2.setPosition(x, 80);
-        lPlayer2Error.setPosition(x + 64, 80);
+        lPlayer2Error.setPosition(x + 96, 80);
 
         btnStart.setPosition(x, 120);
     }
