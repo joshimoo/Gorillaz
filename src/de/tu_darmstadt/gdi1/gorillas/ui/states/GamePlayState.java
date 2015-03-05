@@ -1,29 +1,25 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import de.matthiasmann.twl.*;
+import de.matthiasmann.twl.Alignment;
+import de.matthiasmann.twl.Button;
+import de.matthiasmann.twl.ValueAdjusterInt;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.gorillas.entities.Banana;
-import de.tu_darmstadt.gdi1.gorillas.entities.Skyline;
-import de.tu_darmstadt.gdi1.gorillas.entities.Sun;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.entities.Gorilla;
+import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
-import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.debug;
-import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player1;
-import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.player2;
+import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.*;
 
 public class GamePlayState extends BasicTWLGameState {
 
     private static Skyline skyline;
     private static Gorilla gorilla, gorillb;
     private static Sun sun;
+    private static Cloud cloud;
     private Image background;
 
     private ValueAdjusterInt if_speed;
@@ -34,6 +30,8 @@ public class GamePlayState extends BasicTWLGameState {
     private Banana banana;
     private STATES state;
     private RootPane rp;
+
+    private int windSpeed;
 
     // Values
     //Erdbeschleunigung
@@ -50,6 +48,7 @@ public class GamePlayState extends BasicTWLGameState {
     private static boolean inverseControlKeys = false;
     private boolean admin = true;
     private static boolean mute = false;
+    private static boolean wind = false;
 
     // Counter
     private static int totalRoundCounter = 0;
@@ -103,6 +102,10 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(400, 60);
 
+        if(wind) windSpeed = (int) ((Math.random() * 30) - 15);
+        else windSpeed = 0;
+        cloud = new Cloud(0,60,windSpeed);
+
         banana = null;
         if (rp == null)
             this.createRootPane();
@@ -118,6 +121,7 @@ public class GamePlayState extends BasicTWLGameState {
         skyline.render(g);
         gorilla.render(g);
         gorillb.render(g);
+        cloud.render(g);
 
         if(banana != null) {
             banana.render(g);
@@ -184,6 +188,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         gorilla.update(delta);
         gorillb.update(delta);
+        cloud.update(delta);
 
         if(admin) {
             /* DEBUG: Reroll the LevelGeneration */
@@ -376,9 +381,9 @@ public class GamePlayState extends BasicTWLGameState {
         activePlayer.setLastAngle(if_angle.getValue());
 
         if (activePlayer == player1)
-            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue() - 90, if_speed.getValue(), gravity);
+            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue() - 90, if_speed.getValue(), gravity, windSpeed);
         else
-            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue() + 90, if_speed.getValue(), gravity);
+            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue() + 90, if_speed.getValue(), gravity, windSpeed);
 
         // Remove Win-Message
         roundWinMessage = null;
@@ -402,4 +407,7 @@ public class GamePlayState extends BasicTWLGameState {
     {
         return inverseControlKeys;
     }
+
+    public static void setWind(boolean x){wind = x;}
+    public static boolean getWind(){return wind;}
 }

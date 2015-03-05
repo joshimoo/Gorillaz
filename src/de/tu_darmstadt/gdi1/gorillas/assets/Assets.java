@@ -1,6 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.assets;
 
-import de.tu_darmstadt.gdi1.gorillas.utils.FakeSound;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
@@ -154,7 +153,8 @@ public final class Assets {
         BANANA("banana.png"),
         SNICKERS("snickers.png"),
         DESTRUCTION_OVERLAY("destruction.png"),
-        ARROW("arrow.png");
+        ARROW("arrow.png"),
+        CLOUD("cloud.png");
 
         private final String path;
         public String getPath() { return path; }

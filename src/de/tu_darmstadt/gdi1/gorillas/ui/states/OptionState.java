@@ -19,6 +19,7 @@ public class OptionState extends BasicTWLGameState {
     private Label lError;
     private StateBasedGame game;
     private Button btnInvertKeyControl;
+    private Button btnWind;
 
     @Override
     public int getID() {
@@ -38,6 +39,7 @@ public class OptionState extends BasicTWLGameState {
         RootPane rp = super.createRootPane();
         valueGravity = new ValueAdjusterFloat();
         btnInvertKeyControl = new Button("");
+        btnWind = new Button("");
 
         btnOK = new Button("OK");
         lError = new Label("");
@@ -46,6 +48,11 @@ public class OptionState extends BasicTWLGameState {
             btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
         else
             btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
+
+        if(GamePlayState.getWind())
+            btnWind.setText("Wind");
+        else
+            btnWind.setText("No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
@@ -69,12 +76,26 @@ public class OptionState extends BasicTWLGameState {
             }
         });
 
+        btnWind.addCallback(new Runnable() {
+            public void run() {
+                if(GamePlayState.getWind()){
+                    btnWind.setText("No wind");
+                    GamePlayState.setWind(false);
+                }
+                else{
+                    btnWind.setText("Wind");
+                    GamePlayState.setWind(true);
+                }
+            }
+        });
+
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setMinMaxValue(0.0f, 24.79f);
         valueGravity.setValue(9.80665f);
 
         rp.add(valueGravity);
         rp.add(btnInvertKeyControl);
+        rp.add(btnWind);
         rp.add(btnOK);
         rp.add(lError);
         return rp;
@@ -91,11 +112,14 @@ public class OptionState extends BasicTWLGameState {
         btnInvertKeyControl.setSize(255, 32);
         btnInvertKeyControl.setPosition(20, 60);
 
+        btnWind.setSize(128, 32);
+        btnWind.setPosition(20,100);
+
         lError.setSize(128, 32);
-        lError.setPosition(20, 100);
+        lError.setPosition(20, 140);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(20, 140);
+        btnOK.setPosition(20, 180);
     }
 
     @Override

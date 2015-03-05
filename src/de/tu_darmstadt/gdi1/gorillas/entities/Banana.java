@@ -14,8 +14,9 @@ public class Banana extends Entity {
     private Image img;
     private float rotationSpeed, t;
     private final double vx, vy, x0, y0;
+    private int windSpeed;
 
-    public Banana(final float x, final float y, final int angle, final int speed, float g){
+    public Banana(final float x, final float y, final int angle, final int speed, float g, int w){
         img = Assets.loadUniqueImage(Assets.Images.BANANA);
         img.setCenterOfRotation(img.getHeight()/ 2, img.getWidth() / 2);
         rotationSpeed = (speed * 0.02f) * 360f / 1000f;
@@ -27,6 +28,7 @@ public class Banana extends Entity {
         this.x = (float) x0;
         this.y = (float) y0;
         gravity = g;
+        this.windSpeed = w;
 
         if(angle > 90) rotationSpeed = -rotationSpeed;
     }
@@ -49,8 +51,8 @@ public class Banana extends Entity {
         img.rotate(rotationSpeed * delta);
         /* Move the Banana */
         t = t + delta / 400f;
-        x = (float) (x0 + (vx * t));
-        y = (float) (y0 - (vy * t) + ( gravity /2 * t * t) ) ;
+        x = (float) (x0 + (vx * t) + (Cloud.WSCALE /2 * windSpeed * t * t));
+        y = (float) (y0 - (vy * t) + ( gravity /2 * t * t));
     }
 
     /* Inception sound Playing :D */  @Override public boolean isCollidding(Banana b){return false;}
