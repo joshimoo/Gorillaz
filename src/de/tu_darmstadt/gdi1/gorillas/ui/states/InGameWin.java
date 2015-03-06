@@ -26,26 +26,20 @@ public class InGameWin extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-
         this.createRootPane();
         this.game = game;
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-        background.draw(-20,-10);
-        GamePlayState.getSkyline().render(g);
-        GamePlayState.getGorilla(0).render(g);
-        GamePlayState.getGorilla(1).render(g);
-        GamePlayState.getSun().render(g);
+        GamePlayState s = (GamePlayState) game.getState(Gorillas.GAMEPLAYSTATE);
+        s.render(gc, game, g);
         g.setColor(color);
         g.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
 
-        if(GamePlayState.getActivePlayer() != null) {
-            Player player = GamePlayState.getActivePlayer();
-            if(player != null)
-            {
+        if(s.getActivePlayer() != null) {
+            Player player = s.getActivePlayer();
+            if(player != null) {
                 g.setColor(Color.yellow);
                 g.drawString("Herzlichen Glückwunsch " + player.getName() + "\nSie haben die Runde gewonnen !\nSie benötigten " + player.getThrow() + " Würfe.",100,80);
             }

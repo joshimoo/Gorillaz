@@ -10,7 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 public class InGamePause extends BasicTWLGameState {
-    private Image background;
+
     private Color color = new Color(50,50,50,150);
     private Button btnNewGame;
     private Button btnExit;
@@ -26,30 +26,20 @@ public class InGamePause extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-
-        this.createRootPane();
         this.game = game;
-
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-        background.draw(-20,-10);
-        GamePlayState.getSkyline().render(g);
-        GamePlayState.getGorilla(0).render(g);
-        GamePlayState.getGorilla(1).render(g);
-        GamePlayState.getSun().render(g);
+        game.getState(Gorillas.GAMEPLAYSTATE).render(gc, game, g);
         g.setColor(color);
         g.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
-
-
     }
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
-        if(in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) game.enterState(Gorillas.GAMEPLAYSTATE);
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) game.enterState(Gorillas.GAMEPLAYSTATE);
         if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
     }
@@ -112,4 +102,5 @@ public class InGamePause extends BasicTWLGameState {
 
         return rp;
     }
+
 }

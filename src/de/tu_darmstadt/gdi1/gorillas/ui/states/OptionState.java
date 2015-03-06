@@ -56,7 +56,8 @@ public class OptionState extends BasicTWLGameState {
 
         btnOK.addCallback(new Runnable() {
             public void run() {
-                GamePlayState.setGravity(valueGravity.getValue());
+                GamePlayState s = (GamePlayState) (game.getState(Gorillas.GAMEPLAYSTATE));
+                s.setGravity(valueGravity.getValue());
                 game.enterState(Gorillas.MAINMENUSTATE);
             }
         });
@@ -132,7 +133,8 @@ public class OptionState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O)) {
-            GamePlayState.setGravity(valueGravity.getValue());
+            GamePlayState s = (GamePlayState) (game.getState(Gorillas.GAMEPLAYSTATE));
+            s.setGravity(valueGravity.getValue());
             game.enterState(Gorillas.MAINMENUSTATE);
         }
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
