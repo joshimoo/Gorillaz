@@ -16,33 +16,34 @@ import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.*;
 
 public class GamePlayState extends BasicTWLGameState {
 
-    private static Skyline skyline;
-    private static Gorilla gorilla, gorillb;
-    private static Sun sun;
-    private static Cloud cloud;
-    private Image background;
-
-    private ValueAdjusterInt if_speed;
-    private ValueAdjusterInt if_angle;
-    private Button btnThrow;
-
-    private static Player activePlayer;
-    private Banana banana;
-    private STATES state;
-    private RootPane rp;
-
-    private int windSpeed;
-
-    // Values
-    //Erdbeschleunigung
-    public static float gravity = 9.80665f;
-
     // Key Handling
     private float keyPressDelay = 0;
     private final float keyPressWaitTime = 0.1f; // wait 100 ms TODO: experiment with these
 
+    // DEBUG
     private String throwNumber = null;
     private String roundWinMessage = null;
+
+    // UI
+    private RootPane rp;
+    private ValueAdjusterInt if_speed;
+    private ValueAdjusterInt if_angle;
+    private Button btnThrow;
+
+    // GameState
+    private Player  activePlayer;
+    private STATES  state;
+    private int     windSpeed;
+    private Image   background;
+    private float   gravity = 9.80665f;
+
+    // Entitys
+    private Banana  banana;
+    private Skyline skyline;
+    private Gorilla gorilla;
+    private Gorilla gorillb;
+    private Sun     sun;
+    private Cloud   cloud;
 
     // Switchs
     private static boolean inverseControlKeys = false;
@@ -67,22 +68,21 @@ public class GamePlayState extends BasicTWLGameState {
         return Gorillas.GAMEPLAYSTATE;
     }
 
-    public static Skyline getSkyline(){
+    public Skyline getSkyline(){
         return skyline;
     }
 
-    public static Gorilla getGorilla(int num){
+    public Gorilla getGorilla(int num){
         return num == 0 ? gorilla : gorillb;
     }
 
-    // FIXME: There is to much static in this room :)
-    public static Sun getSun(){
+    public Sun getSun(){
         return sun;
     }
 
-    public static Player getActivePlayer() { return activePlayer; }
+    public Player getActivePlayer() { return activePlayer; }
 
-    public static void setGravity(float g){
+    public void setGravity(final float g){
         gravity = g;
     }
 
@@ -307,7 +307,6 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
         }
     }
-
 
     @Override
     protected RootPane createRootPane() {

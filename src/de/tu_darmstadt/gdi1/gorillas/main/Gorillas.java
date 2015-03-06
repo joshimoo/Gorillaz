@@ -12,6 +12,8 @@ import java.net.URL;
 
 public class Gorillas extends TWLStateBasedGame {
 
+    public static Gorillas game;
+
     /* State Definitions */
     public static final int MAINMENUSTATE   = 0;
     public static final int GAMESETUPSTATE  = 1;
@@ -47,7 +49,8 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static void main(String[] args) throws SlickException {
         Utils.setNativePath();
-        AppGameContainer app = new AppGameContainer(new Gorillas(false));
+        game = new Gorillas(false);
+        AppGameContainer app = new AppGameContainer(game);
         app.setShowFPS(true);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
         app.setTargetFrameRate(TARGET_FPS);
