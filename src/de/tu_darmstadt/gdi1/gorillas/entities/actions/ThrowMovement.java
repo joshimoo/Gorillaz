@@ -4,7 +4,7 @@ import eea.engine.action.basicactions.Movement;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
- * If you make all movement actions additive
+ * TODO: a great idea, is if you make all movement actions additive
  * that would allow one to have multiple movement actions (gravity, wind, userinput) affect the same entity
  *
  * NOTE: there is an implicit, priority based on the order in which you add components
@@ -21,18 +21,12 @@ import org.newdawn.slick.geom.Vector2f;
  * Implements a parabolic flight, that is impacted by gravity and static wind
  */
 public class ThrowMovement extends Movement {
-
-    // TODO: Move out of here, let the Creator handle additional Scale Factors
-    // TODO: the game should use m/s for all design parameters. Then the creator can translate from m/s to m/ms
-    public static final float SPEED_MOD = 0.8f;
     private float gravity = 9.80665f;
-
-    private float windSpeed;
-    private float rotationSpeed, t;
+    private float windAcceleration;
+    private float t;
 
     // TODO: store as Vector2f
     private final float vx, vy, x0, y0;
-
 
     /**
      * Creates a new Movement with the concrete movement speed passed in.
@@ -43,21 +37,16 @@ public class ThrowMovement extends Movement {
     public ThrowMovement(float x, float y, float angle, float speed, float g, float w ) {
         super(speed);
 
-        // TODO: remove unneeded params
-        rotationSpeed = (speed * 0.02f) * 360f / 1000f;
-
         // We should only need single precision
-        vx = (float) (Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD);
-        vy = (float) (Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD);
+        vx = (float) (Math.cos(Math.toRadians(angle)) * speed);
+        vy = (float) (Math.sin(Math.toRadians(angle)) * speed);
 
         x0 = x;
         y0 = y;
         t  = 0;
 
         gravity = g;
-        windSpeed = w;
-
-        if(angle > 90) rotationSpeed = -rotationSpeed;
+        windAcceleration = w;
     }
 
 
@@ -81,10 +70,9 @@ public class ThrowMovement extends Movement {
         // That way we can modify params, in flight withhout breaking the calculation.
         // Right now there is a dependency on t0 and pos0
 
-        t = t + delta / 400f; // TODO: Cleanup Factor
-        // float x = x0 + (vx * t) + (Cloud.WSCALE /2 * windSpeed * t * t); // TODO: WSCALE should be taken care of by the CREATOR
-        float x = x0 + (vx * t) + (windSpeed * t * t);
-        float y = y0 - (vy * t) + (gravity/2 * t * t);
+        t += delta;
+        float x = x0 + (vx * t) + (0.5f * windAcceleration * t * t);
+        float y = y0 - (vy * t) + (0.5f * gravity * t * t);
 
         return new Vector2f(x, y);
     }
