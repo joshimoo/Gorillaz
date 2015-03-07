@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class SqlGorillas
 {
+    private String file;
     private SqlLiteDb db;
     private String table;
 
@@ -15,8 +16,9 @@ public class SqlGorillas
      */
     public SqlGorillas()
     {
+        file = "data_gorillas.hsc";
         table = "Gorillas";
-        db = new SqlLiteDb("data_gorillas.hsc" ,table);
+        db = new SqlLiteDb(file ,table);
     }
 
     /**
@@ -26,6 +28,7 @@ public class SqlGorillas
      */
     public SqlGorillas(String File, String Table)
     {
+        file = File;
         table = Table;
         db = new SqlLiteDb(File,table);
     }
