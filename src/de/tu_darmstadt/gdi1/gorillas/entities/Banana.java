@@ -51,11 +51,12 @@ public class Banana extends Entity {
         img.rotate(rotationSpeed * delta);
         /* Move the Banana */
         t = t + delta / 400f;
-        if((y + img.getHeight() >= Gorillas.FRAME_HEIGHT)& vx > 10){
+        if((y + img.getHeight() >= Gorillas.FRAME_HEIGHT)& (vx > 5 | vx < -5)){
+            if(vx > 5) angle = -angle;
+            if(vx < 5) angle = 180 - angle;
             y0 = Gorillas.FRAME_HEIGHT - (img.getHeight() + 10);
             x0 = x;
             speed = vx;
-            angle = -angle;
             t = delta/ 400f;
         }
 
