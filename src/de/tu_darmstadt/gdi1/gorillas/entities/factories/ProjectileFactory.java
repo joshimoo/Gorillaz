@@ -51,7 +51,7 @@ public class ProjectileFactory extends EntityFactory {
         // Collision
         CollisionEvent collision = new CollisionEvent();
         OREvent validTargets = new OREvent(
-                new CollidedWithEvent(collision, EntityType.GORILLA.name()),
+                new CollidedWithEvent(collision, EntityType.PLAYER.name()),
                 new CollidedWithEvent(collision, EntityType.BUILDING.name()) // TODO: Refactor after Sky Scrapper/Skyline Decision
         );
         ANDEvent validCollision = new ANDEvent(collision, validTargets);

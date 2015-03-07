@@ -8,7 +8,7 @@ package de.tu_darmstadt.gdi1.gorillas.entities;
  * NOTE: Entities of the same Type don't collide with each other
  */
 public enum EntityType {
-    GORILLA,
+    PLAYER,
     BUILDING,
     PROJECTILE,
     CLOUD,
