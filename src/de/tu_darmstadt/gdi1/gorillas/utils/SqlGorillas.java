@@ -10,36 +10,39 @@ public class SqlGorillas
     private SqlLiteDb db;
     private String table;
 
-    int maxScore = 100;
-
     /**
      * Constructor with default table "Gorillas"
      */
     public SqlGorillas()
     {
         table = "Gorillas";
-        db = new SqlLiteDb();
+        db = new SqlLiteDb("data_gorillas.hsc" ,table);
     }
 
-    public SqlGorillas(String Table)
+    /**
+     * Constructor with parameter
+     * @param File  Database filename
+     * @param Table Name of the table
+     */
+    public SqlGorillas(String File, String Table)
     {
         table = Table;
-        db = new SqlLiteDb(table);
+        db = new SqlLiteDb(File,table);
     }
 
     /**
      * Inserts a new highscore
      *
      * @param PlayerName
-     * @param NumberRounds
-     * @param NumberWinRounds
-     * @param NumberThrows
+     * @param NumberRounds Total number of rounds
+     * @param NumberWinRounds Number of rounds you won
+     * @param NumberThrows Total number of throws
      */
     public void insertHighScore(String PlayerName, int NumberRounds, int NumberWinRounds, int NumberThrows)
     {
         String sql = "INSERT INTO " + table +
-                "(ID, PlayerName, NumberRounds, NumberWinRounds, NumberThrows) " +
-                "VALUES ( NULL, '" + PlayerName + "', " + NumberRounds + "," + NumberWinRounds + "," + NumberThrows + " );";
+                     "(ID, PlayerName, NumberRounds, NumberWinRounds, NumberThrows) " +
+                     "VALUES ( NULL, '" + PlayerName + "', " + NumberRounds + "," + NumberWinRounds + "," + NumberThrows + " );";
         System.out.println(sql);
         db.update(sql);
     }
@@ -51,7 +54,9 @@ public class SqlGorillas
      */
     public String[][] getHighScore()
     {
-        String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds, ROUND((CAST(NumberWinRounds as real) / NumberRounds) * 100,0)  AS WinRate, ROUND((CAST(NumberThrows as real) / NumberWinRounds),2) AS HitRate FROM " + table + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
+        String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds," +
+                     "ROUND((CAST(NumberWinRounds as real) / NumberRounds) * 100,0)  AS WinRate, ROUND((CAST(NumberThrows as real) / NumberWinRounds),2) AS HitRate " +
+                     "FROM " + table + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
         ArrayList list = db.queryArrayList(sql);
 
         String[][] out = new String[list.size()][5];
@@ -70,25 +75,15 @@ public class SqlGorillas
 
     /**
      * For testing only
-     *
+     * Shows current highscores
      * @param args
      */
     public static void main(String[] args)
     {
         SqlGorillas db = new SqlGorillas();
 
-        boolean newI = false;
-        //boolean newI = true;
-        if (newI)
-        {
-            db.insertHighScore("Georg", 5,3,9);
-
-            db.insertHighScore("Tami", 4,3,21);
-
-            db.insertHighScore("Gabriel", 3,3,30);
-        }
-
         String[][] highScore_list = db.getHighScore();
+
         for (int i = 0; i < highScore_list.length; i++)
         {
             for (int j = 0; j < 5; j++) {

@@ -299,7 +299,7 @@ public class GamePlayState extends BasicTWLGameState {
                 game.enterState(Gorillas.INGAMEWIN);
 
                 // Store Win to SQL-DB
-                SqlGorillas db = new SqlGorillas();
+                SqlGorillas db = new SqlGorillas("data_gorillas.hsc","Gorillas");
                 db.insertHighScore(activePlayer.getName(), totalRoundCounter, activePlayer.getWin(), activePlayer.getTotalThrows());
 
                 // Reset Values
