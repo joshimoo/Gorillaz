@@ -14,6 +14,7 @@ public class MainMenuState extends BasicTWLGameState {
     private StateBasedEntityManager entityManager;
     private Image background;
     private Button btnNewGame;
+    private Button btnHighScore;
     private Button btnHelp;
     private Button btnOptions;
     private Button btnExit;
@@ -48,6 +49,13 @@ public class MainMenuState extends BasicTWLGameState {
             }
         });
 
+        btnHighScore = new Button("Highscore");
+        btnHighScore.addCallback(new Runnable() {
+            public void run() {
+                game.enterState(Gorillas.HIGHSCORESTATE);
+            }
+        });
+
         btnHelp = new Button("Help");
         btnHelp.addCallback(new Runnable() {
             public void run() {
@@ -77,6 +85,7 @@ public class MainMenuState extends BasicTWLGameState {
         });
 
         rp.add(btnNewGame);
+        rp.add(btnHighScore);
         rp.add(btnHelp);
         rp.add(btnOptions);
         rp.add(btnExit);
@@ -91,6 +100,7 @@ public class MainMenuState extends BasicTWLGameState {
         if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
         if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
+        if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Gorillas.HIGHSCORESTATE);
         if (in_key.isKeyPressed(Input.KEY_H)) game.enterState(Gorillas.HELPSTATE);
         if (in_key.isKeyPressed(Input.KEY_O)) game.enterState(Gorillas.OPTIONSTATE);
     }
@@ -110,14 +120,17 @@ public class MainMenuState extends BasicTWLGameState {
         btnNewGame.setSize(128, 32);
         btnNewGame.setPosition(20, 20);
 
+        btnHighScore.setSize(128, 32);
+        btnHighScore.setPosition(20, 60);
+
         btnHelp.setSize(128, 32);
-        btnHelp.setPosition(20, 60);
+        btnHelp.setPosition(20, 100);
 
         btnOptions.setSize(128, 32);
-        btnOptions.setPosition(20, 100);
+        btnOptions.setPosition(20, 140);
 
         btnExit.setSize(128, 32);
-        btnExit.setPosition(20, 140);
+        btnExit.setPosition(20, 180);
 
         btnMute.setSize(64, 64);
         btnMute.setPosition(0, paneHeight - btnMute.getHeight());
