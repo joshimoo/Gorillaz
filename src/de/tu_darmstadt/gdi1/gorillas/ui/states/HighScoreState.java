@@ -29,17 +29,7 @@ public class HighScoreState extends BasicTWLGameState {
         this.createRootPane();
         this.game = game;
 
-        String[][] highScore_list = db.getHighScore();
-
-        for (int i = 0; i < highScore_list.length; i++)
-        {
-            if(i == 0)
-                line = "Name        Rounds  Won Rounds  WinRate  HitRate\n";
-            for (int j = 0; j < 5; j++) {
-                line += highScore_list[i][j] + "       ";
-            }
-            line += "\n";
-        }
+        refreshScore();
     }
 
     @Override
@@ -53,7 +43,6 @@ public class HighScoreState extends BasicTWLGameState {
             }
         });
 
-
         rp.add(btnStart);
         return rp;
     }
@@ -64,7 +53,6 @@ public class HighScoreState extends BasicTWLGameState {
         graphics.setColor(new Color(50,50,50,150));
         graphics.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
         if(line != null) {
-
             graphics.setColor(Color.yellow);
             graphics.drawString(line, 100, 50);
         }
@@ -74,7 +62,22 @@ public class HighScoreState extends BasicTWLGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
         if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Gorillas.MAINMENUSTATE); }
+    }
 
+    /**
+     * Installs the rootPane of this state as the active root pane.
+     * Calls createRootPane() on first run.
+     *
+     * @param container the GameContainer instance
+     * @param game      the StateBasedGame instance
+     * @throws org.newdawn.slick.SlickException
+     * @see #createRootPane()
+     */
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        // Get current high score when entering the state
+        refreshScore();
     }
 
     @Override
@@ -88,5 +91,22 @@ public class HighScoreState extends BasicTWLGameState {
         int x = (paneWidth - btnStart.getWidth()) >> 1;
 
         btnStart.setPosition(x, 500);
+    }
+
+    /**
+     * Refresh the high score
+     */
+    private void refreshScore(){
+        String[][] highScore_list = db.getHighScore();
+
+        for (int i = 0; i < highScore_list.length; i++)
+        {
+            if(i == 0)
+                line = "Name        Rounds  Won Rounds  WinRate  HitRate\n";
+            for (int j = 0; j < 5; j++) {
+                line += highScore_list[i][j] + "       ";
+            }
+            line += "\n";
+        }
     }
 }
