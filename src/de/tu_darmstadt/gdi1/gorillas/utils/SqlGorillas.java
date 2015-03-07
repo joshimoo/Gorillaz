@@ -43,7 +43,6 @@ public class SqlGorillas
         String sql = "INSERT INTO " + table +
                      "(ID, PlayerName, NumberRounds, NumberWinRounds, NumberThrows) " +
                      "VALUES ( NULL, '" + PlayerName + "', " + NumberRounds + "," + NumberWinRounds + "," + NumberThrows + " );";
-        System.out.println(sql);
         db.update(sql);
     }
 
