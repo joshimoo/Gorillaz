@@ -27,13 +27,13 @@ public class SqlLiteDb
         c = ConnectingToDatabase();
 
         String sql = "CREATE TABLE IF NOT EXISTS " + table +
-                " (" +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "PlayerName TEXT NOT NULL," +
-                "NumberRounds INT NOT NULL," +
-                "NumberWinRounds INT NOT NULL," +
-                "NumberThrows INT NOT NULL" +
-                ");";
+                     " (" +
+                     "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                     "PlayerName TEXT NOT NULL," +
+                     "NumberRounds INT NOT NULL," +
+                     "NumberWinRounds INT NOT NULL," +
+                     "NumberThrows INT NOT NULL" +
+                     ");";
         update(sql);
     }
 
