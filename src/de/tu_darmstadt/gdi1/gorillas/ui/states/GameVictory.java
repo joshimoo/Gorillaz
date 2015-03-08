@@ -10,7 +10,12 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class InGameWin extends BasicTWLGameState {
+/**
+ * TODO: rename to GameVictory
+ * GameVictor, gets triggered when a player reaches a specific Score
+ * It calls the Game.Save actions on exit, which will Save the Highscore and Config File
+ */
+public class GameVictory extends BasicTWLGameState {
     private Image background;
     private Color color = new Color(50,50,50,150);
     private Button btnNewGame;
@@ -21,7 +26,7 @@ public class InGameWin extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Game.INGAMEWIN;
+        return Game.GAMEVICTORY;
     }
 
     @Override
