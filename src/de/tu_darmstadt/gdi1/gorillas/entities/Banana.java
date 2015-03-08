@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Shape;
 
 public class Banana extends Entity {
 
+    private static final float WSCALE = 0.6f;
     private float gravity   = 9.80665f;
     public static final float SPEED_MOD = 0.8f;
     private Image img;
@@ -62,7 +63,7 @@ public class Banana extends Entity {
 
         vx = Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD;
         vy = Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD;
-        x = (float) (x0 + (vx * t) + (Cloud.WSCALE /2 * windSpeed * t * t));
+        x = (float) (x0 + (vx * t) + (WSCALE /2 * windSpeed * t * t));
         y = (float) (y0 - (vy * t) + ( gravity /2 * t * t));
     }
 

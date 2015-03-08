@@ -7,6 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
+import de.tu_darmstadt.gdi1.gorillas.entities.factories.CloudFactory;
 import de.tu_darmstadt.gdi1.gorillas.entities.factories.SunFactory;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
@@ -48,7 +49,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Gorilla gorilla;
     private Gorilla gorillb;
     private Entity sun;
-    private Cloud   cloud;
+    private Entity cloud;
 
     // Switchs
     private static boolean inverseControlKeys = false;
@@ -95,6 +96,12 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+        // TODO: Init should really only be called once
+        // for a temporary workaround you can clear all entities at the beginning of init
+        // or you can use entityManager.setEntityListByState(getID(), initEntitiesList);
+        // which will lead to overwritting the list, and then the old entities from last init will be gc'd
+        entityManager.clearEntitiesFromState(getID());
+
         background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
         skyline = new Skyline(6);
 
@@ -112,7 +119,8 @@ public class GamePlayState extends BasicTWLGameState {
 
         if(wind) windSpeed = (int) ((Math.random() * 30) - 15);
         else windSpeed = 0;
-        cloud = new Cloud(0,60,windSpeed);
+        cloud = CloudFactory.createCloud(new Vector2f(0, 60), windSpeed);
+        entityManager.addEntity(getID(), cloud);
 
         banana = null;
         if (rp == null)
@@ -129,7 +137,6 @@ public class GamePlayState extends BasicTWLGameState {
         skyline.render(g);
         gorilla.render(g);
         gorillb.render(g);
-        cloud.render(g);
 
         if(banana != null) {
             banana.render(g);
@@ -199,7 +206,6 @@ public class GamePlayState extends BasicTWLGameState {
 
         gorilla.update(delta);
         gorillb.update(delta);
-        cloud.update(delta);
 
         if(admin) {
             /* DEBUG: Reroll the LevelGeneration */
