@@ -3,18 +3,15 @@ package de.tu_darmstadt.gdi1.gorillas.entities.factories;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.EntityType;
 import de.tu_darmstadt.gdi1.gorillas.entities.events.CollidedWithEvent;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.Player;
-import eea.engine.action.Action;
-import eea.engine.component.Component;
+import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import eea.engine.component.render.AnimationRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.NOTEvent;
 import eea.engine.event.basicevents.CollisionEvent;
-import eea.engine.event.basicevents.MovementDoesNotCollideEvent;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
@@ -50,7 +47,7 @@ public class PlayerFactory extends EntityFactory {
         NOTEvent notOurProjectile = new NOTEvent(new Event("Filter") {
             @Override
             protected boolean performAction(GameContainer gc, StateBasedGame sb, int delta) {
-                if (sb.getCurrentStateID() == Gorillas.GAMEPLAYSTATE) {
+                if (sb.getCurrentStateID() == Game.GAMEPLAYSTATE) {
                     GamePlayState gs = (GamePlayState) sb.getCurrentState();
                     return gs.getActivePlayer() == player;
                 }

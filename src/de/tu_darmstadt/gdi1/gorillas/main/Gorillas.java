@@ -14,17 +14,6 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static Gorillas game;
 
-    /* State Definitions */
-    public static final int MAINMENUSTATE   = 0;
-    public static final int GAMESETUPSTATE  = 1;
-    public static final int GAMEPLAYSTATE   = 2;
-    public static final int HIGHSCORESTATE  = 3;
-    public static final int OPTIONSTATE     = 4;
-    public static final int TUTORIALSTATE   = 5;
-    public static final int INGAMEPAUSE     = 6;
-    public static final int HELPSTATE       = 7;
-    public static final int INGAMEWIN       = 8;
-
     /* Global Parameters */
     public static final int FRAME_WIDTH     = 800;
     public static final int FRAME_HEIGHT    = 600;
@@ -32,25 +21,15 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static final String THEME    = "/theme.xml";
 
-    /* Global Variables */
-    public static Player player1;
-    public static Player player2;
-
-    public static boolean debug = false;
-
     public Gorillas(boolean debug) {
         super("Gorillas");
-        setDebug(debug);
+        Game.getInstance().setDebug(debug);
     }
 
-    public static void setDebug(boolean debuging) {
-        debug = debuging;
-    }
 
     public static void main(String[] args) throws SlickException {
         Utils.setNativePath();
-        game = new Gorillas(false);
-        AppGameContainer app = new AppGameContainer(game);
+        AppGameContainer app = new AppGameContainer(new Gorillas(Game.getInstance().getDebug()));
         app.setShowFPS(true);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
         app.setTargetFrameRate(TARGET_FPS);
@@ -71,14 +50,14 @@ public class Gorillas extends TWLStateBasedGame {
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
-        StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
-        StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
-        StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
-        StateBasedEntityManager.getInstance().addState(HIGHSCORESTATE);
-        StateBasedEntityManager.getInstance().addState(INGAMEPAUSE);
-        StateBasedEntityManager.getInstance().addState(HELPSTATE);
-        StateBasedEntityManager.getInstance().addState(INGAMEWIN);
-        StateBasedEntityManager.getInstance().addState(OPTIONSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.MAINMENUSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMESETUPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEPLAYSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.HIGHSCORESTATE);
+        StateBasedEntityManager.getInstance().addState(Game.INGAMEPAUSE);
+        StateBasedEntityManager.getInstance().addState(Game.HELPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.INGAMEWIN);
+        StateBasedEntityManager.getInstance().addState(Game.OPTIONSTATE);
         // TODO: Add the other states...
     }
 

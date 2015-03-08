@@ -4,8 +4,8 @@ import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.*;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -21,7 +21,7 @@ public class InGameWin extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.INGAMEWIN;
+        return Game.INGAMEWIN;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class InGameWin extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-        GamePlayState s = (GamePlayState) game.getState(Gorillas.GAMEPLAYSTATE);
+        GamePlayState s = (GamePlayState) game.getState(Game.GAMEPLAYSTATE);
         s.render(gc, game, g);
         g.setColor(color);
         g.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
@@ -50,10 +50,10 @@ public class InGameWin extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
         if(in_key.isKeyPressed(Input.KEY_ESCAPE)){
-            game.enterState(Gorillas.MAINMENUSTATE);
+            game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
         }
 
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
     }
 
     @Override
@@ -80,14 +80,14 @@ public class InGameWin extends BasicTWLGameState {
         btnNewGame = new Button("New Game");
         btnNewGame.addCallback(new Runnable() {
             public void run() {
-                game.enterState(Gorillas.GAMESETUPSTATE);
+                game.enterState(Game.GAMESETUPSTATE);
             }
         });
 
         btnMainMenu = new Button("OK");
         btnMainMenu.addCallback(new Runnable() {
             public void run() {
-                game.enterState(Gorillas.MAINMENUSTATE);
+                game.enterState(Game.MAINMENUSTATE);
             }
         });
 
