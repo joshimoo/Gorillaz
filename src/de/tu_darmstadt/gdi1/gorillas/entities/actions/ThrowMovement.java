@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities.actions;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import eea.engine.action.basicactions.Movement;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -70,7 +71,9 @@ public class ThrowMovement extends Movement {
         // That way we can modify params, in flight withhout breaking the calculation.
         // Right now there is a dependency on t0 and pos0
 
-        t += delta;
+        // TODO: Add Different Throw Components (Gravity, Static Wind, Dynamic Wind, Bouncing (dotzen) )
+        // TODO: Move This to ThrowStaticWindMovement
+        t += delta * Game.getTimeScale();
         float x = x0 + (vx * t) + (0.5f * windAcceleration * t * t);
         float y = y0 - (vy * t) + (0.5f * gravity * t * t);
 

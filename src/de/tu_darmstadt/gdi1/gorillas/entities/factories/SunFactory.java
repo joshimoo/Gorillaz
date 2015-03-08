@@ -30,6 +30,12 @@ public class SunFactory extends EntityFactory {
         Image image = Assets.loadImage(Assets.Images.SUN_SMILING);
         sun.addComponent( new ImageRenderComponent(image) );
 
+        // Rotation
+        float rotationSpeed = 25;
+        LoopEvent update = new LoopEvent();
+        update.addAction(new RotateRightAction( (rotationSpeed * Game.getRotationFactor()) * 360f / 1000f));
+        sun.addComponent(update);
+
         // Collisions
         CollisionEvent collision = new CollisionEvent();
         ANDEvent validCollision = new ANDEvent(collision, new CollidedWithEvent(collision, EntityType.PROJECTILE.name()));

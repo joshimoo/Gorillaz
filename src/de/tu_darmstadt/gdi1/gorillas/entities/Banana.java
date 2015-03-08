@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -43,7 +44,7 @@ public class Banana extends Entity {
     @Override
     public void render(Graphics graph) {
         graph.drawImage(img, x, y);
-        if(Gorillas.debug) graph.draw(getColMask());
+        if(Game.getInstance().getDebug()) graph.draw(getColMask());
     }
 
     @Override

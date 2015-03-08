@@ -2,6 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.entities.factories;
 
 import de.tu_darmstadt.gdi1.gorillas.entities.EntityType;
 import de.tu_darmstadt.gdi1.gorillas.entities.components.ShapeDestructionPattern;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.component.render.DestructionRenderComponent;
 import eea.engine.entity.DestructibleImageEntity;
@@ -67,7 +68,7 @@ public class BuildingFactory extends EntityFactory {
         DestructionRenderComponent destructionRenderComponent = new DestructionRenderComponent(
                 createBuildingImage(width, height, new java.awt.Color(color.r, color.g, color.b, color.a)),
                 ShapeDestructionPattern.createCircleDestructionPattern(EXPLOSION_RADIUS),
-                Gorillas.debug// TODO: fix debug handling
+                Game.getInstance().getDebug()
         );
 
         DestructibleImageEntity building = new DestructibleImageEntity(EntityType.BUILDING.name(), destructionRenderComponent);

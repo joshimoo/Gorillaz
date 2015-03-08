@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
@@ -69,7 +70,7 @@ public class Skyscraper extends Entity{
         // Why cant we just draw the BuffImg, in OpenGL we could use textures.
         graph.drawImage(slickImg, x, y);
 
-        if (Gorillas.debug) {
+        if (Game.getInstance().getDebug()) {
             graph.draw(collMask);
             for (Shape s : collList)
                 graph.draw(s);

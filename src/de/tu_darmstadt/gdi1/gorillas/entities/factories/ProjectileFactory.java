@@ -4,6 +4,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.EntityType;
 import de.tu_darmstadt.gdi1.gorillas.entities.actions.ThrowMovement;
 import de.tu_darmstadt.gdi1.gorillas.entities.events.CollidedWithEvent;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import eea.engine.action.basicactions.DestroyEntityAction;
 import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.render.ImageRenderComponent;
@@ -21,14 +22,6 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class ProjectileFactory extends EntityFactory {
 
-    // TODO: Refactor, rethink where todo the scaling and unit conversion
-    // It might be better to have the caller pass converted values
-    private static final float PROJECTILE_SCALE = 25;
-    public static float getProjectileScale() { return PROJECTILE_SCALE; }
-
-    private static final float ROTATION_DRAG = 0.02f;
-    private static float getRotationFactor() { return ROTATION_DRAG; }
-
     public static Entity createBanana(Vector2f pos, float throwAngle, float throwSpeed, float gravity, float windAcceleration ) {
         Entity banana = createEntity(EntityType.PROJECTILE, pos);
 
@@ -40,12 +33,18 @@ public class ProjectileFactory extends EntityFactory {
         // NOTE: Events cycle through there actions linearly, so there is an implicit priority
         // TODO: Make sure that Movement comes before rotation or in reverse but be consistent
         // At the moment the order has no impact, since our movement is in world space instead of local space
+        // FIXME: The way I am dealing with the unit conversion, needs to be fixed.
+        // FIXME: Devise a better strategy, maybe applie the MS_TO_S + TIMESCALE only to delta Time before dealing with it.
         LoopEvent update = new LoopEvent();
-        update.addAction(new ThrowMovement(pos.x, pos.y, throwAngle, throwSpeed * MS_TO_S * getProjectileScale(), gravity, windAcceleration));
+        update.addAction(new ThrowMovement(pos.x, pos.y, throwAngle,
+                throwSpeed,
+                gravity,
+                windAcceleration * Game.getWindScale())
+        );
 
         // Rotation
         float direction = throwAngle > 90 ? -1 : 1;
-        update.addAction(new RotateRightAction(throwSpeed * direction * getRotationFactor() * 360 * MS_TO_S));
+        update.addAction(new RotateRightAction(throwSpeed * direction * Game.getRotationFactor() * 360 / 1000));
         banana.addComponent(update);
 
         // Collision
