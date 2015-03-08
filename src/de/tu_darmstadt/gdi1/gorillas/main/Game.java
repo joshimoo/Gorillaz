@@ -20,7 +20,7 @@ public class Game {
     public static final int TUTORIALSTATE   = 5;
     public static final int INGAMEPAUSE     = 6;
     public static final int HELPSTATE       = 7;
-    public static final int INGAMEWIN       = 8;
+    public static final int GAMEVICTORY     = 8;
 
     /** Singleton Pattern */
     private Game() {}
