@@ -11,6 +11,10 @@ import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.BlobbyTransition;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.RotateTransition;
+import org.newdawn.slick.state.transition.Transition;
 
 public class GameSetupState extends BasicTWLGameState {
 
@@ -171,9 +175,9 @@ public class GameSetupState extends BasicTWLGameState {
             lPlayer1Error.setVisible(false);
             lPlayer2Error.setVisible(false);
 
-            // TODO: should not be necessary since StateBasedGame should call all init methods for the each entry in the init states list
-            try { game.getState(Game.GAMEPLAYSTATE).init(cont, game); }
-            catch (SlickException e) { e.printStackTrace(); }
+            // Removed the init call, refresh the state dependent variables in enter (gorilla creation)
+            // TODO: experiment with transitions
+            //game.enterState(Game.GAMEPLAYSTATE, new RotateTransition(Color.blue), new BlobbyTransition(Color.green));
             game.enterState(Game.GAMEPLAYSTATE);
 
         } else {

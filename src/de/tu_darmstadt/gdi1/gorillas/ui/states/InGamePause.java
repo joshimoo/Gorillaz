@@ -9,6 +9,10 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 
+/**
+ * TODO: PauseState should actually be a Panel
+ * Try to set gc.pause(); onShow and unset on hide
+ */
 public class InGamePause extends BasicTWLGameState {
 
     private Color color = new Color(50,50,50,150);
