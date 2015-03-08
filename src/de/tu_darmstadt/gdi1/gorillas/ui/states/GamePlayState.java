@@ -48,8 +48,7 @@ public class GamePlayState extends BasicTWLGameState {
     private StateBasedEntityManager entityManager;
     private Banana  banana;
     private Skyline skyline;
-    private Gorilla gorilla;
-    private Gorilla gorillb;
+    private Entity[] gorillas;
     private Entity sun;
     private Entity cloud;
 
@@ -88,8 +87,9 @@ public class GamePlayState extends BasicTWLGameState {
         return skyline;
     }
 
-    public Gorilla getGorilla(int num){
-        return num == 0 ? gorilla : gorillb;
+    public Entity getGorilla(int num){
+        if (gorillas != null && num < gorillas.length) { return gorillas[num]; }
+        else { throw new IllegalArgumentException(String.format("There is no Gorrilla at Index: %d currently there are %d gorillas", num, gorillas.length)); }
     }
 
     public Entity getSun(){
@@ -118,8 +118,11 @@ public class GamePlayState extends BasicTWLGameState {
         int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
         int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
 
-        gorilla = new Gorilla(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1));
-        gorillb = new Gorilla(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2));
+        // TODO: Refactor Player Handling
+        gorillas = new Entity[]{
+                PlayerFactory.createGorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)), Game.getInstance().getPlayer(0)),
+                PlayerFactory.createGorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)), Game.getInstance().getPlayer(1))
+        };
 
         sun = SunFactory.createSun(new Vector2f(400, 60));
         entityManager.addEntity(getID(), sun);
@@ -142,8 +145,6 @@ public class GamePlayState extends BasicTWLGameState {
         g.drawImage(background, -20, -10);
         entityManager.renderEntities(gc, game, g); // We render after the Background Image, but before the text overlays
         skyline.render(g);
-        gorilla.render(g);
-        gorillb.render(g);
 
         if(banana != null) {
             banana.render(g);
@@ -228,18 +229,12 @@ public class GamePlayState extends BasicTWLGameState {
         entityManager.updateEntities(gc, game, delta);
         Input input = gc.getInput();
 
-        gorilla.update(delta);
-        gorillb.update(delta);
-
         if(admin) {
             /* DEBUG: Reroll the LevelGeneration */
             if (input.isKeyPressed(Input.KEY_Q))
                 init(gc, game);
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
-                activePlayer.setWin();
-                activePlayer.setWin();
-                activePlayer.setWin();
                 getActivePlayer().setWin();
                 getActivePlayer().setWin();
                 getActivePlayer().setWin();
