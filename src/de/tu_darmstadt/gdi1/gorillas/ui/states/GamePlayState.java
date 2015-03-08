@@ -10,7 +10,12 @@ import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
 
 import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.*;
 
@@ -129,20 +134,7 @@ public class GamePlayState extends BasicTWLGameState {
                 g.drawImage(Assets.loadImage(Assets.Images.ARROW), banana.x - 8, 0);
         }
 
-        g.setColor(Color.black);    /* Dropshadow TODO: maybe translucent background */
-        g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2 + 1, gorillb.y - 63);
-        g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2 + 1, gorilla.y - 63);
-
-        /* We could possibly change the name-color of the active player as an indication */
-        if(activePlayer == player1)
-            g.setColor(Color.white);
-        else g.setColor(Color.yellow);
-        g.drawString(player2.getName(), gorillb.x - g.getFont().getWidth(player2.getName()) / 2, gorillb.y - 64);
-        if(activePlayer == player1)
-            g.setColor(Color.yellow);
-        else
-            g.setColor(Color.white);
-        g.drawString(player1.getName(), gorilla.x - g.getFont().getWidth(player1.getName()) / 2, gorilla.y - 64);
+        drawPlayerNames(g);
 
         if(state != STATES.THROW) {
             g.setColor(Color.blue);
@@ -159,6 +151,37 @@ public class GamePlayState extends BasicTWLGameState {
         {
             g.setColor(Color.red);
             g.drawString(roundWinMessage,this.getRootPane().getWidth()/2 - 150,100);
+        }
+    }
+
+    /**
+     * Draws text with a dropshadow
+     * @param pos center position of the text
+     */
+    private void drawTextWithDropShadow(Graphics g, Vector2f pos, String text, Color color) {
+        // Center Text
+        float x = pos.x - g.getFont().getWidth(text) / 2;
+
+        // TODO: maybe translucent background
+        // Draw Dropshadow
+        g.setColor(Color.black);
+        g.drawString(text, x + 1, pos.y - 1);
+
+        // Draw Text
+        g.setColor(color);
+        g.drawString(text, x, pos.y);
+    }
+
+    private void drawPlayerNames(Graphics g) {
+        // TODO: Gorillas / Players should be stored like this at class level
+        Player[] players = {player1, player2};
+        Gorilla[] gorillas = {gorilla, gorillb};
+        for (int i = 0; i < players.length; i++) {
+            // Offset the Text 64 pixels higher then the gorrila
+            Vector2f pos = new Vector2f(gorillas[i].x, gorillas[i].y);
+            pos.y -= 64;
+            Color color = activePlayer == players[i] ? Color.yellow : Color.white;
+            drawTextWithDropShadow(g, pos, players[i].getName(), color);
         }
     }
 
