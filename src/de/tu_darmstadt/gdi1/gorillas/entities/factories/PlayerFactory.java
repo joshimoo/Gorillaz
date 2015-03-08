@@ -56,7 +56,7 @@ public class PlayerFactory extends EntityFactory {
         });
         ANDEvent validCollision = new ANDEvent(collision, new CollidedWithEvent(collision, EntityType.PROJECTILE.name()), notOurProjectile );
         validCollision.addAction((gc, sb, delta, event) -> player.setWin());
-        gorilla.addComponent(validCollision);
+        // gorilla.addComponent(validCollision);
 
         return gorilla;
     }

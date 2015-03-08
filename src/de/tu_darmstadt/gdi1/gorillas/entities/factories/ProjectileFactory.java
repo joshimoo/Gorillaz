@@ -55,7 +55,7 @@ public class ProjectileFactory extends EntityFactory {
         );
         ANDEvent validCollision = new ANDEvent(collision, validTargets);
         validCollision.addAction(new DestroyEntityAction());
-        banana.addComponent(validCollision);
+        // banana.addComponent(validCollision);
 
         // TODO: Add Scoring Actions
 
