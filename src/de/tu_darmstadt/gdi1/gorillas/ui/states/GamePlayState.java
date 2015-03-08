@@ -7,9 +7,13 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
+import de.tu_darmstadt.gdi1.gorillas.entities.factories.SunFactory;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
+import eea.engine.entity.*;
+import eea.engine.entity.Entity;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.*;
@@ -38,11 +42,12 @@ public class GamePlayState extends BasicTWLGameState {
     private float   gravity = 9.80665f;
 
     // Entitys
+    private StateBasedEntityManager entityManager;
     private Banana  banana;
     private Skyline skyline;
     private Gorilla gorilla;
     private Gorilla gorillb;
-    private Sun     sun;
+    private Entity sun;
     private Cloud   cloud;
 
     // Switchs
@@ -63,6 +68,8 @@ public class GamePlayState extends BasicTWLGameState {
      */
     private static enum STATES{ INPUT, THROW, DAMAGE, ROUNDVICTORY, VICTORY }
 
+    public GamePlayState(){ entityManager = StateBasedEntityManager.getInstance(); }
+
     @Override
     public int getID() {
         return Gorillas.GAMEPLAYSTATE;
@@ -76,7 +83,7 @@ public class GamePlayState extends BasicTWLGameState {
         return num == 0 ? gorilla : gorillb;
     }
 
-    public Sun getSun(){
+    public Entity getSun(){
         return sun;
     }
 
@@ -100,7 +107,8 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla = new Gorilla(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1));
         gorillb = new Gorilla(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2));
 
-        sun = new Sun(400, 60);
+        sun = SunFactory.createSun(new Vector2f(400, 60));
+        entityManager.addEntity(getID(), sun);
 
         if(wind) windSpeed = (int) ((Math.random() * 30) - 15);
         else windSpeed = 0;
@@ -117,7 +125,7 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -20, -10);
-        sun.render(g);
+        entityManager.renderEntities(gc, game, g); // We render after the Background Image, but before the text overlays
         skyline.render(g);
         gorilla.render(g);
         gorillb.render(g);
@@ -184,6 +192,9 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        // Let the entities update their inputs first
+        // Then process all remaining inputs
+        entityManager.updateEntities(gc, game, delta);
         Input input = gc.getInput();
 
         gorilla.update(delta);
@@ -219,7 +230,6 @@ public class GamePlayState extends BasicTWLGameState {
                 toggleUI(false);
 
                 banana.update(delta);
-                sun.isCollidding(banana);
 
                 /* Banane verlässt das Spielfeld */
                 if(banana.getColMask().getMinX() > Gorillas.FRAME_WIDTH
