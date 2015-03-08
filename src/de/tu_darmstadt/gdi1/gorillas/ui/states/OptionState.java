@@ -44,15 +44,10 @@ public class OptionState extends BasicTWLGameState {
         btnOK = new Button("OK");
         lError = new Label("");
 
-        if(GamePlayState.getInverseControlKeys())
-            btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-        else
-            btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
+        if(GamePlayState.getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
+        else { btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle"); }
 
-        if(GamePlayState.getWind())
-            btnWind.setText("Wind");
-        else
-            btnWind.setText("No wind");
+        btnWind.setText(GamePlayState.getWind() ? "Wind" : "No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
@@ -64,13 +59,10 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.addCallback(new Runnable() {
             public void run() {
-                if(GamePlayState.getInverseControlKeys())
-                {
+                if(GamePlayState.getInverseControlKeys()) {
                     btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
                     GamePlayState.setInverseControlKeys(false);
-                }
-                else
-                {
+                } else {
                     btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
                     GamePlayState.setInverseControlKeys(true);
                 }
@@ -125,7 +117,6 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-
         background.draw(-20, -10);
     }
 
