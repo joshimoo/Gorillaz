@@ -324,7 +324,7 @@ public class GamePlayState extends BasicTWLGameState {
                 // TODO: VICTORY
                 System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
                 System.out.println("Win Nr" + getActivePlayer().getWin());
-                game.enterState(Game.INGAMEWIN);
+                game.enterState(Game.GAMEVICTORY);
 
                 // Store Win to SQL-DB
                 SqlGorillas db = new SqlGorillas("data_gorillas.hsc","Gorillas");
