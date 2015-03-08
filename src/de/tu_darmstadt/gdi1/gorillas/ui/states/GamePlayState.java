@@ -9,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.entities.factories.CloudFactory;
 import de.tu_darmstadt.gdi1.gorillas.entities.factories.PlayerFactory;
+import de.tu_darmstadt.gdi1.gorillas.entities.factories.ProjectileFactory;
 import de.tu_darmstadt.gdi1.gorillas.entities.factories.SunFactory;
 import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
@@ -46,7 +47,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     // Entitys
     private StateBasedEntityManager entityManager;
-    private Banana  banana;
+    private Entity  banana;
     private Skyline skyline;
     private Entity[] gorillas;
     private Entity sun;
@@ -100,18 +101,13 @@ public class GamePlayState extends BasicTWLGameState {
         gravity = g;
     }
 
-    @Override
-    public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-        // TODO: Init should really only be called once
-        // for a temporary workaround you can clear all entities at the beginning of init
-        // or you can use entityManager.setEntityListByState(getID(), initEntitiesList);
-        // which will lead to overwritting the list, and then the old entities from last init will be gc'd
-        entityManager.clearEntitiesFromState(getID());
-        background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
-
+    public void createSkyline() {
         // TODO: Switch over to Building Entity
         skyline = new Skyline(6);
+    }
 
+    /** Make sure to have a skyline before call this */
+    public void createGorrillas() {
         int x1 = (int)(Math.random() * 3 + 0);
         int x2 = (int)(Math.random() * 3 + 3);
 
@@ -124,32 +120,61 @@ public class GamePlayState extends BasicTWLGameState {
                 PlayerFactory.createGorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)), Game.getInstance().getPlayer(1))
         };
 
+        entityManager.addEntity(getID(), getGorilla(0));
+        entityManager.addEntity(getID(), getGorilla(1));
+    }
+
+    public void startGame() {
+        entityManager.clearEntitiesFromState(getID());
+        destroyBanana(); // In case their ist still one remaining
+
+        // TODO: Refactor Player Handling
+        createSkyline();
+        createGorrillas();
+
         sun = SunFactory.createSun(new Vector2f(400, 60));
         entityManager.addEntity(getID(), sun);
 
-        if(wind) windSpeed = (int) ((Math.random() * 30) - 15);
-        else windSpeed = 0;
+        windSpeed = wind ? (int) ((Math.random() * 30) - 15) : 0;
         cloud = CloudFactory.createCloud(new Vector2f(0, 60), windSpeed);
         entityManager.addEntity(getID(), cloud);
-
-        banana = null;
-        if (rp == null)
-            this.createRootPane();
 
         setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
     }
 
     @Override
+    public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+        // TODO: Init should really only be called once
+        // for a temporary workaround you can clear all entities at the beginning of init
+        // or you can use entityManager.setEntityListByState(getID(), initEntitiesList);
+        // which will lead to overwritting the list, and then the old entities from last init will be gc'd
+        background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
+
+        // Load All Static Content or Ressources (Background Images, Sounds etc)
+        // Lazy Load the UI, this is better for the TestGameContainer
+        // if (rp == null) {this.createRootPane()};
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        startGame();
+    }
+
+
+    @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -20, -10);
-        entityManager.renderEntities(gc, game, g); // We render after the Background Image, but before the text overlays
         skyline.render(g);
+        entityManager.renderEntities(gc, game, g); // We render after the Background Image, but before the text overlays
 
-        if(banana != null) {
-            banana.render(g);
-            if(banana.getColMask().getMaxY() < 0)
-                g.drawImage(Assets.loadImage(Assets.Images.ARROW), banana.x - 8, 0);
+
+        // TODO: Check if this returns WorldSpace or LocalSpace
+        if(banana != null && banana.getShape().getMaxY() < 0) {
+            // TODO: Make the Arrow an Entity, that syncronises with the banana via an action,
+            // then let the projectileFactory automaticly create that arrow while creating the banana
+            g.drawImage(Assets.loadImage(Assets.Images.ARROW), banana.getPosition().x - 8, 0);
         }
 
         drawPlayerNames(g);
@@ -194,10 +219,10 @@ public class GamePlayState extends BasicTWLGameState {
 
         for (int i = 0; i < Game.getInstance().getPlayers().size(); i++) {
             // Offset the Text 64 pixels higher then the gorrila
+            // NOTE: Never modify the Vector that is retured from a .getPosition call
             Vector2f pos = getGorilla(i).getPosition();
-            pos.y -= 64;
             Color color = getActivePlayer() == Game.getInstance().getPlayer(i) ? Color.yellow : Color.white;
-            drawTextWithDropShadow(g, pos, Game.getInstance().getPlayer(i).getName(), color);
+            drawTextWithDropShadow(g, new Vector2f(pos.x, pos.y - 64), Game.getInstance().getPlayer(i).getName(), color);
             i++;
         }
     }
@@ -231,8 +256,8 @@ public class GamePlayState extends BasicTWLGameState {
 
         if(admin) {
             /* DEBUG: Reroll the LevelGeneration */
-            if (input.isKeyPressed(Input.KEY_Q))
-                init(gc, game);
+            if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
+
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
                 getActivePlayer().setWin();
@@ -242,6 +267,7 @@ public class GamePlayState extends BasicTWLGameState {
                 System.out.println("V Cheat");
             }
         }
+
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Game.INGAMEPAUSE);
         if(input.isKeyPressed(Input.KEY_M)) toggleMute();
@@ -257,13 +283,13 @@ public class GamePlayState extends BasicTWLGameState {
                 // During the flight disable inputs
                 toggleUI(false);
 
-                banana.update(delta);
-
                 /* Banane verlässt das Spielfeld */
-                if(banana.getColMask().getMinX() > Gorillas.FRAME_WIDTH
-                    || banana.getColMask().getMaxX() < 0
-                    || banana.getColMask().getMinY() > Gorillas.FRAME_HEIGHT)
+                // TODO: see if this returns WorldSpace or LocalSpace
+                // if(banana.getShape().getMinX() > Gorillas.FRAME_WIDTH || banana.getShape().getMaxX() < 0 || banana.getShape().getMinY() > Gorillas.FRAME_HEIGHT) {
+                if(banana.getPosition().x > Gorillas.FRAME_WIDTH || banana.getPosition().x < 0 || banana.getPosition().y > Gorillas.FRAME_HEIGHT) {
                     state = STATES.DAMAGE;
+                }
+
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
@@ -275,8 +301,8 @@ public class GamePlayState extends BasicTWLGameState {
                     System.out.println("Hit Player 2");
                 }
 
-                if(skyline.isCollidding(banana))
-                    state = STATES.DAMAGE;
+                // TODO: ADD Collision Detection again
+                // if(banana.collides(skyline)) { state = STATES.DAMAGE; }
 
                 break;
             case DAMAGE:
@@ -289,11 +315,11 @@ public class GamePlayState extends BasicTWLGameState {
                 if_speed.setValue(getActivePlayer().getLastSpeed());
                 if_angle.setValue(getActivePlayer().getLastAngle());
 
-                skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
+                skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, 32);
                 if(!mute) { Assets.loadSound(Assets.Sounds.EXPLOSION).play(); }
-                banana = null;
+                destroyBanana();
 
-                // TODO: Claculate PlayerDamage
+                // TODO: Calculate PlayerDamage
                 // player1.damage(calcPlayerDamage(banana.getCenterX(), banana.getCenterY(), gorilla));
                 // player2.damage(calcPlayerDamage(banana.getCenterX(), banana.getCenterY(), gorillb));
 
@@ -322,7 +348,8 @@ public class GamePlayState extends BasicTWLGameState {
 
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
-                    init(gc, game);
+                    // init(gc, game); // TODO: Why are we reiniting after round won?
+                    startGame();
                 }
                 break;
             case VICTORY:
@@ -359,11 +386,7 @@ public class GamePlayState extends BasicTWLGameState {
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
 
-        btnThrow.addCallback(new Runnable() {
-            public void run() {
-               throwBanana();
-            }
-        });
+        btnThrow.addCallback(GamePlayState.this::throwBanana);
 
         // Add the Input-Elements to the RootPane
         rp.add(if_speed);
@@ -402,32 +425,46 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle.setVisible(enable);
     }
 
+    // TODO: do component based
+    private void destroyBanana() {
+        if (banana != null) { entityManager.removeEntity(getID(), banana);}
+        banana = null;
+    }
+
+    /** Creates and assigns the Banana */
+    private void createBanana(Vector2f pos, float throwAngle, float throwSpeed, float gravity, float windAcceleration) {
+        // Cleanup any remaining, Bananas since at the moment we can only have a maximum of 1
+        if (banana != null) {entityManager.removeEntity(getID(), banana);}
+        banana = ProjectileFactory.createBanana(pos, throwAngle, throwSpeed, gravity, windAcceleration);
+        entityManager.addEntity(getID(), banana);
+    }
+
     /** Generates a Banana at the current Player */
     private void throwBanana() {
         // Save new throw
         getActivePlayer().setThrow();
 
-        System.out.println("Throw Banana " + if_speed.getValue() + " " + if_angle.getValue());
+        int speed = if_speed.getValue();
+        int angle = if_angle.getValue();
 
-        getActivePlayer().setLastSpeed(if_speed.getValue());
-        getActivePlayer().setLastAngle(if_angle.getValue());
+        System.out.println("Throw Banana " + speed + " " + angle);
+
+        getActivePlayer().setLastSpeed(speed);
+        getActivePlayer().setLastAngle(angle);
 
         if (getActivePlayer() == Game.getInstance().getPlayer(0)) {
             Vector2f pos = getGorilla(0).getPosition();
             Vector2f size = getGorilla(0).getSize();
-            banana = new Banana(pos.x, pos.y - size.y, if_angle.getValue() - 90, if_speed.getValue(), gravity, windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), angle - 90, speed, gravity, windSpeed);
         }
-
         else {
             Vector2f pos = getGorilla(1).getPosition();
             Vector2f size = getGorilla(1).getSize();
-            banana = new Banana(pos.x, pos.y - size.y, 180 - if_angle.getValue() + 90, if_speed.getValue(), gravity, windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle + 90, speed, gravity, windSpeed);
         }
-
 
         // Remove Win-Message
         roundWinMessage = null;
-
         state = STATES.THROW;
     }
 
