@@ -7,10 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
-import de.tu_darmstadt.gdi1.gorillas.entities.factories.CloudFactory;
-import de.tu_darmstadt.gdi1.gorillas.entities.factories.PlayerFactory;
-import de.tu_darmstadt.gdi1.gorillas.entities.factories.ProjectileFactory;
-import de.tu_darmstadt.gdi1.gorillas.entities.factories.SunFactory;
+import de.tu_darmstadt.gdi1.gorillas.entities.factories.*;
 import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
@@ -48,7 +45,7 @@ public class GamePlayState extends BasicTWLGameState {
     // Entitys
     private StateBasedEntityManager entityManager;
     private Entity  banana;
-    private Skyline skyline;
+    private CompoundDestructibleEntity skyline;
     private Entity[] gorillas;
     private Entity sun;
     private Entity cloud;
@@ -84,7 +81,7 @@ public class GamePlayState extends BasicTWLGameState {
         return de.tu_darmstadt.gdi1.gorillas.main.Game.GAMEPLAYSTATE;
     }
 
-    public Skyline getSkyline(){
+    public CompoundDestructibleEntity getSkyline(){
         return skyline;
     }
 
@@ -103,7 +100,8 @@ public class GamePlayState extends BasicTWLGameState {
 
     public void createSkyline() {
         // TODO: Switch over to Building Entity
-        skyline = new Skyline(6);
+        skyline = BuildingFactory.createCompoundSkyline(6);
+        entityManager.addEntity(getID(), skyline);
     }
 
     /** Make sure to have a skyline before call this */
@@ -111,8 +109,11 @@ public class GamePlayState extends BasicTWLGameState {
         int x1 = (int)(Math.random() * 3 + 0);
         int x2 = (int)(Math.random() * 3 + 3);
 
-        int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
-        int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
+        // TODO: Placeholder, Refactor
+        // int buildingWidth = Gorillas.FRAME_WIDTH / 6;
+        int buildingWidth = skyline.getWidth(0);
+        int xx = x1 * (buildingWidth) + (buildingWidth / 2);
+        int yy = x2 * (buildingWidth) + (buildingWidth / 2);
 
         // TODO: Refactor Player Handling
         gorillas = new Entity[]{
@@ -166,7 +167,6 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -20, -10);
-        skyline.render(g);
         entityManager.renderEntities(gc, game, g); // We render after the Background Image, but before the text overlays
 
 
@@ -278,7 +278,7 @@ public class GamePlayState extends BasicTWLGameState {
                 toggleUI(true);
                 updateThrowParameters(input, delta);
                 break;
-            case THROW: // TODO: Refactor Collision Detection into it's own methods
+            case THROW:
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow();
                 // During the flight disable inputs
                 toggleUI(false);
@@ -290,7 +290,6 @@ public class GamePlayState extends BasicTWLGameState {
                     state = STATES.DAMAGE;
                 }
 
-
                 if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
                     System.out.println("Hit Player 1");
@@ -301,21 +300,19 @@ public class GamePlayState extends BasicTWLGameState {
                     System.out.println("Hit Player 2");
                 }
 
-                // TODO: ADD Collision Detection again
-                // if(banana.collides(skyline)) { state = STATES.DAMAGE; }
+                if (banana.collides(skyline)) { state = STATES.DAMAGE; }
 
                 break;
             case DAMAGE:
                 System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
-                // TODO: Remove me
-                // setActivePlayer(getActivePlayer() == Game.getInstance().getPlayer(0) ? Game.getInstance().getPlayer(1) : Game.getInstance().getPlayer(0));
                 Game.getInstance().toogleNextPlayerActive();
                 if_speed.setValue(getActivePlayer().getLastSpeed());
                 if_angle.setValue(getActivePlayer().getLastAngle());
 
-                skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, 32);
+                //skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, 32);
+                skyline.impactAt(banana.getPosition());
                 if(!mute) { Assets.loadSound(Assets.Sounds.EXPLOSION).play(); }
                 destroyBanana();
 

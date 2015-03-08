@@ -19,6 +19,16 @@ public class CompoundDestructibleEntity extends DestructibleImageEntity {
         this.children = children;
     }
 
+    public int getWidth(int index) {
+        if (children != null && index < children.length) { return (int) children[index].getSize().x; }
+        else {return 0;}
+    }
+
+    public int getHeight(int index) {
+        if (children != null && index < children.length) { return (int) children[index].getSize().y; }
+        else {return 0;}
+    }
+
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics graphicsContext) {
         super.render(gc,sb,graphicsContext);

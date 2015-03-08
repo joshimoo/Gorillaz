@@ -78,6 +78,7 @@ public class BuildingFactory extends EntityFactory {
         return building;
     }
 
+    // TODO: Refactor
     public static CompoundDestructibleEntity createCompoundSkyline(int buildingCount) {
         DestructibleImageEntity[] buildings = new DestructibleImageEntity[buildingCount];
 
