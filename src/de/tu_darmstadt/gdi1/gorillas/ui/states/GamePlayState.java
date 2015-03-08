@@ -229,22 +229,25 @@ public class GamePlayState extends BasicTWLGameState {
                 activePlayer.setWin();
                 activePlayer.setWin();
                 activePlayer.setWin();
+                getActivePlayer().setWin();
+                getActivePlayer().setWin();
+                getActivePlayer().setWin();
                 state = STATES.VICTORY;
                 System.out.println("V Cheat");
             }
         }
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
-        if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Gorillas.INGAMEPAUSE);
+        if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Game.INGAMEPAUSE);
         if(input.isKeyPressed(Input.KEY_M)) toggleMute();
 
         switch (state) {
             case INPUT:
-                throwNumber = "Throw Nr " + activePlayer.getThrow(); // FIXME: null pointer, if init is not called after creating new players
+                throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // FIXME: null pointer, if init is not called after creating new players
                 toggleUI(true);
                 updateThrowParameters(input, delta);
                 break;
             case THROW: // TODO: Refactor Collision Detection into it's own methods
-                throwNumber = "Throw Nr " + activePlayer.getThrow();
+                throwNumber = "Throw Nr " + getActivePlayer().getThrow();
                 // During the flight disable inputs
                 toggleUI(false);
 
@@ -257,12 +260,12 @@ public class GamePlayState extends BasicTWLGameState {
                     || banana.getColMask().getMinY() > Gorillas.FRAME_HEIGHT)
                     state = STATES.DAMAGE;
 
-                if(activePlayer == player2 && gorilla.isCollidding(banana)) {
+                if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
                     System.out.println("Hit Player 1");
                 }
 
-                if(activePlayer == player1 && gorillb.isCollidding(banana)) {
+                if(getActivePlayer() == Game.getInstance().getPlayer(0) && getGorilla(1).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
                     System.out.println("Hit Player 2");
                 }
@@ -272,22 +275,17 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
-                System.out.println("Throw " + activePlayer.getName() + " Nr" + activePlayer.getThrow());
-                throwNumber = "Throw Nr " + activePlayer.getThrow(); // Ueberfluessig
-                
-                if(activePlayer == player1) {
-                    activePlayer = player2;
-                }
-                else {
-                    activePlayer = player1;
-                }
+                System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
+                throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
-                if_speed.setValue(activePlayer.getLastSpeed());
-                if_angle.setValue(activePlayer.getLastAngle());
+                // TODO: Remove me
+                // setActivePlayer(getActivePlayer() == Game.getInstance().getPlayer(0) ? Game.getInstance().getPlayer(1) : Game.getInstance().getPlayer(0));
+                Game.getInstance().toogleNextPlayerActive();
+                if_speed.setValue(getActivePlayer().getLastSpeed());
+                if_angle.setValue(getActivePlayer().getLastAngle());
 
                 skyline.destroy((int)banana.getCenterX(), (int)banana.getCenterY(), 32);
-                if(!mute)
-                    Assets.loadSound(Assets.Sounds.EXPLOSION).play();
+                if(!mute) { Assets.loadSound(Assets.Sounds.EXPLOSION).play(); }
                 banana = null;
 
                 // TODO: Claculate PlayerDamage
@@ -297,41 +295,40 @@ public class GamePlayState extends BasicTWLGameState {
                 state = STATES.INPUT;
                 break;
             case ROUNDVICTORY:
-                activePlayer.setWin();
+                getActivePlayer().setWin();
                 totalRoundCounter += 1;
 
-                if(activePlayer.getWin() > 2)
+                if(getActivePlayer().getWin() > 2)
                     state = STATES.VICTORY;
                 else {
-                    System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !");
-                    System.out.println("Win Nr" +activePlayer.getWin());
+                    System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
+                    System.out.println("Win Nr" + getActivePlayer().getWin());
 
-                    roundWinMessage = "Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben die Runde gewonnen !\n" +
-                                        "Sieg Nummer " + activePlayer.getWin() + ".\n"+
-                                        "Sie benötigten " + activePlayer.getThrow() + " Würfe.";
+                    roundWinMessage = "Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !\n" +
+                                        "Sieg Nummer " + getActivePlayer().getWin() + ".\n"+
+                                        "Sie benötigten " + getActivePlayer().getThrow() + " Würfe.";
                     // TODO: Save Win and Throw-Number
                     // Restart Game
-                    player1.resetThrow();
-                    player2.resetThrow();
-                    player1.setLastAngle(120);
-                    player2.setLastAngle(120);
-                    player1.setLastSpeed(80);
-                    player2.setLastSpeed(80);
-                    if_speed.setValue(activePlayer.getLastSpeed());
-                    if_angle.setValue(activePlayer.getLastAngle());
+                    for (Player player : Game.getInstance().getPlayers()) {
+                        player.resetThrow();
+                        player.setLastAngle(120);
+                        player.setLastSpeed(80);
+                    }
+
+                    if_speed.setValue(getActivePlayer().getLastSpeed());
+                    if_angle.setValue(getActivePlayer().getLastAngle());
                     init(gc, game);
                 }
                 break;
             case VICTORY:
                 // TODO: VICTORY
-                System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben das Spiel gewonnen !");
-                System.out.println("Win Nr" +activePlayer.getWin());
-                game.enterState(Gorillas.INGAMEWIN);
+                System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
+                System.out.println("Win Nr" + getActivePlayer().getWin());
                 game.enterState(Game.INGAMEWIN);
 
                 // Store Win to SQL-DB
                 SqlGorillas db = new SqlGorillas("data_gorillas.hsc","Gorillas");
-                db.insertHighScore(activePlayer.getName(), totalRoundCounter, activePlayer.getWin(), activePlayer.getTotalThrows());
+                db.insertHighScore(getActivePlayer().getName(), totalRoundCounter, getActivePlayer().getWin(), getActivePlayer().getTotalThrows());
 
                 // Reset Values
                 totalRoundCounter = 0;
@@ -403,17 +400,25 @@ public class GamePlayState extends BasicTWLGameState {
     /** Generates a Banana at the current Player */
     private void throwBanana() {
         // Save new throw
-        activePlayer.setThrow();
+        getActivePlayer().setThrow();
 
         System.out.println("Throw Banana " + if_speed.getValue() + " " + if_angle.getValue());
 
-        activePlayer.setLastSpeed(if_speed.getValue());
-        activePlayer.setLastAngle(if_angle.getValue());
+        getActivePlayer().setLastSpeed(if_speed.getValue());
+        getActivePlayer().setLastAngle(if_angle.getValue());
 
-        if (activePlayer == player1)
-            banana = new Banana(gorilla.x, gorilla.y - gorilla.getHeight(), if_angle.getValue() - 90, if_speed.getValue(), gravity, windSpeed);
-        else
-            banana = new Banana(gorillb.x, gorillb.y - gorillb.getHeight(), 180 - if_angle.getValue() + 90, if_speed.getValue(), gravity, windSpeed);
+        if (getActivePlayer() == Game.getInstance().getPlayer(0)) {
+            Vector2f pos = getGorilla(0).getPosition();
+            Vector2f size = getGorilla(0).getSize();
+            banana = new Banana(pos.x, pos.y - size.y, if_angle.getValue() - 90, if_speed.getValue(), gravity, windSpeed);
+        }
+
+        else {
+            Vector2f pos = getGorilla(1).getPosition();
+            Vector2f size = getGorilla(1).getSize();
+            banana = new Banana(pos.x, pos.y - size.y, 180 - if_angle.getValue() + 90, if_speed.getValue(), gravity, windSpeed);
+        }
+
 
         // Remove Win-Message
         roundWinMessage = null;
