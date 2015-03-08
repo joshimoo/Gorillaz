@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities.factories;
 
+import de.tu_darmstadt.gdi1.gorillas.entities.CompoundDestructibleEntity;
 import de.tu_darmstadt.gdi1.gorillas.entities.EntityType;
 import de.tu_darmstadt.gdi1.gorillas.entities.components.ShapeDestructionPattern;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
@@ -77,9 +78,23 @@ public class BuildingFactory extends EntityFactory {
         return building;
     }
 
+    public static CompoundDestructibleEntity createCompoundSkyline(int buildingCount) {
+        DestructibleImageEntity[] buildings = new DestructibleImageEntity[buildingCount];
+
+        for(int i = 0; i < buildingCount; i++) {
+            int buildingWidth = Gorillas.FRAME_WIDTH / buildingCount;
+            int buildingHeight = (int)(Math.random() * 450 + 50);
+            int x = i * buildingWidth;
+            int y = Gorillas.FRAME_HEIGHT - buildingHeight;
+
+            buildings[i] = createBuilding(new Vector2f(x, y), buildingWidth, buildingHeight);
+        }
+
+        return new CompoundDestructibleEntity(EntityType.BUILDING.name(), buildings);
+    }
+
     public static Entity createSkyline(Vector2f pos){
         // TODO: Implement
         throw new NotImplementedException();
     }
-
 }
