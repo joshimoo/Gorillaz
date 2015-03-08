@@ -1,4 +1,4 @@
-package de.tu_darmstadt.gdi1.gorillas.ui.states;
+package de.tu_darmstadt.gdi1.gorillas.main;
 
 // Maybe Player should be an entity?
 // Or Take care of gorrilla?
