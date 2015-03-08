@@ -8,6 +8,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
@@ -15,9 +16,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-
-
-import static de.tu_darmstadt.gdi1.gorillas.main.Gorillas.*;
 
 public class GamePlayState extends BasicTWLGameState {
 
@@ -36,7 +34,6 @@ public class GamePlayState extends BasicTWLGameState {
     private Button btnThrow;
 
     // GameState
-    private Player  activePlayer;
     private STATES  state;
     private int     windSpeed;
     private Image   background;
@@ -59,6 +56,12 @@ public class GamePlayState extends BasicTWLGameState {
     // Counter
     private static int totalRoundCounter = 0;
 
+
+    public Player getActivePlayer() { return Game.getInstance().getActivePlayer(); }
+    public void setActivePlayer(Player activePlayer) {
+        Game.getInstance().setActivePlayer(activePlayer);
+    }
+
     /** Die FSM für das spiel ist eigentlich recht simple:
      *      Im INPUT state werden die Eingaben des aktiven Spieles verarbeitet. Wenn einen
      *  Banane geworfen wird, wechseln wir nach THROW. Hier wird die Banane nach den Physikalichen
@@ -70,7 +73,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.GAMEPLAYSTATE;
+        return de.tu_darmstadt.gdi1.gorillas.main.Game.GAMEPLAYSTATE;
     }
 
     public Skyline getSkyline(){
@@ -85,15 +88,20 @@ public class GamePlayState extends BasicTWLGameState {
         return sun;
     }
 
-    public Player getActivePlayer() { return activePlayer; }
-
     public void setGravity(final float g){
         gravity = g;
     }
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+        // TODO: Init should really only be called once
+        // for a temporary workaround you can clear all entities at the beginning of init
+        // or you can use entityManager.setEntityListByState(getID(), initEntitiesList);
+        // which will lead to overwritting the list, and then the old entities from last init will be gc'd
+        entityManager.clearEntitiesFromState(getID());
         background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
+
+        // TODO: Switch over to Building Entity
         skyline = new Skyline(6);
 
         int x1 = (int)(Math.random() * 3 + 0);
@@ -115,7 +123,7 @@ public class GamePlayState extends BasicTWLGameState {
         if (rp == null)
             this.createRootPane();
 
-        activePlayer = player1;
+        setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
     }
 
@@ -173,15 +181,14 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     private void drawPlayerNames(Graphics g) {
-        // TODO: Gorillas / Players should be stored like this at class level
-        Player[] players = {player1, player2};
-        Gorilla[] gorillas = {gorilla, gorillb};
-        for (int i = 0; i < players.length; i++) {
+
+        for (int i = 0; i < Game.getInstance().getPlayers().size(); i++) {
             // Offset the Text 64 pixels higher then the gorrila
-            Vector2f pos = new Vector2f(gorillas[i].x, gorillas[i].y);
+            Vector2f pos = getGorilla(i).getPosition();
             pos.y -= 64;
-            Color color = activePlayer == players[i] ? Color.yellow : Color.white;
-            drawTextWithDropShadow(g, pos, players[i].getName(), color);
+            Color color = getActivePlayer() == Game.getInstance().getPlayer(i) ? Color.yellow : Color.white;
+            drawTextWithDropShadow(g, pos, Game.getInstance().getPlayer(i).getName(), color);
+            i++;
         }
     }
 
@@ -320,6 +327,7 @@ public class GamePlayState extends BasicTWLGameState {
                 System.out.println("Herzlichen Glückwunsch " + activePlayer.getName() + "\nSie haben das Spiel gewonnen !");
                 System.out.println("Win Nr" +activePlayer.getWin());
                 game.enterState(Gorillas.INGAMEWIN);
+                game.enterState(Game.INGAMEWIN);
 
                 // Store Win to SQL-DB
                 SqlGorillas db = new SqlGorillas("data_gorillas.hsc","Gorillas");
@@ -416,17 +424,15 @@ public class GamePlayState extends BasicTWLGameState {
     // TODO: Move this out of this state, it does not belong here.
     public static void toggleMute() {
         mute = !mute;
-        if(debug) System.out.println("Mute: " + mute);
+        if(Game.getInstance().getDebug()) System.out.println("Mute: " + mute);
     }
 
     // TODO: Move this out of this state, it does not belong here.
-    public static void setInverseControlKeys(boolean x)
-    {
+    public static void setInverseControlKeys(boolean x) {
         inverseControlKeys = x;
     }
 
-    public static boolean getInverseControlKeys()
-    {
+    public static boolean getInverseControlKeys() {
         return inverseControlKeys;
     }
 

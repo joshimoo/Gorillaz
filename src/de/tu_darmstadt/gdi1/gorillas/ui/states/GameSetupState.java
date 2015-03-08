@@ -6,7 +6,8 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.*;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -24,7 +25,7 @@ public class GameSetupState extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.GAMESETUPSTATE;
+        return de.tu_darmstadt.gdi1.gorillas.main.Game.GAMESETUPSTATE;
     }
 
     @Override
@@ -123,8 +124,8 @@ public class GameSetupState extends BasicTWLGameState {
      */
     public Boolean setPlayerNames(String n1, String n2) {
         if (checkValidPlayerNames(n1,n2)) {
-            Gorillas.player1 = new Player(n1);
-            Gorillas.player2 = new Player(n2);
+            Game.getInstance().createPlayer(n1);
+            Game.getInstance().createPlayer(n2);
             return true;
         }
 
@@ -171,9 +172,9 @@ public class GameSetupState extends BasicTWLGameState {
             lPlayer2Error.setVisible(false);
 
             // TODO: should not be necessary since StateBasedGame should call all init methods for the each entry in the init states list
-            try { game.getState(Gorillas.GAMEPLAYSTATE).init(cont, game); }
+            try { game.getState(Game.GAMEPLAYSTATE).init(cont, game); }
             catch (SlickException e) { e.printStackTrace(); }
-            game.enterState(Gorillas.GAMEPLAYSTATE);
+            game.enterState(Game.GAMEPLAYSTATE);
 
         } else {
             lPlayer1Error.setVisible(!getPlayer1Error().isEmpty());

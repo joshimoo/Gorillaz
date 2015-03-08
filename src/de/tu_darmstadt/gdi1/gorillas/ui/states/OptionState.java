@@ -6,7 +6,7 @@ import de.matthiasmann.twl.ValueAdjusterFloat;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -23,7 +23,7 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.OPTIONSTATE;
+        return Game.OPTIONSTATE;
     }
 
     @Override
@@ -56,9 +56,9 @@ public class OptionState extends BasicTWLGameState {
 
         btnOK.addCallback(new Runnable() {
             public void run() {
-                GamePlayState s = (GamePlayState) (game.getState(Gorillas.GAMEPLAYSTATE));
+                GamePlayState s = (GamePlayState) (game.getState(Game.GAMEPLAYSTATE));
                 s.setGravity(valueGravity.getValue());
-                game.enterState(Gorillas.MAINMENUSTATE);
+                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
             }
         });
 
@@ -133,9 +133,9 @@ public class OptionState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O)) {
-            GamePlayState s = (GamePlayState) (game.getState(Gorillas.GAMEPLAYSTATE));
+            GamePlayState s = (GamePlayState) (game.getState(Game.GAMEPLAYSTATE));
             s.setGravity(valueGravity.getValue());
-            game.enterState(Gorillas.MAINMENUSTATE);
+            game.enterState(Game.MAINMENUSTATE);
         }
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
     }

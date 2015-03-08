@@ -4,7 +4,8 @@ import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.*;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,7 +21,7 @@ public class HighScoreState extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.HIGHSCORESTATE;
+        return Game.HIGHSCORESTATE;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class HighScoreState extends BasicTWLGameState {
 
         btnStart.addCallback(new Runnable() {
             public void run() {
-                game.enterState(Gorillas.MAINMENUSTATE);
+                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
             }
         });
 
@@ -61,7 +62,7 @@ public class HighScoreState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Gorillas.MAINMENUSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Game.MAINMENUSTATE); }
     }
 
     /**
