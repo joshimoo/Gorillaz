@@ -1,41 +1,60 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import eea.engine.action.basicactions.RotateRightAction;
+import eea.engine.component.render.AnimationRenderComponent;
+import eea.engine.component.render.FrameRenderComponent;
+import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.Entity;
+import eea.engine.event.basicevents.LoopEvent;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.ShapeFill;
+import org.newdawn.slick.geom.*;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class Sun extends Entity{
+public class Sun extends Entity {
+    private FrameRenderComponent animation;
 
-    private Image img;
-    private Circle collCircle;
+    // TODO: we currently use topleft positions everywhere, change them all to be center positions
+    public Sun(Vector2f pos) {
+        super("Sun");
+        setPosition(pos);
 
-    public Sun(final float x, final float y){
-        this.x = x;
-        this.y = y;
-        img = Assets.loadImage(Assets.Images.SUN_SMILING);
-        collCircle = new Circle(x - img.getWidth()/2, y - img.getHeight()/2,img.getHeight()/2);
+        // Rendering
+        Image[] frames = new Image[] {
+                Assets.loadImage(Assets.Images.SUN_SMILING),
+                Assets.loadImage(Assets.Images.SUN_ASTONISHED)
+        };
+        animation = new FrameRenderComponent(frames, frames[0].getWidth(), frames[0].getHeight());
+        addComponent(animation);
     }
 
     @Override
-    public void render(Graphics g) {
-
-        g.drawImage(img, x - img.getWidth(), y - img.getHeight());
-        //g.draw(collCircle);
+    public Shape getShape() {
+        Circle c = new Circle(getPosition().x, getPosition().y, getSize().y / 2);
+        return c.transform(Transform.createRotateTransform((float) Math.toRadians(getRotation()), getPosition().x, getPosition().y));
     }
 
+    @Deprecated
+    public Sun(final float x, final float y){ this(new Vector2f(x, y)); }
+
+
+    /**
+     * We collide if there is an intersection
+     * But also if the otherEntity is completely contained inside of us
+     */
     @Override
-    public void update(int delta) {
-        // TODO: Implement sun face-change on collision.
+    public boolean collides(Entity otherEntity) {
+        boolean collides = super.collides(otherEntity) || getShape().contains(otherEntity.getShape());
+        animation.switchToFrame(collides ? 1 : 0);
+        return collides;
     }
 
-    @Override
+    @Deprecated
     public boolean isCollidding(Banana b) {
-        boolean bool = collCircle.intersects(b.getColMask());
-        if(bool)
-            img = Assets.loadImage(Assets.Images.SUN_ASTONISHED);
-        else
-            img = Assets.loadImage(Assets.Images.SUN_SMILING);
-        return bool;
+        return collides(b);
     }
 }

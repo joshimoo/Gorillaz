@@ -2,38 +2,50 @@ package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import eea.engine.action.Action;
+import eea.engine.action.basicactions.MoveRightAction;
+import eea.engine.component.Component;
+import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.Entity;
+import eea.engine.event.basicevents.LeavingScreenEvent;
+import eea.engine.event.basicevents.LoopEvent;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
 
 public class Cloud extends Entity {
-    private Image img;
     private int w;
     private float t;
 
-    public Cloud(float x, float y, int w){
-        img = Assets.loadUniqueImage(Assets.Images.CLOUD);
-        this.x = x;
-        this.y = y;
-
-        this.w = w;
+    public Cloud(Vector2f pos, int windSpeed) {
+        super("Cloud");
+        setPosition(pos);
+        w = windSpeed;
         t = 0;
 
-    }
-    @Override
-    public void render(Graphics graph) {
-        graph.drawImage(img,x,y);
+        // Rendering
+        addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.CLOUD)));
     }
 
-    @Override
-    public void update(int delta) {
-        x += (Game.getWindScale()/2) * w;
-        if(x < -img.getWidth()) x = Gorillas.FRAME_WIDTH;
-        else if(x > Gorillas.FRAME_WIDTH) x = -img.getWidth();
-    }
+    @Deprecated
+    public Cloud(float x, float y, int w){ this(new Vector2f(x, y), w); }
 
     @Override
-    public boolean isCollidding(Banana b) {
-        return false;
+    public void update(GameContainer gc, StateBasedGame sb, int delta) {
+        super.update(gc, sb, delta);
+
+        // TODO: Add random delay before cloud comes back into screen
+        Vector2f pos = getPosition();
+        pos.x += (Game.getWindScale()/2) * w;
+
+        if(pos.x < -getSize().x) {
+            pos.x = gc.getWidth();
+        } else if(pos.x > gc.getWidth() + getSize().x / 2) {
+            pos.x = -getSize().x;
+        }
+
+        setPosition(pos);
     }
 }
