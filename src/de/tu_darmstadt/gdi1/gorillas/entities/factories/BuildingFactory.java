@@ -85,8 +85,10 @@ public class BuildingFactory extends EntityFactory {
         for(int i = 0; i < buildingCount; i++) {
             int buildingWidth = Gorillas.FRAME_WIDTH / buildingCount;
             int buildingHeight = (int)(Math.random() * 450 + 50);
-            int x = i * buildingWidth;
-            int y = Gorillas.FRAME_HEIGHT - buildingHeight;
+
+            // Position now defines the center point of an entity
+            int x = i * buildingWidth + (buildingWidth / 2);
+            int y = Gorillas.FRAME_HEIGHT - buildingHeight / 2;
 
             buildings[i] = createBuilding(new Vector2f(x, y), buildingWidth, buildingHeight);
         }

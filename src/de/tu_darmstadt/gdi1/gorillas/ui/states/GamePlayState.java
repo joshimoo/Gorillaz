@@ -17,6 +17,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -163,11 +164,24 @@ public class GamePlayState extends BasicTWLGameState {
         startGame();
     }
 
+    void renderDebugShapes(GameContainer gc, StateBasedGame sb, Graphics g) {
+        // Wrap this into a debug
+        for (Entity e : entityManager.getEntitiesByState(getID())) {
+            g.draw(e.getShape());
+        }
+
+        // Skyline
+        for (Shape s : skyline.getShapes()) {
+            g.draw(s);
+        }
+    }
+
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -20, -10);
         entityManager.renderEntities(gc, game, g); // We render after the Background Image, but before the text overlays
+        renderDebugShapes(gc,game, g);
 
 
         // TODO: Check if this returns WorldSpace or LocalSpace
@@ -223,7 +237,6 @@ public class GamePlayState extends BasicTWLGameState {
             Vector2f pos = getGorilla(i).getPosition();
             Color color = getActivePlayer() == Game.getInstance().getPlayer(i) ? Color.yellow : Color.white;
             drawTextWithDropShadow(g, new Vector2f(pos.x, pos.y - 64), Game.getInstance().getPlayer(i).getName(), color);
-            i++;
         }
     }
 

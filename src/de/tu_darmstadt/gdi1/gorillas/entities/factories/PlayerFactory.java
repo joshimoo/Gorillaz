@@ -23,6 +23,10 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class PlayerFactory extends EntityFactory {
 
+    /**
+     * Create a new Gorilla that is associated with player at
+     * @param pos the feet position of this gorilla
+     */
     public static Entity createGorilla(Vector2f pos, Player player){
         Entity gorilla = createEntity(EntityType.PLAYER, pos);
         float ANIMATION_SPEED = 1.0f; /* How fast should the Animation be */
@@ -37,6 +41,8 @@ public class PlayerFactory extends EntityFactory {
         gorilla.addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
         // TODO: ADD MORE CONSTRUCTORS, default constructor sets duration = 1
 
+        // Change our Center position so that our feet touch the top of the building
+        gorilla.setPosition(new Vector2f(pos.x - frames[0].getWidth() / 2, pos.y - frames[0].getHeight() / 2));
 
         // Collisions
         // TODO: Add Collisions, if we plan on implementing movement

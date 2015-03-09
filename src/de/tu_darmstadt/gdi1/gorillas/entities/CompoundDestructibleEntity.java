@@ -5,8 +5,12 @@ import eea.engine.component.render.DestructionRenderComponent;
 import eea.engine.entity.DestructibleImageEntity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
+import java.util.ArrayList;
 
 /**
  * A compound DestructibleEntity, takes care of all it's children
@@ -27,6 +31,16 @@ public class CompoundDestructibleEntity extends DestructibleImageEntity {
     public int getHeight(int index) {
         if (children != null && index < children.length) { return (int) children[index].getSize().y; }
         else {return 0;}
+    }
+
+    // TODO: think about creating a compound shape (polygon), based on the points of the underlying shapes
+    public Shape[] getShapes() {
+        Shape[] shapes = new Shape[children.length];
+        for (int i = 0; i < children.length; i++) {
+            shapes[i] = children[i].getShape();
+        }
+
+        return shapes;
     }
 
     @Override
