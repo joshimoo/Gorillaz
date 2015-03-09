@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -42,7 +43,7 @@ public class Banana extends Entity {
     @Override
     public void render(Graphics graph) {
         graph.drawImage(img, x, y);
-        if(Gorillas.debug) graph.draw(getColMask());
+        if(Game.getInstance().getDebug()) graph.draw(getColMask());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class Banana extends Entity {
 
         vx = Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD;
         vy = Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD;
-        x = (float) (x0 + (vx * t) + (Cloud.WSCALE /2 * windSpeed * t * t));
+        x = (float) (x0 + (vx * t) + ( windSpeed /2 * Game.getWindScale() * t * t));
         y = (float) (y0 - (vy * t) + ( gravity /2 * t * t));
     }
 

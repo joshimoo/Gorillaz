@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
@@ -38,7 +39,7 @@ public class Gorilla extends Entity {
     @Override
     public void render(Graphics graph) {
         graph.drawImage(animation.getCurrentFrame(), x - getHeight() / 2, y - getHeight());
-        if(Gorillas.debug) graph.draw(collMask);
+        if(Game.getInstance().getDebug()) graph.draw(collMask);
     }
 
     @Override
