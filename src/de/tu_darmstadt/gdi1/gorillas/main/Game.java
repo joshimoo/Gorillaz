@@ -26,7 +26,7 @@ public class Game {
     // If we design everything on m/s, we can then define a scale of 1 m == X pixels
     // Or we have custom scales, for our individual components of 1m == x pixels for WIND
     //public static final float MS_TO_S = 1.0f / 1000; // TODO: this would be best, but let's see if we can do so with our tests
-    public static final float MS_TO_S = 1;
+    private float MS_TO_S = 1;
 
     // TODO: Refactor, rethink where todo the scaling and unit conversion
     // TODO: Experiment, with this value
@@ -35,9 +35,10 @@ public class Game {
     // where w[-15, 15), fps = 120
     // 0.3 * 7.5 * 120 --> // 2.5 * 120 = 300 pixel pro sekunde
     // maybe 1m = 20 pixels, which would lead to 150 pixels/s at 7.5 m/s
-    private static final float WIND_SCALE = 0.6f;
-    private static final float TIME_SCALE = 1 / 400f;
-    private static final float ROTATION_DRAG = 0.02f;
+    private float WIND_SCALE = 0.6f;
+    private float TIME_SCALE = 1 / 400f;
+    private float ROTATION_DRAG = 0.02f;
+    private int EXPLOSION_RADIUS = 32;
 
     /** Singleton Pattern */
     private Game() {
@@ -54,14 +55,15 @@ public class Game {
 
 
     /** Runtime Debug Setting */
-    private boolean debug = false;
+    private boolean debug = true;
     public Boolean getDebug() { return debug; }
     public void setDebug(boolean debuging) { debug = debuging; }
 
     /** Time Constants */
-    public static float getTimeScale() { return TIME_SCALE; }
-    public static float getWindScale() { return WIND_SCALE; }
-    public static float getRotationFactor() { return ROTATION_DRAG; }
+    public static float getTimeScale() { return getInstance().TIME_SCALE; }
+    public static float getWindScale() { return getInstance().WIND_SCALE; }
+    public static float getRotationFactor() { return getInstance().ROTATION_DRAG; }
+    public static int getExplosionRadius() {return getInstance().EXPLOSION_RADIUS; }
 
     /** We are using a RingBuffer for Player handling
      * One of the reasons we are doing things this way,
