@@ -105,5 +105,3 @@ public class Game {
     // It's a lot of boilerplate, but it allows a bunch of flexibility, you could move the internal data, to other classes
     // you could load the data from file.
 }
-
-
