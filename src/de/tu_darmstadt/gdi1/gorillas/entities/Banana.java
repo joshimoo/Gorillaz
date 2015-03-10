@@ -45,8 +45,7 @@ public class Banana extends Entity {
 
     @Override
     public Shape getShape() {
-        Circle c = new Circle(getPosition().x, getPosition().y, getSize().y / 2);
-        return c.transform(Transform.createRotateTransform((float) Math.toRadians(getRotation()), getPosition().x, getPosition().y));
+        return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
     }
 
     @Override
