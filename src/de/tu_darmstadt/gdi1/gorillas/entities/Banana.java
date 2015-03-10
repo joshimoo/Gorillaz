@@ -1,71 +1,76 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
+import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.Entity;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.geom.*;
+import org.newdawn.slick.state.StateBasedGame;
 
 public class Banana extends Entity {
 
     private float gravity   = 9.80665f;
     public static final float SPEED_MOD = 0.8f;
-    private Image img;
     private float rotationSpeed, t;
-    private double vx, vy, x0, y0, speed;
-    private int windSpeed, angle;
+    private float vx, vy, speed;
+    private int windAcceleration, angle;
 
-    public Banana(final float x, final float y, final int angle, final int speed, float g, int w){
-        img = Assets.loadUniqueImage(Assets.Images.BANANA);
-        img.setCenterOfRotation(img.getHeight()/ 2, img.getWidth() / 2);
+    private Vector2f pos0;
+
+    public Banana(Vector2f pos, final int angle, final int speed, float g, int w) {
+        super("Banana");
+
+        // Rendering
+        addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.BANANA)));
         rotationSpeed = (speed * 0.02f) * 360f / 1000f;
-        x0 = x;
-        y0 = y;
+
+        // Flight Params
+        setPosition(pos);
+        pos0 = new Vector2f(pos.x, pos.y);
         t  = 0;
-        this.x = (float) x0;
-        this.y = (float) y0;
         gravity = g;
-        this.windSpeed = w;
+        windAcceleration = w;
         this.speed = speed;
         this.angle = angle;
 
         if(angle > 90) rotationSpeed = -rotationSpeed;
     }
 
-    public float getCenterX(){ return x + img.getCenterOfRotationX(); }
-    public float getCenterY(){ return y + img.getCenterOfRotationY(); }
-
-    public Shape getColMask(){ return new Circle(getCenterX(), getCenterY(), 10); }
-
-
-    @Override
-    public void render(Graphics graph) {
-        graph.drawImage(img, x, y);
-        if(Gorillas.debug) graph.draw(getColMask());
+    @Deprecated
+    public Banana(final float x, final float y, final int angle, final int speed, float g, int w){
+        this(new Vector2f(x, y), angle, speed, g, w);
     }
 
     @Override
-    public void update(int delta) {
+    public Shape getShape() {
+        return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
+    }
+
+    @Override
+    public void update(GameContainer gc, StateBasedGame sb, int delta) {
+        super.update(gc, sb, delta);
+
         /* Let the Banana rotate over time */
-        img.rotate(rotationSpeed * delta);
+        setRotation(getRotation() + rotationSpeed * delta);
+
+        Vector2f pos = getPosition();
         /* Move the Banana */
-        t = t + delta / 400f;
-        if((y + img.getHeight() >= Gorillas.FRAME_HEIGHT)& (vx > 5 | vx < -5)){
+        t = t + delta * Game.getTimeScale();
+        if((pos.y + getSize().y / 2 >= Gorillas.FRAME_HEIGHT)& (vx > 5 | vx < -5)){
             if(vx > 5) angle = -angle;
             if(vx < 5) angle = 180 - angle;
-            y0 = Gorillas.FRAME_HEIGHT - (img.getHeight() + 10);
-            x0 = x;
+
+            pos0 = new Vector2f(pos.x, gc.getHeight() - (getSize().y + 10) / 2);
             speed = vx;
-            t = delta/ 400f;
+            t = delta * Game.getTimeScale();
         }
 
-        vx = Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD;
-        vy = Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD;
-        x = (float) (x0 + (vx * t) + (Cloud.WSCALE /2 * windSpeed * t * t));
-        y = (float) (y0 - (vy * t) + ( gravity /2 * t * t));
+        vx = (float) Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD;
+        vy = (float) Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD;
+        pos.x = (float) (pos0.x + (vx * t) + ( windAcceleration /2 * Game.getWindScale() * t * t));
+        pos.y = (float) (pos0.y - (vy * t) + ( gravity /2 * t * t));
+        setPosition(pos);
     }
-
-    /* Inception sound Playing :D */  @Override public boolean isCollidding(Banana b){return false;}
-
 }

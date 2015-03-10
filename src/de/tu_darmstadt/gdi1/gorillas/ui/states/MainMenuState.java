@@ -4,7 +4,7 @@ import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -27,7 +27,7 @@ public class MainMenuState extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.MAINMENUSTATE;
+        return de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE;
     }
 
     @Override
@@ -45,27 +45,27 @@ public class MainMenuState extends BasicTWLGameState {
         btnNewGame = new Button("New Game");
         btnNewGame.addCallback(new Runnable() {
             public void run() {
-                game.enterState(Gorillas.GAMESETUPSTATE);
+                game.enterState(Game.GAMESETUPSTATE);
             }
         });
 
         btnHighScore = new Button("Highscore");
         btnHighScore.addCallback(new Runnable() {
             public void run() {
-                game.enterState(Gorillas.HIGHSCORESTATE);
+                game.enterState(Game.HIGHSCORESTATE);
             }
         });
 
         btnHelp = new Button("Help");
         btnHelp.addCallback(new Runnable() {
             public void run() {
-                game.enterState(Gorillas.HELPSTATE);
+                game.enterState(Game.HELPSTATE);
             }
         });
 
         btnOptions = new Button("Options");
         btnOptions.addCallback(new Runnable(){
-            public void run(){ game.enterState(Gorillas.OPTIONSTATE);}
+            public void run(){ game.enterState(Game.OPTIONSTATE);}
         });
 
         btnExit = new Button("Exit Game");
@@ -97,12 +97,12 @@ public class MainMenuState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         entityManager.updateEntities(container, game, delta);
         Input in_key = container.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Gorillas.GAMESETUPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
         if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
-        if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Gorillas.HIGHSCORESTATE);
-        if (in_key.isKeyPressed(Input.KEY_H)) game.enterState(Gorillas.HELPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_O)) game.enterState(Gorillas.OPTIONSTATE);
+        if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Game.HIGHSCORESTATE);
+        if (in_key.isKeyPressed(Input.KEY_H)) game.enterState(Game.HELPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_O)) game.enterState(Game.OPTIONSTATE);
     }
 
 	@Override

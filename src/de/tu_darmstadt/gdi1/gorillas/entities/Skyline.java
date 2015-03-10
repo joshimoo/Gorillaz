@@ -1,15 +1,19 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import eea.engine.entity.Entity;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class Skyline extends Entity{
+public class Skyline extends Entity {
 
     public final int BUILD_COUNT;
     public final int BUILD_WIDTH;
     public final Skyscraper[] skyscrapers;
 
     public Skyline(final int n){
+        super("Skyline");
         BUILD_COUNT = n;
         BUILD_WIDTH = Gorillas.FRAME_WIDTH / BUILD_COUNT;
         skyscrapers = new Skyscraper[BUILD_COUNT];
@@ -29,18 +33,22 @@ public class Skyline extends Entity{
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(GameContainer gc, StateBasedGame sb, Graphics graph) {
+        super.render(gc, sb, graph);
         for(Skyscraper s : skyscrapers)
-            s.render(g);
+            s.render(gc, sb, graph);
     }
 
     @Override
-    public boolean isCollidding(Banana b) {
+    public boolean collides(Entity otherEntity) {
         boolean a = false;
         for(Skyscraper s: skyscrapers)
-            a |= s.isCollidding(b);
+            a |= s.collides(otherEntity);
         return a;
     }
 
-    /* not needed */ @Override public void update(int delta) {}
+    @Deprecated
+    public boolean isCollidding(Banana b) {
+        return collides(b);
+    }
 }
