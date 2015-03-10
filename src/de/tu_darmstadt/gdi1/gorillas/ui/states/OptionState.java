@@ -6,7 +6,7 @@ import de.matthiasmann.twl.ValueAdjusterFloat;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -23,7 +23,7 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public int getID() {
-        return Gorillas.OPTIONSTATE;
+        return Game.OPTIONSTATE;
     }
 
     @Override
@@ -44,33 +44,25 @@ public class OptionState extends BasicTWLGameState {
         btnOK = new Button("OK");
         lError = new Label("");
 
-        if(GamePlayState.getInverseControlKeys())
-            btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-        else
-            btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
+        if(GamePlayState.getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
+        else { btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle"); }
 
-        if(GamePlayState.getWind())
-            btnWind.setText("Wind");
-        else
-            btnWind.setText("No wind");
+        btnWind.setText(GamePlayState.getWind() ? "Wind" : "No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
-                GamePlayState s = (GamePlayState) (game.getState(Gorillas.GAMEPLAYSTATE));
+                GamePlayState s = (GamePlayState) (game.getState(Game.GAMEPLAYSTATE));
                 s.setGravity(valueGravity.getValue());
-                game.enterState(Gorillas.MAINMENUSTATE);
+                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
             }
         });
 
         btnInvertKeyControl.addCallback(new Runnable() {
             public void run() {
-                if(GamePlayState.getInverseControlKeys())
-                {
+                if(GamePlayState.getInverseControlKeys()) {
                     btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
                     GamePlayState.setInverseControlKeys(false);
-                }
-                else
-                {
+                } else {
                     btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
                     GamePlayState.setInverseControlKeys(true);
                 }
@@ -125,7 +117,6 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-
         background.draw(-20, -10);
     }
 
@@ -133,9 +124,9 @@ public class OptionState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O)) {
-            GamePlayState s = (GamePlayState) (game.getState(Gorillas.GAMEPLAYSTATE));
+            GamePlayState s = (GamePlayState) (game.getState(Game.GAMEPLAYSTATE));
             s.setGravity(valueGravity.getValue());
-            game.enterState(Gorillas.MAINMENUSTATE);
+            game.enterState(Game.MAINMENUSTATE);
         }
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
     }

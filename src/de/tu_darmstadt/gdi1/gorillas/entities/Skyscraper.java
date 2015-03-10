@@ -1,18 +1,26 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import eea.engine.entity.Entity;
+import eea.engine.interfaces.ICollidable;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.BufferedImageUtil;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
-public class Skyscraper extends Entity{
+public class Skyscraper extends Entity implements ICollidable {
 
     private BufferedImage img;
     private org.newdawn.slick.Image slickImg;
@@ -20,14 +28,12 @@ public class Skyscraper extends Entity{
     private final int width;
     private final int height;
 
-    private org.newdawn.slick.geom.Shape collMask;
-    private java.util.List<Circle> collList;
-
     public Skyscraper(int position, int width){
+        super("Skyscaper");
         this.height  = (int) (Math.random() * 450 + 50);
         this.width   = width;
-        this.x       = position * width;
-        this.y       = Gorillas.FRAME_HEIGHT - height;
+        setPosition(new Vector2f(position * width + width / 2, Gorillas.FRAME_HEIGHT - height / 2));
+        setSize(new Vector2f(getWidth(), getHeight())); // We set the size explicitly since we have no render component
 
         int red   = (int) (Math.random() * 255);
         int green = (int) (Math.random() * 255);
@@ -58,23 +64,21 @@ public class Skyscraper extends Entity{
         try {
             slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
         } catch (IOException e) { e.printStackTrace();}
-
-        collMask = new Rectangle(x, y, getWidth(), getHeight());
-        collList = new ArrayList<>(32);
     }
 
     @Override
-    public void render(org.newdawn.slick.Graphics graph) {
+    public void render(GameContainer gc, StateBasedGame sb, org.newdawn.slick.Graphics graph) {
+        super.render(gc, sb, graph);
+
         // Stupid pointless incompatibility between atw.BuffImg & slick.Img
         // Why cant we just draw the BuffImg, in OpenGL we could use textures.
-        graph.drawImage(slickImg, x, y);
+        // Slick draws top left, while position is center position
+        graph.drawImage(slickImg, getRenderPosition().x, getRenderPosition().y);
+    }
 
-        if (Gorillas.debug) {
-            graph.draw(collMask);
-            for (Shape s : collList)
-                graph.draw(s);
-        }
-
+    @Deprecated
+    private Vector2f getRenderPosition() {
+        return new Vector2f(getPosition().x - getSize().x / 2, getPosition().y - getSize().y / 2);
     }
 
     public void destroy(final int x, final int y, final int pow){
@@ -83,46 +87,48 @@ public class Skyscraper extends Entity{
 
         // We don't need a destruction map. This way we could even use different weapons
         // or randomized damage.
-        graphic.fillOval( (int) (x - this.x) - pow, (int) (y - this.y) - pow, pow*2, pow*2);
+        graphic.fillOval( (int) (x - getRenderPosition().x) - pow, (int) (y - getRenderPosition().y) - pow, pow*2, pow*2);
 
         // still need to update this :/
         // TODO: Switch to OGL Textruedrawing for improved Performance
         try {
             slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
         } catch (IOException e) { e.printStackTrace();}
-
-        /* Füge eine neue antishape ein:*/
-        collList.add(new Circle(x, y, pow));
     }
 
     public int getHeight(){ return height; }
     public int getWidth() { return width;  }
 
     @Override
-    public boolean isCollidding(Banana b) {
-        boolean a = false;
-        boolean containing = false;
-        if(collMask.intersects(b.getColMask())) {
-            a = true;
-            for (Circle c : collList) {
-                containing |= fullyContains(c, (Circle)b.getColMask());
-            }
+    public boolean collides(float x, float y) {
+        // calculate the relative coordinates (relative to the upper left corner
+        // of the buffer used in the renderer)
+        float halfWidth = this.getSize().x / 2;
+        float halfHeight = this.getSize().y / 2;
+        int relX = Math.round(x - this.getPosition().x + halfWidth);
+        int relY = Math.round(y - this.getPosition().y + halfHeight);
+
+        if (relX < 0 || relY < 0 || relX >= this.getSize().x || relY >= this.getSize().y) {
+            return false; // not in buffer area
         }
-        return a && !containing;
+
+        // return true, if a pixel is hit that is not fully transparent
+        boolean collision = (img.getRGB(relX, relY) & 0xFF000000) != 0;
+        if(Game.getInstance().getDebug() && collision) System.out.printf("Collision: %.0f, %.0f valid: %b %n", x, y, collision );
+        return collision;
     }
 
-    private boolean fullyContains(Circle c1, Circle c2){
-        if(c1.intersects(c2)){
-            float dist = (float) Math.sqrt(
-                    Math.pow(c1.getCenterX() - c2.getCenterX(), 2)
-                  + Math.pow(c1.getCenterY() - c2.getCenterY(), 2));
+    @Override
+    public boolean collides(Entity otherEntity) {
+        // Check if any part of Banana is inside of buffer area
+        Vector2f pos = otherEntity.getPosition();
+        float halfWidth = otherEntity.getSize().x / 2;
+        float halfHeight = otherEntity.getSize().y / 2;
 
-            return dist < (c1.getRadius() - c2.getRadius());
-        }
-        return false;
+        // do a bounding box test - for performance we short circuit the evaluation
+        return collides(pos.x - halfWidth, pos.y - halfHeight) ||
+                collides(pos.x + halfWidth, pos.y - halfHeight) ||
+                collides(pos.x - halfWidth, pos.y + halfHeight) ||
+                collides(pos.x + halfWidth, pos.y + halfHeight);
     }
-
-
-    /* Not needed here */
-    @Override public void update(int delta) {}
 }
