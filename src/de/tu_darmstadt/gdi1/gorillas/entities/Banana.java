@@ -6,7 +6,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -48,12 +47,6 @@ public class Banana extends Entity {
     public Shape getShape() {
         Circle c = new Circle(getPosition().x, getPosition().y, getSize().y / 2);
         return c.transform(Transform.createRotateTransform((float) Math.toRadians(getRotation()), getPosition().x, getPosition().y));
-    }
-
-    @Override
-    public void render(GameContainer gc, StateBasedGame sb, Graphics graph) {
-        super.render(gc,sb,graph);
-        if(Game.getInstance().getDebug()) graph.draw(getShape());
     }
 
     @Override
