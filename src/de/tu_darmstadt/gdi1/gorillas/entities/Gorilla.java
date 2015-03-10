@@ -36,9 +36,6 @@ public class Gorilla extends Entity {
         setPosition(new Vector2f(pos.x - frames[0].getWidth() / 2, pos.y - frames[0].getHeight() / 2));
     }
 
-    @Deprecated
-    public Gorilla(int x, int y) { this(new Vector2f(x, y)); }
-
     @Override
     public void render(GameContainer gc, StateBasedGame sb, Graphics graph) {
         super.render(gc, sb, graph);

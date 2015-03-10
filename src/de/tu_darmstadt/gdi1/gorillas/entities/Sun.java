@@ -38,10 +38,6 @@ public class Sun extends Entity {
         return c.transform(Transform.createRotateTransform((float) Math.toRadians(getRotation()), getPosition().x, getPosition().y));
     }
 
-    @Deprecated
-    public Sun(final float x, final float y){ this(new Vector2f(x, y)); }
-
-
     /**
      * We collide if there is an intersection
      * But also if the otherEntity is completely contained inside of us

@@ -2,16 +2,9 @@ package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
-import eea.engine.action.Action;
-import eea.engine.action.basicactions.MoveRightAction;
-import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
-import eea.engine.event.basicevents.LeavingScreenEvent;
-import eea.engine.event.basicevents.LoopEvent;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -28,9 +21,6 @@ public class Cloud extends Entity {
         // Rendering
         addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.CLOUD)));
     }
-
-    @Deprecated
-    public Cloud(float x, float y, int w){ this(new Vector2f(x, y), w); }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {

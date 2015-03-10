@@ -131,13 +131,13 @@ public class GamePlayState extends BasicTWLGameState {
         int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
         int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
 
-        gorilla = new Gorilla(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1));
-        gorillb = new Gorilla(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2));
+        gorilla = new Gorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)));
+        gorillb = new Gorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)));
 
-        sun = new Sun(400, 60);
+        sun = new Sun(new Vector2f(400, 60));
 
         windSpeed = wind ? (int) ((Math.random() * 30) - 15) : 0;
-        cloud = new Cloud(0,60,windSpeed);
+        cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
         destroyBanana();
 
@@ -154,6 +154,7 @@ public class GamePlayState extends BasicTWLGameState {
             g.draw(gorilla.getShape());
             g.draw(gorillb.getShape());
             g.draw(cloud.getShape());
+            if (banana != null) g.draw(banana.getShape());
 
             // Draw historical collisions
             debugCollisions.forEach(g::draw);
