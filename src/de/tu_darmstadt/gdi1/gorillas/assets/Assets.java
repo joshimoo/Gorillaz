@@ -41,7 +41,7 @@ public final class Assets {
                 }
             }
 
-            // Draw an Black Outline 2 px wide
+            // Draw an White Outline 2 px wide
             for (int y = 0; y < buf.getHeight(); y++) {
                 buf.setRGBA(0, y, 255, 255, 255, 255);
                 buf.setRGBA(1, y, 255, 255, 255, 255);
@@ -64,7 +64,7 @@ public final class Assets {
     private static Image loadImage(final String path){
         try {
             return new Image(path);
-        } catch (SlickException e) {
+        } catch (Exception e) {
             System.err.println("Missing Image: " + path);
             return createErrorImage();
         }
