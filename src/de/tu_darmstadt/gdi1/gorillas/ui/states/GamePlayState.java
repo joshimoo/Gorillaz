@@ -116,7 +116,8 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        startGame();
+        if(game.getLastStateID() != Game.INGAMEPAUSE)
+            startGame();
     }
 
     public void startGame() {
