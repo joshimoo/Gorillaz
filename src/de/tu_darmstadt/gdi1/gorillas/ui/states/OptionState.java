@@ -117,7 +117,8 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        background.draw(-20, -10);
+        //background.draw(-20, -10);
+        graphics.drawImage(background, -10, -20);
     }
 
     @Override
