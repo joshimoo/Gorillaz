@@ -59,7 +59,6 @@ public class GamePlayState extends BasicTWLGameState {
     private Cloud   cloud;
 
     // Switchs
-    private boolean admin = true;
     private static boolean inverseControlKeys = false;
     private static boolean mute = false;
     private static boolean wind = false;
@@ -257,7 +256,7 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.update(gc, game, delta);
         cloud.update(gc, game, delta);
 
-        if(admin) {
+        if(Game.Options.getDeveloperMode()) {
             /* DEBUG: Reroll the LevelGeneration */
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
 
