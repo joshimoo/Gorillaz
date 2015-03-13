@@ -47,7 +47,7 @@ public class OptionState extends BasicTWLGameState {
         if(GamePlayState.getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
         else { btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle"); }
 
-        btnWind.setText(GamePlayState.getWind() ? "Wind" : "No wind");
+        btnWind.setText(Game.Options.getWind() ? "Wind" : "No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
@@ -59,25 +59,25 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.addCallback(new Runnable() {
             public void run() {
-                if(GamePlayState.getInverseControlKeys()) {
+                if(Game.Options.getInverseControlKeys()) {
                     btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
-                    GamePlayState.setInverseControlKeys(false);
+                    Game.Options.setInverseControlKeys(false);
                 } else {
                     btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-                    GamePlayState.setInverseControlKeys(true);
+                    Game.Options.setInverseControlKeys(true);
                 }
             }
         });
 
         btnWind.addCallback(new Runnable() {
             public void run() {
-                if(GamePlayState.getWind()){
+                if(Game.Options.getWind()){
                     btnWind.setText("No wind");
-                    GamePlayState.setWind(false);
+                    Game.Options.setWind(false);
                 }
                 else{
                     btnWind.setText("Wind");
-                    GamePlayState.setWind(true);
+                    Game.Options.setWind(true);
                 }
             }
         });
