@@ -131,7 +131,6 @@ public abstract class StateBasedGame implements Game, InputListener {
      * @param id The ID of the state to enter
      */
     public void enterState(int id) {
-        lastState = currentState;
         enterState(id, new EmptyTransition(), new EmptyTransition());
     }
 
@@ -152,6 +151,7 @@ public abstract class StateBasedGame implements Game, InputListener {
         leaveTransition = leave;
         enterTransition = enter;
 
+        lastState = currentState;
         nextState = getState(id);
         if (nextState == null) {
             throw new RuntimeException("No game state registered with the ID: "+id);
