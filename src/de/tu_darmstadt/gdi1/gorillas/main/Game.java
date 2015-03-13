@@ -22,6 +22,9 @@ public class Game {
     public static final int HELPSTATE       = 7;
     public static final int GAMEVICTORY     = 8;
 
+    // Global-Options
+    public static Options Options = new Options();
+
     // TODO: consider whether we need, an extra scale if we are doing everything in m/s
     // If we design everything on m/s, we can then define a scale of 1 m == X pixels
     // Or we have custom scales, for our individual components of 1m == x pixels for WIND
