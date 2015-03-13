@@ -118,16 +118,16 @@ public class HighScoreState extends BasicTWLGameState {
         }
     }
 
-    private String revillTo(String in, int lenght)
+    private String revillTo(String in, int length)
     {
         //TODO: Replace with String.format
-        int diffLenght = lenght - in.length();
-        if(diffLenght > 0)
+        int diffLength = length - in.length();
+        if(diffLength > 0)
         {
-            StringBuilder newString = new StringBuilder(lenght);
+            StringBuilder newString = new StringBuilder(length);
             newString.append(in);
 
-            for (int i = 0; i < diffLenght; i++) {
+            for (int i = 0; i < diffLength; i++) {
                 newString.append(" ");
             }
             return newString.toString();
