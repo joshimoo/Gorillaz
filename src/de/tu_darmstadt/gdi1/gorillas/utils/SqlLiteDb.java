@@ -26,14 +26,25 @@ public class SqlLiteDb
         databaseFile = File;
         c = ConnectingToDatabase();
 
-        String sql = "CREATE TABLE IF NOT EXISTS " + table +
-                     " (" +
-                     "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                     "PlayerName TEXT NOT NULL," +
-                     "NumberRounds INT NOT NULL," +
-                     "NumberWinRounds INT NOT NULL," +
-                     "NumberThrows INT NOT NULL" +
-                     ");";
+        String sql = "";
+        if(table.equals("Players")) {
+            sql = "CREATE TABLE IF NOT EXISTS " + table +
+                    " (" +
+                    "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "PlayerName TEXT NOT NULL" +
+                    ");";
+        }
+        else
+        {
+            sql = "CREATE TABLE IF NOT EXISTS " + table +
+                    " (" +
+                    "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "PlayerName TEXT NOT NULL," +
+                    "NumberRounds INT NOT NULL," +
+                    "NumberWinRounds INT NOT NULL," +
+                    "NumberThrows INT NOT NULL" +
+                    ");";
+        }
         update(sql);
     }
 
