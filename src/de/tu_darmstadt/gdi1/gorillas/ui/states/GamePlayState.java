@@ -46,7 +46,7 @@ public class GamePlayState extends BasicTWLGameState {
     private int     windSpeed;
     private Image   background;
     private Image   arrow;
-    private Sound explosionSound;
+    private Sound   explosionSound;
     private float   gravity = 9.80665f;
 
     // Entities
@@ -59,8 +59,8 @@ public class GamePlayState extends BasicTWLGameState {
     private Cloud   cloud;
 
     // Switchs
-    private static boolean inverseControlKeys = false;
     private boolean admin = true;
+    private static boolean inverseControlKeys = false;
     private static boolean mute = false;
     private static boolean wind = false;
 
