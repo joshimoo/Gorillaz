@@ -103,11 +103,36 @@ public class HighScoreState extends BasicTWLGameState {
         for (int i = 0; i < highScore_list.length; i++)
         {
             if(i == 0)
-                line = "Name        Rounds  Won Rounds  WinRate  HitRate\n";
+                line = "Place  Name            Rounds     Wins   WinRate   HitRate\n";
+            if(i<10)
+                line += " " + i + "     ";
+            else
+                line += i + "     ";
             for (int j = 0; j < 5; j++) {
-                line += highScore_list[i][j] + "       ";
+                if(j==0)
+                    line += revillTo(highScore_list[i][j],10) + "  ";
+                else
+                    line += String.format("%8s",highScore_list[i][j]) + "  ";
             }
             line += "\n";
         }
+    }
+
+    private String revillTo(String in, int lenght)
+    {
+        //TODO: Replace with String.format
+        int diffLenght = lenght - in.length();
+        if(diffLenght > 0)
+        {
+            StringBuilder newString = new StringBuilder(lenght);
+            newString.append(in);
+
+            for (int i = 0; i < diffLenght; i++) {
+                newString.append(" ");
+            }
+            return newString.toString();
+        }
+        else
+            return in;
     }
 }
