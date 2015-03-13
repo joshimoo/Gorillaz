@@ -110,7 +110,7 @@ public class HighScoreState extends BasicTWLGameState {
                 line += i + "     ";
             for (int j = 0; j < 5; j++) {
                 if(j==0)
-                    line += revillTo(highScore_list[i][j],10) + "  ";
+                    line += refillStringToLength(highScore_list[i][j], 10) + "  ";
                 else
                     line += String.format("%8s",highScore_list[i][j]) + "  ";
             }
@@ -118,7 +118,7 @@ public class HighScoreState extends BasicTWLGameState {
         }
     }
 
-    private String revillTo(String in, int length)
+    private String refillStringToLength(String in, int length)
     {
         //TODO: Replace with String.format
         int diffLength = length - in.length();
