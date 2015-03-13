@@ -56,6 +56,8 @@ public class HelpState extends BasicTWLGameState {
                         "\n" +
                         "    Enter -> new Game\n" +
                         "    H -> Help\n" +
+                        "    O -> Options\n" +
+                        "    S -> HighScore\n" +
                         "    ESC -> Exit\n" +
                         "    M -> Mute\n" +
                         "\n" +
