@@ -79,8 +79,7 @@ public class MainMenuState extends BasicTWLGameState {
         btnMute = new Button("Mute");
         btnMute.addCallback(new Runnable() {
             public void run() {
-                // TODO: Mute me :)
-                System.out.println("Mute");
+                GamePlayState.toggleMute();
             }
         });
 
