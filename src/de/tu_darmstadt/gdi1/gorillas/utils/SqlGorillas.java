@@ -76,6 +76,31 @@ public class SqlGorillas
     }
 
     /**
+     *
+     */
+    public void insertPlayerName(String PlayerName)
+    {
+        String sql = "INSERT INTO " + table +
+                "(ID, PlayerName) VALUES ( NULL, '" + PlayerName + "' );";
+        db.update(sql);
+    }
+
+    public String[] getPlayerName()
+    {
+        String sql = "SELECT PlayerName FROM " + table + " ORDER BY ID DESC LIMIT 0,2;";
+        ArrayList list = db.queryArrayList(sql);
+
+        String[] out = new String[list.size()];
+
+        for (int i = 0; i < list.size(); i++)
+        {
+            ArrayList resultList = (ArrayList) list.get(i);
+            out[i] = (String) resultList.get(0);
+        }
+        return out;
+    }
+
+    /**
      * For testing only
      * Shows current highscores
      * @param args

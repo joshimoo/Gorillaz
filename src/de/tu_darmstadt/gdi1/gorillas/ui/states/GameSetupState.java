@@ -8,6 +8,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -55,8 +56,7 @@ public class GameSetupState extends BasicTWLGameState {
             }
         });
 
-        txtName1.setText(Utils.getRandomName());
-        txtName2.setText(Utils.getRandomName());
+        loadPlayerNames();
 
         rp.add(txtName1);
         rp.add(txtName2);
@@ -74,8 +74,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        txtName1.setText(Utils.getRandomName());
-        txtName2.setText(Utils.getRandomName());
+        loadPlayerNames();
     }
 
     @Override
@@ -130,6 +129,7 @@ public class GameSetupState extends BasicTWLGameState {
         if (checkValidPlayerNames(n1,n2)) {
             Game.getInstance().createPlayer(n1);
             Game.getInstance().createPlayer(n2);
+            storePlayerNamesToSql(n1,n2);
             return true;
         }
 
@@ -183,6 +183,28 @@ public class GameSetupState extends BasicTWLGameState {
         } else {
             lPlayer1Error.setVisible(!getPlayer1Error().isEmpty());
             lPlayer2Error.setVisible(!getPlayer2Error().isEmpty());
+        }
+    }
+
+    private void storePlayerNamesToSql(String player1, String player2)
+    {
+        SqlGorillas sql = new SqlGorillas("player_gorillas.data","Players");
+        sql.insertPlayerName(player1);
+        sql.insertPlayerName(player2);
+    }
+
+    private void loadPlayerNames()
+    {
+        SqlGorillas sql = new SqlGorillas("player_gorillas.data","Players");
+        String[] names = sql.getPlayerName();
+        if(names.length < 2) {
+            txtName1.setText(Utils.getRandomName());
+            txtName2.setText(Utils.getRandomName());
+        }
+        else
+        {
+            txtName1.setText(names[0]);
+            txtName2.setText(names[1]);
         }
     }
 }
