@@ -47,10 +47,11 @@ public class OptionState extends BasicTWLGameState {
         if(GamePlayState.getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
         else { btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle"); }
 
-        btnWind.setText(GamePlayState.getWind() ? "Wind" : "No wind");
+        btnWind.setText(Game.getWind() ? "Wind" : "No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
+                //TODO: Is that ok? Or easier possible.
                 GamePlayState s = (GamePlayState) (game.getState(Game.GAMEPLAYSTATE));
                 s.setGravity(valueGravity.getValue());
                 game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
@@ -59,25 +60,26 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.addCallback(new Runnable() {
             public void run() {
-                if(GamePlayState.getInverseControlKeys()) {
+                if (Game.getInverseControlKeys()) {
                     btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
-                    GamePlayState.setInverseControlKeys(false);
-                } else {
+                    Game.setInverseControlKeys(false);
+                }
+                else {
                     btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-                    GamePlayState.setInverseControlKeys(true);
+                    Game.setInverseControlKeys(true);
                 }
             }
         });
 
         btnWind.addCallback(new Runnable() {
             public void run() {
-                if(GamePlayState.getWind()){
+                if (Game.getWind()) {
                     btnWind.setText("No wind");
-                    GamePlayState.setWind(false);
+                    Game.setWind(false);
                 }
-                else{
+                else {
                     btnWind.setText("Wind");
-                    GamePlayState.setWind(true);
+                    Game.setWind(true);
                 }
             }
         });
@@ -124,10 +126,11 @@ public class OptionState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O)) {
+            //TODO: Is that ok? Or easier possible.
             GamePlayState s = (GamePlayState) (game.getState(Game.GAMEPLAYSTATE));
             s.setGravity(valueGravity.getValue());
             game.enterState(Game.MAINMENUSTATE);
         }
-        if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
+        if (in_key.isKeyPressed(Input.KEY_M)) Game.toggleMute();
     }
 }

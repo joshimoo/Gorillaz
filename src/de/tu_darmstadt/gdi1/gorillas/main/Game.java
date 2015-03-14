@@ -1,5 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -106,4 +108,56 @@ public class Game {
     // if you do this for every method you can put them as private and rename with an underscore
     // It's a lot of boilerplate, but it allows a bunch of flexibility, you could move the internal data, to other classes
     // you could load the data from file.
+
+
+
+    /*
+        ##### Options #####
+     */
+
+    /*
+        Global varibles
+     */
+    private boolean developer = true;
+    private int maxPlayerName = 12;
+
+    /*
+        ##### Getter #####
+     */
+
+    /*
+        Intern Getter
+     */
+    public static boolean getDeveloperMode(){return  getInstance().developer;}
+    public static int getMaxPlayerName(){return  getInstance().maxPlayerName;}
+
+    /*
+        Wrapper
+     */
+    public static boolean getWind(){return  GamePlayState.getWind();}
+    public static boolean getInverseControlKeys(){return  GamePlayState.getInverseControlKeys();}
+
+
+    /*
+        ##### Setter #####
+     */
+
+    /*
+        Intern Setter
+     */
+    public static void setDeveloperMode(boolean value){  getInstance().developer = value;}
+    public static void setMaxPlayerName(int value){getInstance().maxPlayerName = value;}
+
+    /*
+        Wrapper
+     */
+    public static void setWind(boolean value){GamePlayState.setWind(value);}
+    public static void setInverseControlKeys(boolean value){GamePlayState.setInverseControlKeys(value);}
+
+
+
+    /*
+        Functions
+     */
+    public static void toggleMute(){ GamePlayState.toggleMute();}
 }
