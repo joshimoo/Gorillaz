@@ -85,11 +85,13 @@ public class Game {
     public List<Player> getPlayers() {return players; }
     //public  ListIterator<Player> getPlayers() { return players.listIterator(); } // Iterator is the safe way, but it's just to much boilerplate even for me !_!
 
+    //TODO: Refactor to static?
     public Player getPlayer(int num){
         if (players != null && num < players.size()) { return players.get(num); }
         else { throw new IllegalArgumentException(String.format("There is no Player at Index: %d currently there are %d players", num, players.size())); }
     }
 
+    //TODO: Refactor to static?
     private void setPlayer(int num, Player player) {
         if (players != null && num < MAX_PLAYER_COUNT) {
             players.set(num, player);
@@ -120,6 +122,7 @@ public class Game {
      */
     private boolean developer = true;
     private int maxPlayerName = 12;
+    private boolean storePlayerNames = true;
 
     /*
         ##### Getter #####
@@ -130,6 +133,7 @@ public class Game {
      */
     public static boolean getDeveloperMode(){return  getInstance().developer;}
     public static int getMaxPlayerName(){return  getInstance().maxPlayerName;}
+    public static boolean getStorePlayerNames(){return  getInstance().storePlayerNames;}
 
     /*
         Wrapper
@@ -147,6 +151,7 @@ public class Game {
      */
     public static void setDeveloperMode(boolean value){  getInstance().developer = value;}
     public static void setMaxPlayerName(int value){getInstance().maxPlayerName = value;}
+    public static void setStorePlayerNames(boolean value){  getInstance().storePlayerNames = value;}
 
     /*
         Wrapper
