@@ -129,7 +129,7 @@ public class GameSetupState extends BasicTWLGameState {
         if (checkValidPlayerNames(n1,n2)) {
             Game.getInstance().createPlayer(n1);
             Game.getInstance().createPlayer(n2);
-            storePlayerNamesToSql(n1,n2);
+            storePlayerNamesToSql(n1, n2);
             return true;
         }
 
@@ -144,8 +144,8 @@ public class GameSetupState extends BasicTWLGameState {
      * @return true when both names are valid
      */
     private Boolean checkValidPlayerNames(String n1, String n2) {
-        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : n1.length() > 12 ? ERROR_TO_LONG : "");
-        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : n2.length() > 12 ? ERROR_TO_LONG : "");
+        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : n1.length() > Game.getMaxPlayerName() ? ERROR_TO_LONG : "");
+        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : n2.length() > Game.getMaxPlayerName() ? ERROR_TO_LONG : "");
 
         // Only check for duplicates if we have valid inputs
         if (!n1.isEmpty() && n1.equals(n2)) {
