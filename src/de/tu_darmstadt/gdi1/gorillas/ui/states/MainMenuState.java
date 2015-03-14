@@ -43,45 +43,22 @@ public class MainMenuState extends BasicTWLGameState {
         RootPane rp = super.createRootPane();
 
         btnNewGame = new Button("New Game");
-        btnNewGame.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(Game.GAMESETUPSTATE);
-            }
-        });
+        btnNewGame.addCallback(() -> game.enterState(Game.GAMESETUPSTATE) );
 
         btnHighScore = new Button("Highscore");
-        btnHighScore.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(Game.HIGHSCORESTATE);
-            }
-        });
+        btnHighScore.addCallback(() -> game.enterState(Game.HIGHSCORESTATE) );
 
         btnHelp = new Button("Help");
-        btnHelp.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(Game.HELPSTATE);
-            }
-        });
+        btnHelp.addCallback(() -> game.enterState(Game.HELPSTATE) );
 
         btnOptions = new Button("Options");
-        btnOptions.addCallback(new Runnable(){
-            public void run(){ game.enterState(Game.OPTIONSTATE);}
-        });
+        btnOptions.addCallback(() -> game.enterState(Game.OPTIONSTATE) );
 
         btnExit = new Button("Exit Game");
-        btnExit.addCallback(new Runnable() {
-            public void run() {
-                /// FIXME: ist system.exit ok?
-                System.exit(0);
-            }
-        });
+        btnExit.addCallback(() -> Game.getInstance().exitGame());
 
         btnMute = new Button("Mute");
-        btnMute.addCallback(new Runnable() {
-            public void run() {
-                GamePlayState.toggleMute();
-            }
-        });
+        btnMute.addCallback(() -> Game.getInstance().toggleMute());
 
         rp.add(btnNewGame);
         rp.add(btnHighScore);
@@ -96,12 +73,12 @@ public class MainMenuState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         entityManager.updateEntities(container, game, delta);
         Input in_key = container.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_ESCAPE)) System.exit(0);
-        if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
-        if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Game.HIGHSCORESTATE);
-        if (in_key.isKeyPressed(Input.KEY_H)) game.enterState(Game.HELPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_O)) game.enterState(Game.OPTIONSTATE);
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE)) { Game.getInstance().exitGame(); }
+        if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
+        if (in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Game.HIGHSCORESTATE); }
+        if (in_key.isKeyPressed(Input.KEY_H)) { game.enterState(Game.HELPSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_O)) { game.enterState(Game.OPTIONSTATE); }
     }
 
 	@Override

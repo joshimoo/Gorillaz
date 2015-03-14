@@ -60,11 +60,6 @@ public class GamePlayState extends BasicTWLGameState {
     private Sun     sun;
     private Cloud   cloud;
 
-    // Switches
-    private static boolean inverseControlKeys = false;
-    private static boolean mute = false;
-    private static boolean wind = false;
-
     // Counter
     private static int totalRoundCounter = 0;
 
@@ -137,7 +132,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(new Vector2f(400, 60));
 
-        windSpeed = wind ? (int) ((Math.random() * 30) - 15) : 0;
+        windSpeed = Game.getInstance().getWind() ? (int) ((Math.random() * 30) - 15) : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
         destroyBanana();
@@ -236,7 +231,7 @@ public class GamePlayState extends BasicTWLGameState {
         if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE)) { throwBanana(); }
 
         if(keyPressDelay > 0) { keyPressDelay -= delta * MS_TO_S; }
-        else if (inverseControlKeys) {
+        else if (Game.getInstance().getInverseControlKeys()) {
             if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)){ if_angle.setValue(if_angle.getValue() + 1); keyPressDelay = keyPressWaitTime; }
             if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)){ if_angle.setValue(if_angle.getValue() - 1); keyPressDelay = keyPressWaitTime; }
             if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)){ if_speed.setValue(if_speed.getValue() + 1); keyPressDelay = keyPressWaitTime; }
@@ -261,7 +256,7 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.update(gc, game, delta);
         cloud.update(gc, game, delta);
 
-        if(Game.getDeveloperMode()) {
+        if(Game.getInstance().isDeveloper()) {
             /* DEBUG: Reroll the LevelGeneration */
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
 
@@ -277,7 +272,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         /* Auf [ESC] muss unabhängig vom state reagiert werden */
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Game.INGAMEPAUSE);
-        if(input.isKeyPressed(Input.KEY_M)) toggleMute();
+        if(input.isKeyPressed(Input.KEY_M)) Game.getInstance().toggleMute();
 
         switch (state) {
             case INPUT:
@@ -317,7 +312,7 @@ public class GamePlayState extends BasicTWLGameState {
 
                 if(skyline.isCollidding(banana)) {
                     state = STATES.DAMAGE;
-                    debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getExplosionRadius()));
+                    debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getInstance().getExplosionRadius()));
                    if(getActivePlayer() == Game.getInstance().getPlayer(1)){
                        if(banana.getPosition().getX() > gorilla.getPosition().getX() + 64)
                            comment = "Viel zu kurz!";
@@ -354,8 +349,8 @@ public class GamePlayState extends BasicTWLGameState {
                 if_speed.setValue(getActivePlayer().getLastSpeed());
                 if_angle.setValue(getActivePlayer().getLastAngle());
 
-                skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, Game.getExplosionRadius());
-                if(!mute) { explosionSound.play(); }
+                skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, Game.getInstance().getExplosionRadius());
+                if(!Game.getInstance().isMute()) { explosionSound.play(); }
                 destroyBanana();
 
                 // TODO: Claculate PlayerDamage
@@ -516,21 +511,4 @@ public class GamePlayState extends BasicTWLGameState {
         state = STATES.THROW;
     }
 
-    // TODO: Move this out of this state, it does not belong here.
-    public static void toggleMute() {
-        mute = !mute;
-        if(Game.getInstance().getDebug()) System.out.println("Mute: " + mute);
-    }
-
-    // TODO: Move this out of this state, it does not belong here.
-    public static void setInverseControlKeys(boolean x) {
-        inverseControlKeys = x;
-    }
-
-    public static boolean getInverseControlKeys() {
-        return inverseControlKeys;
-    }
-
-    public static void setWind(boolean x){wind = x;}
-    public static boolean getWind(){return wind;}
 }

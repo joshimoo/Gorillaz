@@ -144,8 +144,8 @@ public class GameSetupState extends BasicTWLGameState {
      * @return true when both names are valid
      */
     private Boolean checkValidPlayerNames(String n1, String n2) {
-        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : n1.length() > Game.getMaxPlayerName() ? ERROR_TO_LONG : "");
-        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : n2.length() > Game.getMaxPlayerName() ? ERROR_TO_LONG : "");
+        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : n1.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : "");
+        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : n2.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : "");
 
         // Only check for duplicates if we have valid inputs
         if (!n1.isEmpty() && n1.equals(n2)) {
@@ -174,10 +174,6 @@ public class GameSetupState extends BasicTWLGameState {
         if (setPlayerNames(n1, n2)) {
             lPlayer1Error.setVisible(false);
             lPlayer2Error.setVisible(false);
-
-            // Removed the init call, refresh the state dependent variables in enter (gorilla creation)
-            // TODO: experiment with transitions
-            //game.enterState(Game.GAMEPLAYSTATE, new RotateTransition(Color.blue), new BlobbyTransition(Color.green));
             game.enterState(Game.GAMEPLAYSTATE);
 
         } else {
@@ -188,16 +184,16 @@ public class GameSetupState extends BasicTWLGameState {
 
     private void storePlayerNamesToSql(String player1, String player2)
     {
-        if(Game.getStorePlayerNames()) {
+        // TODO: Move this later to a HIGHSCORE Class
+        if(Game.getInstance().getStorePlayerNames()) {
             SqlGorillas sql = new SqlGorillas("player_gorillas.data", "Players");
-            sql.insertPlayerName(player1);
-            sql.insertPlayerName(player2);
+            sql.insertPlayerName(player1,player2);
         }
     }
 
     private void loadPlayerNames()
     {
-        if(Game.getStorePlayerNames()) {
+        if(Game.getInstance().getStorePlayerNames()) {
             SqlGorillas sql = new SqlGorillas("player_gorillas.data", "Players");
             String[] names = sql.getPlayerName();
             if (names.length == 2) {

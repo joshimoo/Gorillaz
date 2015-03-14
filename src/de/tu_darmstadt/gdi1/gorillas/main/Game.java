@@ -1,10 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
-import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
-
 import java.util.List;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 /**
  * Singleton Class, that contains all globals.
@@ -24,19 +21,19 @@ public class Game {
     public static final int HELPSTATE       = 7;
     public static final int GAMEVICTORY     = 8;
 
-    // TODO: consider whether we need, an extra scale if we are doing everything in m/s
-    // If we design everything on m/s, we can then define a scale of 1 m == X pixels
-    // Or we have custom scales, for our individual components of 1m == x pixels for WIND
-    //public static final float MS_TO_S = 1.0f / 1000; // TODO: this would be best, but let's see if we can do so with our tests
-    private float MS_TO_S = 1;
+    // Constants
+    public static final float GRAVITY_MAX = 24.79f;
+    public static final int MAX_NAMESIZE = 12;
 
-    // TODO: Refactor, rethink where todo the scaling and unit conversion
-    // TODO: Experiment, with this value
-    // Original values where FPS dependent
-    // (0.6 / 2) * w * fps --> // 0.3 * w * fps
-    // where w[-15, 15), fps = 120
-    // 0.3 * 7.5 * 120 --> // 2.5 * 120 = 300 pixel pro sekunde
-    // maybe 1m = 20 pixels, which would lead to 150 pixels/s at 7.5 m/s
+    // Switches
+    private boolean debug = true;
+    private boolean developer = true;
+    private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
+    private boolean storePlayerNames = true; // Possible candidate for an internal Option Class
+    private boolean mute = false;
+    private boolean wind = false;
+
+    // Scaling Factors
     private float WIND_SCALE = 0.6f;
     private float TIME_SCALE = 1 / 400f;
     private float ROTATION_DRAG = 0.02f;
@@ -55,17 +52,32 @@ public class Game {
         return game;
     }
 
+    public boolean isMute() { return mute; }
+    public void toggleMute() {
+        mute = !mute;
+        if( getDebug() ) System.out.println("Mute: " + mute);
+    }
 
-    /** Runtime Debug Setting */
-    private boolean debug = true;
+    public boolean getInverseControlKeys() { return inverseControlKeys; }
+    public void setInverseControlKeys(boolean enable) { inverseControlKeys = enable; }
+
+    public boolean getWind(){ return wind; }
+    public void setWind(boolean enable) { wind = enable; }
+
     public Boolean getDebug() { return debug; }
-    public void setDebug(boolean debuging) { debug = debuging; }
+    public void setDebug(boolean enable) { debug = enable; }
+
+    public boolean getStorePlayerNames() { return storePlayerNames; }
+    public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
+
+    public boolean isDeveloper() { return developer; }
+    public void setDeveloperMode(boolean enable){ developer = enable; }
 
     /** Time Constants */
-    public static float getTimeScale() { return getInstance().TIME_SCALE; }
-    public static float getWindScale() { return getInstance().WIND_SCALE; }
-    public static float getRotationFactor() { return getInstance().ROTATION_DRAG; }
-    public static int getExplosionRadius() {return getInstance().EXPLOSION_RADIUS; }
+    public float getTimeScale() { return TIME_SCALE; }
+    public float getWindScale() { return WIND_SCALE; }
+    public float getRotationFactor() { return ROTATION_DRAG; }
+    public int getExplosionRadius() {return EXPLOSION_RADIUS; }
 
     /** We are using a RingBuffer for Player handling
      * One of the reasons we are doing things this way,
@@ -85,13 +97,11 @@ public class Game {
     public List<Player> getPlayers() {return players; }
     //public  ListIterator<Player> getPlayers() { return players.listIterator(); } // Iterator is the safe way, but it's just to much boilerplate even for me !_!
 
-    //TODO: Refactor to static?
     public Player getPlayer(int num){
         if (players != null && num < players.size()) { return players.get(num); }
         else { throw new IllegalArgumentException(String.format("There is no Player at Index: %d currently there are %d players", num, players.size())); }
     }
 
-    //TODO: Refactor to static?
     private void setPlayer(int num, Player player) {
         if (players != null && num < MAX_PLAYER_COUNT) {
             players.set(num, player);
@@ -104,65 +114,16 @@ public class Game {
         setPlayer(++lastAddedPlayer % MAX_PLAYER_COUNT, new Player(name));
     }
 
-    // TODO: if you get tired of typing: Game.getInstance().instanceMethodName()
-    // Use the Refactoring Plugin if possible,
-    // Create a static Wrapper that does this call, // static Player getPlayer(int num) {return Game.getInstance()._getPlayer(num); }
-    // if you do this for every method you can put them as private and rename with an underscore
-    // It's a lot of boilerplate, but it allows a bunch of flexibility, you could move the internal data, to other classes
-    // you could load the data from file.
-
-
-
-    /*
-        ##### Options #####
+    /**
+     * Call exit game, to close the game
+     * This will cleanup all loaded assets
+     * as well as save all unsaved data
      */
-
-    /*
-        Global varibles
-     */
-    private boolean developer = true;
-    private int maxPlayerName = 12;
-    private boolean storePlayerNames = true;
-
-    /*
-        ##### Getter #####
-     */
-
-    /*
-        Intern Getter
-     */
-    public static boolean getDeveloperMode(){return  getInstance().developer;}
-    public static int getMaxPlayerName(){return  getInstance().maxPlayerName;}
-    public static boolean getStorePlayerNames(){return  getInstance().storePlayerNames;}
-
-    /*
-        Wrapper
-     */
-    public static boolean getWind(){return  GamePlayState.getWind();}
-    public static boolean getInverseControlKeys(){return  GamePlayState.getInverseControlKeys();}
-
-
-    /*
-        ##### Setter #####
-     */
-
-    /*
-        Intern Setter
-     */
-    public static void setDeveloperMode(boolean value){  getInstance().developer = value;}
-    public static void setMaxPlayerName(int value){getInstance().maxPlayerName = value;}
-    public static void setStorePlayerNames(boolean value){  getInstance().storePlayerNames = value;}
-
-    /*
-        Wrapper
-     */
-    public static void setWind(boolean value){GamePlayState.setWind(value);}
-    public static void setInverseControlKeys(boolean value){GamePlayState.setInverseControlKeys(value);}
-
-
-
-    /*
-        Functions
-     */
-    public static void toggleMute(){ GamePlayState.toggleMute();}
-}
+    public void exitGame() {
+        // TODO: Cleanup
+        // Cleanup all used assets
+        // Save SQL DB
+        // Close SQL DB
+        System.exit(0);
+    }
+  }

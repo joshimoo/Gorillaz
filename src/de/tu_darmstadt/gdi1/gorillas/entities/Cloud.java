@@ -28,7 +28,7 @@ public class Cloud extends Entity {
 
         // TODO: Add random delay before cloud comes back into screen
         Vector2f pos = getPosition();
-        pos.x += (Game.getWindScale()/2) * w;
+        pos.x += (Game.getInstance().getWindScale() / 2) * w;
 
         if(pos.x < -getSize().x) {
             pos.x = gc.getWidth();
