@@ -104,6 +104,7 @@ public class OptionState extends BasicTWLGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
+
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O) || in_key.isKeyPressed(Input.KEY_ENTER)) { returnToPrevScreen();}
         if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
         if (in_key.isKeyPressed(Input.KEY_UP)) { valueGravity.setValue(valueGravity.getValue() + 1); }
@@ -115,7 +116,7 @@ public class OptionState extends BasicTWLGameState {
     private void returnToPrevScreen() {
         Game.getInstance().setGravity(valueGravity.getValue());
         Game.getInstance().setSoundVolume(valueSound.getValue()/100f);
-        game.enterState(Game.MAINMENUSTATE);
+        game.enterState(game.getLastStateID());
     }
 
     // TODO: Map Text Strings to Constants
@@ -128,5 +129,4 @@ public class OptionState extends BasicTWLGameState {
         Game.getInstance().toggleInverseControlKeys();
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
     }
-
 }
