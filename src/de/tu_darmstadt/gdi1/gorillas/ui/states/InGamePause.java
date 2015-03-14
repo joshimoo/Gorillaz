@@ -45,6 +45,8 @@ public class InGamePause extends BasicTWLGameState {
         Input in_key = container.getInput();
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) game.enterState(Game.GAMEPLAYSTATE);
         if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
+        if (in_key.isKeyPressed(Input.KEY_E)) System.exit(0);
+        if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Game.MAINMENUSTATE);
         if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
     }
 
