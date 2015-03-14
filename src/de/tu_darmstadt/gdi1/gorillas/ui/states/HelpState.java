@@ -70,6 +70,8 @@ public class HelpState extends BasicTWLGameState {
                         "\n" +
                         "    ESC / P -> Pause\n" +
                         "    WASD und Pfeiltasten -> Speed und Winkel\n" +
+                        "    O -> Optionen (nicht alles wird sofort übernommen)\n" +
+                        "    H -> Hilfe\n" +
                         "\n" +
                         "Pause\n" +
                         "\n" +

@@ -117,7 +117,7 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        if(game.getLastStateID() != Game.INGAMEPAUSE && game.getLastStateID() != Game.HELPSTATE)
+        if(game.getLastStateID() != Game.INGAMEPAUSE && game.getLastStateID() != Game.HELPSTATE && game.getLastStateID() != Game.OPTIONSTATE)
             startGame();
     }
 
@@ -276,6 +276,7 @@ public class GamePlayState extends BasicTWLGameState {
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Game.INGAMEPAUSE);
         if(input.isKeyPressed(Input.KEY_M)) toggleMute();
         if(input.isKeyPressed(Input.KEY_H)) game.enterState(Game.HELPSTATE);
+        if(input.isKeyPressed(Input.KEY_O)) game.enterState(Game.OPTIONSTATE);
 
         switch (state) {
             case INPUT:
