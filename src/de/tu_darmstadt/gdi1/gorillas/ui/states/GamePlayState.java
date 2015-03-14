@@ -48,6 +48,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Image   arrow;
     private Sound   explosionSound;
     private float   gravity = 9.80665f;
+    private String comment = "";
 
     // Entities
     private StateBasedEntityManager entityManager;
@@ -164,6 +165,8 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.drawImage(background, -20, -10);
+        g.setColor(Color.yellow);
+        g.drawString(comment, 450, 20);
         entityManager.renderEntities(gc, game, g);
         sun.render(gc, game, g);
         skyline.render(gc, game, g);
@@ -285,6 +288,7 @@ public class GamePlayState extends BasicTWLGameState {
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow();
                 // During the flight disable inputs
                 toggleUI(false);
+                comment = "";
 
                 banana.update(gc, game, delta);
                 sun.isCollidding(banana);
@@ -295,21 +299,48 @@ public class GamePlayState extends BasicTWLGameState {
                     System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",
                             banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight()
                     );
+                    comment = "...";
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
                     System.out.println("Hit Player 1");
+                    comment = "Treffer!";
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(0) && getGorilla(1).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
                     System.out.println("Hit Player 2");
+                    comment = "Treffer!";
                 }
 
                 if(skyline.isCollidding(banana)) {
                     state = STATES.DAMAGE;
                     debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getExplosionRadius()));
+                   if(getActivePlayer() == Game.getInstance().getPlayer(1)){
+                       if(banana.getPosition().getX() > gorilla.getPosition().getX() + 64)
+                           comment = "Viel zu kurz!";
+                       else if(banana.getPosition().getX() < gorilla.getPosition().getX() - 64)
+                           comment = "Viel zu weit!";
+                       if(banana.getPosition().getY() > gorilla.getPosition().getY() + 64)
+                           comment += " Viel zu tief!";
+                       else if(banana.getPosition().getY() < gorilla.getPosition().getY() - 64)
+                           comment += " Viel zu hoch!";
+
+                       if(comment == "") comment = "Fast getroffen!";
+                   }
+                    else{
+                       if(banana.getPosition().getX() > gorillb.getPosition().getX() + 64)
+                           comment = "Viel zu weit!";
+                       else if(banana.getPosition().getX() < gorillb.getPosition().getX() - 64)
+                           comment = "Viel zu kurz!";
+                       if(banana.getPosition().getY() > gorillb.getPosition().getY() + 64)
+                           comment += " Viel zu tief!";
+                       else if(banana.getPosition().getY() < gorillb.getPosition().getY() - 64)
+                           comment += " Viel zu hoch!";
+
+                       if(comment == "") comment = "Fast getroffen!";
+                   }
                 }
 
 
