@@ -188,23 +188,25 @@ public class GameSetupState extends BasicTWLGameState {
 
     private void storePlayerNamesToSql(String player1, String player2)
     {
-        SqlGorillas sql = new SqlGorillas("player_gorillas.data","Players");
-        sql.insertPlayerName(player1);
-        sql.insertPlayerName(player2);
+        if(Game.getStorePlayerNames()) {
+            SqlGorillas sql = new SqlGorillas("player_gorillas.data", "Players");
+            sql.insertPlayerName(player1);
+            sql.insertPlayerName(player2);
+        }
     }
 
     private void loadPlayerNames()
     {
-        SqlGorillas sql = new SqlGorillas("player_gorillas.data","Players");
-        String[] names = sql.getPlayerName();
-        if(names.length < 2) {
-            txtName1.setText(Utils.getRandomName());
-            txtName2.setText(Utils.getRandomName());
+        if(Game.getStorePlayerNames()) {
+            SqlGorillas sql = new SqlGorillas("player_gorillas.data", "Players");
+            String[] names = sql.getPlayerName();
+            if (names.length == 2) {
+                txtName1.setText(names[0]);
+                txtName2.setText(names[1]);
+                return;
+            }
         }
-        else
-        {
-            txtName1.setText(names[0]);
-            txtName2.setText(names[1]);
-        }
+        txtName1.setText(Utils.getRandomName());
+        txtName2.setText(Utils.getRandomName());
     }
 }
