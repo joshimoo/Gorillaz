@@ -7,6 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Options;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -47,7 +48,7 @@ public class OptionState extends BasicTWLGameState {
         if(GamePlayState.getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
         else { btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle"); }
 
-        btnWind.setText(Game.Options.getWind() ? "Wind" : "No wind");
+        btnWind.setText(Options.getWind() ? "Wind" : "No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
@@ -59,25 +60,26 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.addCallback(new Runnable() {
             public void run() {
-                if(Game.Options.getInverseControlKeys()) {
+                if (Options.getInverseControlKeys()) {
                     btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
-                    Game.Options.setInverseControlKeys(false);
-                } else {
+                    Options.setInverseControlKeys(false);
+                }
+                else {
                     btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-                    Game.Options.setInverseControlKeys(true);
+                    Options.setInverseControlKeys(true);
                 }
             }
         });
 
         btnWind.addCallback(new Runnable() {
             public void run() {
-                if(Game.Options.getWind()){
+                if (Options.getWind()) {
                     btnWind.setText("No wind");
-                    Game.Options.setWind(false);
+                    Options.setWind(false);
                 }
-                else{
+                else {
                     btnWind.setText("Wind");
-                    Game.Options.setWind(true);
+                    Options.setWind(true);
                 }
             }
         });

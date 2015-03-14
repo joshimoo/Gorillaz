@@ -9,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Options;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import eea.engine.entity.Entity;
@@ -256,7 +257,7 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.update(gc, game, delta);
         cloud.update(gc, game, delta);
 
-        if(Game.Options.getDeveloperMode()) {
+        if(Options.getDeveloperMode()) {
             /* DEBUG: Reroll the LevelGeneration */
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
 

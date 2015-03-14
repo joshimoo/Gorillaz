@@ -110,7 +110,7 @@ public class HighScoreState extends BasicTWLGameState {
                 line += i + "     ";
             for (int j = 0; j < 5; j++) {
                 if(j==0)
-                    line += String.format("%-" + Game.Options.getMaxPlayerName() + "s", highScore_list[i][j]) + "  ";
+                    line += String.format("%-" + Options.getMaxPlayerName() + "s", highScore_list[i][j]) + "  ";
                 else
                     line += String.format("%8s",highScore_list[i][j]) + "  ";
             }
