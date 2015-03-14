@@ -49,6 +49,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Sound   explosionSound;
     private float   gravity = 9.80665f;
     private String comment = "";
+    private String score = "Score: 0:0";
 
     // Entities
     private StateBasedEntityManager entityManager;
@@ -167,6 +168,7 @@ public class GamePlayState extends BasicTWLGameState {
         g.drawImage(background, -20, -10);
         g.setColor(Color.yellow);
         g.drawString(comment, 450, 20);
+        g.drawString(score, 250, 20);
         entityManager.renderEntities(gc, game, g);
         sun.render(gc, game, g);
         skyline.render(gc, game, g);
@@ -383,6 +385,8 @@ public class GamePlayState extends BasicTWLGameState {
                         player.setLastAngle(120);
                         player.setLastSpeed(80);
                     }
+                        score = "Score: " + Game.getInstance().getPlayer(0).getWin() + ":" +
+                                Game.getInstance().getPlayer(1).getWin();
 
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
