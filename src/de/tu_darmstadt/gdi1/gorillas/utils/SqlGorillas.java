@@ -85,6 +85,16 @@ public class SqlGorillas
         db.update(sql);
     }
 
+    public void insertPlayerName(String PlayerName1, String PlayerName2)
+    {
+        String sql = "UPDATE " + table +
+                " SET PlayerName ='" + PlayerName1 + "' WHERE ID=1;";
+        db.update(sql);
+        sql = "UPDATE " + table +
+                " SET PlayerName ='" + PlayerName2 + "' WHERE ID=2;";
+        db.update(sql);
+    }
+
     public String[] getPlayerName()
     {
         String sql = "SELECT PlayerName FROM " + table + " ORDER BY ID DESC LIMIT 0,2;";

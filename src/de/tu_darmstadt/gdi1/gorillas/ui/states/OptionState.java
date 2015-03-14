@@ -44,10 +44,10 @@ public class OptionState extends BasicTWLGameState {
         btnOK = new Button("OK");
         lError = new Label("");
 
-        if(GamePlayState.getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
+        if(Game.getInstance().getInverseControlKeys()) { btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed"); }
         else { btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle"); }
 
-        btnWind.setText(Game.getWind() ? "Wind" : "No wind");
+        btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
 
         btnOK.addCallback(new Runnable() {
             public void run() {
@@ -60,32 +60,32 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.addCallback(new Runnable() {
             public void run() {
-                if (Game.getInverseControlKeys()) {
+                if (Game.getInstance().getInverseControlKeys()) {
                     btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
-                    Game.setInverseControlKeys(false);
+                    Game.getInstance().setInverseControlKeys(false);
                 }
                 else {
                     btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-                    Game.setInverseControlKeys(true);
+                    Game.getInstance().setInverseControlKeys(true);
                 }
             }
         });
 
         btnWind.addCallback(new Runnable() {
             public void run() {
-                if (Game.getWind()) {
+                if (Game.getInstance().getWind()) {
                     btnWind.setText("No wind");
-                    Game.setWind(false);
+                    Game.getInstance().setWind(false);
                 }
                 else {
                     btnWind.setText("Wind");
-                    Game.setWind(true);
+                    Game.getInstance().setWind(true);
                 }
             }
         });
 
         //Max ist Gravitationsbeschleunigung des Jupiters
-        valueGravity.setMinMaxValue(0.0f, 24.79f);
+        valueGravity.setMinMaxValue(0.0f, Game.GRAVITY_MAX);
         valueGravity.setValue(9.80665f);
 
         rp.add(valueGravity);
@@ -131,31 +131,27 @@ public class OptionState extends BasicTWLGameState {
             s.setGravity(valueGravity.getValue());
             game.enterState(Game.MAINMENUSTATE);
         }
-        if (in_key.isKeyPressed(Input.KEY_UP))
-            valueGravity.setValue(valueGravity.getValue() + 1);
-        if (in_key.isKeyPressed(Input.KEY_DOWN))
-            valueGravity.setValue(valueGravity.getValue() - 1);
-        if (in_key.isKeyPressed(Input.KEY_C)){
-            if (Game.getInverseControlKeys()) {
+
+        if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
+        if (in_key.isKeyPressed(Input.KEY_UP)) { valueGravity.setValue(valueGravity.getValue() + 1); }
+        if (in_key.isKeyPressed(Input.KEY_DOWN)) { valueGravity.setValue(valueGravity.getValue() - 1); }
+        if (in_key.isKeyPressed(Input.KEY_C)) {
+            if (Game.getInstance().getInverseControlKeys()) {
                 btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
-                Game.setInverseControlKeys(false);
-            }
-            else {
+                Game.getInstance().setInverseControlKeys(false);
+            } else {
                 btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
-                Game.setInverseControlKeys(true);
+                Game.getInstance().setInverseControlKeys(true);
             }
         }
         if (in_key.isKeyPressed(Input.KEY_W)){
-            if (Game.getWind()) {
+            if (Game.getInstance().getWind()) {
                 btnWind.setText("No wind");
-                Game.setWind(false);
-            }
-            else {
+                Game.getInstance().setWind(false);
+            } else {
                 btnWind.setText("Wind");
-                Game.setWind(true);
+                Game.getInstance().setWind(true);
             }
         }
-
-        if (in_key.isKeyPressed(Input.KEY_M)) Game.toggleMute();
     }
 }

@@ -57,19 +57,19 @@ public class Banana extends Entity {
 
         Vector2f pos = getPosition();
         /* Move the Banana */
-        t = t + delta * Game.getTimeScale();
+        t = t + delta * Game.getInstance().getTimeScale();
         if((pos.y + getSize().y / 2 >= Gorillas.FRAME_HEIGHT)& (vx > 5 | vx < -5)){
             if(vx > 5) angle = -angle;
             if(vx < 5) angle = 180 - angle;
 
             pos0 = new Vector2f(pos.x, gc.getHeight() - (getSize().y + 10) / 2);
             speed = vx;
-            t = delta * Game.getTimeScale();
+            t = delta * Game.getInstance().getTimeScale();
         }
 
         vx = (float) Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD;
         vy = (float) Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD;
-        pos.x = (float) (pos0.x + (vx * t) + ( windAcceleration /2 * Game.getWindScale() * t * t));
+        pos.x = (float) (pos0.x + (vx * t) + ( windAcceleration /2 * Game.getInstance().getWindScale() * t * t));
         pos.y = (float) (pos0.y - (vy * t) + ( gravity /2 * t * t));
         setPosition(pos);
     }

@@ -45,9 +45,9 @@ public class InGamePause extends BasicTWLGameState {
         Input in_key = container.getInput();
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) game.enterState(Game.GAMEPLAYSTATE);
         if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_E)) System.exit(0);
+        if (in_key.isKeyPressed(Input.KEY_E)) Game.getInstance().exitGame();
         if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Game.MAINMENUSTATE);
-        if (in_key.isKeyPressed(Input.KEY_M)) GamePlayState.toggleMute();
+        if (in_key.isKeyPressed(Input.KEY_M)) Game.getInstance().toggleMute();
     }
 
     @Override
@@ -56,16 +56,16 @@ public class InGamePause extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         btnNewGame.setSize(128, 32);
-        btnNewGame.setPosition((Gorillas.FRAME_WIDTH >> 1) - 64, 150);
+        btnNewGame.setPosition((Gorillas.FRAME_WIDTH / 2) - 64, 150);
 
         btnExit.setSize(128, 32);
-        btnExit.setPosition((Gorillas.FRAME_WIDTH >> 1) - 64, 225);
+        btnExit.setPosition((Gorillas.FRAME_WIDTH / 2) - 64, 225);
 
         btnMute.setSize(64, 64);
         btnMute.setPosition(0, paneHeight - btnMute.getHeight());
 
         btnMainMenu.setSize(128,32);
-        btnMainMenu.setPosition((Gorillas.FRAME_WIDTH >> 1) - 64, 300);
+        btnMainMenu.setPosition((Gorillas.FRAME_WIDTH / 2) - 64, 300);
     }
 
     @Override
@@ -73,33 +73,16 @@ public class InGamePause extends BasicTWLGameState {
         rp = super.createRootPane();
 
         btnNewGame = new Button("New Game");
-        btnNewGame.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(Game.GAMESETUPSTATE);
-            }
-        });
+        btnNewGame.addCallback(() -> game.enterState(Game.GAMESETUPSTATE) );
 
         btnExit = new Button("Exit Game");
-        btnExit.addCallback(new Runnable() {
-            public void run() {
-                /// FIXME: ist system.exit ok?
-                System.exit(0);
-            }
-        });
+        btnExit.addCallback(() -> Game.getInstance().exitGame() );
 
         btnMute = new Button("Mute");
-        btnMute.addCallback(new Runnable() {
-            public void run() {
-                GamePlayState.toggleMute();
-            }
-        });
+        btnMute.addCallback(() -> Game.getInstance().toggleMute() );
 
         btnMainMenu = new Button("Main Menu");
-        btnMainMenu.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
-            }
-        });
+        btnMainMenu.addCallback(() -> game.enterState(Game.MAINMENUSTATE) );
 
         rp.add(btnNewGame);
         rp.add(btnExit);
