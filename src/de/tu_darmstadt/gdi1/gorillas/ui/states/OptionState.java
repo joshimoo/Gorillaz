@@ -131,6 +131,31 @@ public class OptionState extends BasicTWLGameState {
             s.setGravity(valueGravity.getValue());
             game.enterState(Game.MAINMENUSTATE);
         }
+        if (in_key.isKeyPressed(Input.KEY_UP))
+            valueGravity.setValue(valueGravity.getValue() + 1);
+        if (in_key.isKeyPressed(Input.KEY_DOWN))
+            valueGravity.setValue(valueGravity.getValue() - 1);
+        if (in_key.isKeyPressed(Input.KEY_C)){
+            if (Game.getInverseControlKeys()) {
+                btnInvertKeyControl.setText("UP-Down: Speed - Left-Right: Angle");
+                Game.setInverseControlKeys(false);
+            }
+            else {
+                btnInvertKeyControl.setText("UP-Down: Angle - Left-Right: Speed");
+                Game.setInverseControlKeys(true);
+            }
+        }
+        if (in_key.isKeyPressed(Input.KEY_W)){
+            if (Game.getWind()) {
+                btnWind.setText("No wind");
+                Game.setWind(false);
+            }
+            else {
+                btnWind.setText("Wind");
+                Game.setWind(true);
+            }
+        }
+
         if (in_key.isKeyPressed(Input.KEY_M)) Game.toggleMute();
     }
 }
