@@ -22,10 +22,13 @@ public class Game {
     public static final int GAMEVICTORY     = 8;
 
     // Constants
+    public static final float GRAVITY_MIN = 0;
     public static final float GRAVITY_MAX = 24.79f;
+    public static final float GRAVITY_DEFAULT = 9.80665f;
     public static final int MAX_NAMESIZE = 12;
 
     // Switches
+    private boolean testmode = false;
     private boolean debug = true;
     private boolean developer = true;
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
@@ -38,6 +41,12 @@ public class Game {
     private float TIME_SCALE = 1 / 400f;
     private float ROTATION_DRAG = 0.02f;
     private int EXPLOSION_RADIUS = 32;
+
+    // Gameplay Variables
+    private float gravity = GRAVITY_DEFAULT;
+
+    public float getGravity() { return gravity; }
+    public void setGravity(float value) { this.gravity = value > GRAVITY_MAX ? GRAVITY_MAX : value < GRAVITY_MIN ? GRAVITY_MIN : value; }
 
     /** Singleton Pattern */
     private Game() {
@@ -60,12 +69,17 @@ public class Game {
 
     public boolean getInverseControlKeys() { return inverseControlKeys; }
     public void setInverseControlKeys(boolean enable) { inverseControlKeys = enable; }
+    public void toggleInverseControlKeys() { inverseControlKeys = !inverseControlKeys; }
 
     public boolean getWind(){ return wind; }
     public void setWind(boolean enable) { wind = enable; }
+    public void toggleWind() { wind = !wind; }
 
-    public Boolean getDebug() { return debug; }
+    public boolean getDebug() { return debug; }
     public void setDebug(boolean enable) { debug = enable; }
+
+    public boolean isTestMode() { return testmode; }
+    public void enableTestMode(boolean enable) { testmode = enable; }
 
     public boolean getStorePlayerNames() { return storePlayerNames; }
     public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
@@ -89,7 +103,7 @@ public class Game {
     private int activePlayer = 0;
     public Player getActivePlayer() { return players.get(activePlayer); }
     public void setActivePlayer(Player activePlayer) { this.activePlayer = players.indexOf(activePlayer); }
-    public Player toogleNextPlayerActive() {
+    public Player toggleNextPlayerActive() {
         activePlayer = ++activePlayer % MAX_PLAYER_COUNT;
         return players.get(activePlayer);
     }

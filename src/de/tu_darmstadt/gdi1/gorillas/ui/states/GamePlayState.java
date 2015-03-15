@@ -2,7 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import de.matthiasmann.twl.Alignment;
 import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.ValueAdjusterInt;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
@@ -10,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
+import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -37,8 +37,8 @@ public class GamePlayState extends BasicTWLGameState {
 
     // UI
     private RootPane rp;
-    private ValueAdjusterInt if_speed;
-    private ValueAdjusterInt if_angle;
+    private AdvancedValueAdjusterInt if_speed; // We are using the advanced with the edit callback for tests
+    private AdvancedValueAdjusterInt if_angle; // We are using the advanced with the edit callback for tests
     private Button btnThrow;
 
     // GameState
@@ -94,20 +94,17 @@ public class GamePlayState extends BasicTWLGameState {
         return sun;
     }
 
-    public void setGravity(final float g){
-        gravity = g;
-    }
-
     public GamePlayState() { entityManager = StateBasedEntityManager.getInstance(); }
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         // Load All Static Content or Ressources (Background Images, Sounds etc)
         // Lazy Load the UI, this is better for the TestGameContainer
-        // if (rp == null) {this.createRootPane()};
-        background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
-        arrow = Assets.loadImage(Assets.Images.ARROW);
-        explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
+        if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
+            background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
+            arrow = Assets.loadImage(Assets.Images.ARROW);
+            explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
+        }
     }
 
     @Override
@@ -142,23 +139,22 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     void renderDebugShapes(GameContainer gc, StateBasedGame game, Graphics g) {
-        if (Game.getInstance().getDebug()) {
-            // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
-            //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
-            g.draw(sun.getShape());
-            g.draw(skyline.getShape());
-            g.draw(gorilla.getShape());
-            g.draw(gorillb.getShape());
-            g.draw(cloud.getShape());
-            if (banana != null) g.draw(banana.getShape());
+        // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
+        //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
+        g.draw(sun.getShape());
+        g.draw(skyline.getShape());
+        g.draw(gorilla.getShape());
+        g.draw(gorillb.getShape());
+        g.draw(cloud.getShape());
+        if (banana != null) g.draw(banana.getShape());
 
-            // Draw historical collisions
-            debugCollisions.forEach(g::draw);
-        }
+        // Draw historical collisions
+        debugCollisions.forEach(g::draw);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         g.drawImage(background, -20, -10);
         g.setColor(Color.yellow);
         g.drawString(comment, 450, 20);
@@ -173,8 +169,9 @@ public class GamePlayState extends BasicTWLGameState {
 
         if(banana != null) {
             banana.render(gc, game, g);
-            if(banana.getShape().getMaxY() < 0)
+            if(banana.getShape().getMaxY() < 0) {
                 g.drawImage(arrow, banana.getPosition().x - 8, 0);
+            }
         }
 
         drawPlayerNames(g);
@@ -345,12 +342,12 @@ public class GamePlayState extends BasicTWLGameState {
                 System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
-                Game.getInstance().toogleNextPlayerActive();
+                Game.getInstance().toggleNextPlayerActive();
                 if_speed.setValue(getActivePlayer().getLastSpeed());
                 if_angle.setValue(getActivePlayer().getLastAngle());
 
                 skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, Game.getInstance().getExplosionRadius());
-                if(!Game.getInstance().isMute()) { explosionSound.play(); }
+                playSound(explosionSound);
                 destroyBanana();
 
                 // TODO: Claculate PlayerDamage
@@ -403,6 +400,11 @@ public class GamePlayState extends BasicTWLGameState {
         }
     }
 
+    /** Plays the passed sound, unless the audio is muted */
+    private void playSound(Sound sound) {
+        if (!Game.getInstance().isMute() && sound != null) { sound.play(); }
+    }
+
     /**
      * Checks if the entity has left the playing field
      * Only checks Left/Right/Bottom
@@ -416,15 +418,17 @@ public class GamePlayState extends BasicTWLGameState {
         // Needed for adding the new Input-Elements
         rp = super.createRootPane();
 
-        if_speed= new ValueAdjusterInt();
-        if_angle = new ValueAdjusterInt();
+        if_speed= new AdvancedValueAdjusterInt();
+        if_angle = new AdvancedValueAdjusterInt();
         btnThrow = new Button("Throw");
 
         if_speed.setMinMaxValue(0,200);
         if_speed.setValue(80);
+        validVelocity = true;
 
         if_angle.setMinMaxValue(0,180);
         if_angle.setValue(120);
+        validAngle = true;
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
@@ -484,7 +488,7 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     /** Generates a Banana at the current Player */
-    private void throwBanana() {
+    public void throwBanana() {
         // Save new throw
         getActivePlayer().setThrow();
 
@@ -499,16 +503,59 @@ public class GamePlayState extends BasicTWLGameState {
         if (getActivePlayer() == Game.getInstance().getPlayer(0)) {
             Vector2f pos = getGorilla(0).getPosition();
             Vector2f size = getGorilla(0).getSize();
-            createBanana(new Vector2f(pos.x, pos.y - size.y), angle - 90, speed, gravity, windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), angle - 90, speed, Game.getInstance().getGravity(), windSpeed);
         } else {
             Vector2f pos = getGorilla(1).getPosition();
             Vector2f size = getGorilla(1).getSize();
-            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle + 90, speed, gravity, windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle + 90, speed, Game.getInstance().getGravity(), windSpeed);
         }
 
         // Remove Win-Message
         roundWinMessage = null;
         state = STATES.THROW;
     }
+
+    // TESTS
+    // HACK: This is dirty !_!
+    private boolean validVelocity = false;
+    private boolean validAngle = false;
+    public void resetPlayerWidget() {
+        if_speed.setValue(0);
+        if_angle.setValue(0);
+        validVelocity = false;
+        validAngle = false;
+    }
+
+    public int getVelocity() { return validVelocity ? if_speed.getValue() : -1; }
+    public void fillVelocityInput(char c) {
+        if(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
+            if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
+            validVelocity = true;
+        }
+    }
+
+    public int getAngle() { return validAngle ? if_angle.getValue() : -1; }
+    public void fillAngleInput(char c) {
+        if(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
+            if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
+            validAngle = true;
+        }
+    }
+
+    /** This only works for positive numbers */
+    public boolean verifyInput(int oldValue, int min, int max, char c) {
+        if (Character.isDigit(c)) {
+            int newValue = oldValue * 10 + Character.getNumericValue(c);
+            if (newValue <= max && newValue >= min) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+
 
 }

@@ -26,23 +26,19 @@ public class HighScoreState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-        this.createRootPane();
         this.game = game;
-
         refreshScore();
+        if (!Game.getInstance().isTestMode()) {
+            background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+        }
     }
 
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
-        btnStart = new Button("Back");
 
-        btnStart.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
-            }
-        });
+        btnStart = new Button("Back");
+        btnStart.addCallback(() -> game.enterState(Game.MAINMENUSTATE));
 
         rp.add(btnStart);
         return rp;
@@ -50,6 +46,7 @@ public class HighScoreState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         graphics.drawImage(background, -10, -20);
         graphics.setColor(new Color(50,50,50,150));
         graphics.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
@@ -88,8 +85,8 @@ public class HighScoreState extends BasicTWLGameState {
 
         // Layout subject to change
         btnStart.setSize(256, 32);
-        // Center the Textfields on the screen. Jetzt wird duch 2 geteilt :)
-        int x = (paneWidth - btnStart.getWidth()) >> 1;
+        // Center the Textfields on the screen.
+        int x = (paneWidth - btnStart.getWidth()) / 2;
 
         btnStart.setPosition(x, 500);
     }
