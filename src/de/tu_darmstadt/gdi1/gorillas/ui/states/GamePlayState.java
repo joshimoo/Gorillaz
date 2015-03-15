@@ -499,11 +499,11 @@ public class GamePlayState extends BasicTWLGameState {
         if (getActivePlayer() == Game.getInstance().getPlayer(0)) {
             Vector2f pos = getGorilla(0).getPosition();
             Vector2f size = getGorilla(0).getSize();
-            createBanana(new Vector2f(pos.x, pos.y - size.y), angle - 90, speed, gravity, windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), angle - 90, speed, Game.getInstance().getGravity(), windSpeed);
         } else {
             Vector2f pos = getGorilla(1).getPosition();
             Vector2f size = getGorilla(1).getSize();
-            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle + 90, speed, gravity, windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle + 90, speed, Game.getInstance().getGravity(), windSpeed);
         }
 
         // Remove Win-Message

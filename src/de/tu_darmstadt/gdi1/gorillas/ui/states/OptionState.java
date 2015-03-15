@@ -85,8 +85,8 @@ public class OptionState extends BasicTWLGameState {
         });
 
         //Max ist Gravitationsbeschleunigung des Jupiters
-        valueGravity.setMinMaxValue(0.0f, Game.GRAVITY_MAX);
-        valueGravity.setValue(9.80665f);
+        valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
+        valueGravity.setValue(Game.GRAVITY_DEFAULT);
 
         rp.add(valueGravity);
         rp.add(btnInvertKeyControl);

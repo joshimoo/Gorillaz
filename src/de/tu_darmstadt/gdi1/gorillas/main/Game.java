@@ -22,7 +22,9 @@ public class Game {
     public static final int GAMEVICTORY     = 8;
 
     // Constants
+    public static final float GRAVITY_MIN = 0;
     public static final float GRAVITY_MAX = 24.79f;
+    public static final float GRAVITY_DEFAULT = 9.80665f;
     public static final int MAX_NAMESIZE = 12;
 
     // Switches
@@ -38,6 +40,12 @@ public class Game {
     private float TIME_SCALE = 1 / 400f;
     private float ROTATION_DRAG = 0.02f;
     private int EXPLOSION_RADIUS = 32;
+
+    // Gameplay Variables
+    private float gravity = GRAVITY_DEFAULT;
+
+    public float getGravity() { return gravity; }
+    public void setGravity(float value) { this.gravity = value > GRAVITY_MAX ? GRAVITY_MAX : value < GRAVITY_MIN ? GRAVITY_MIN : value; }
 
     /** Singleton Pattern */
     private Game() {
