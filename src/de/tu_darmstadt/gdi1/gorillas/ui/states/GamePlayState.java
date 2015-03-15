@@ -2,7 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import de.matthiasmann.twl.Alignment;
 import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.ValueAdjusterInt;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
@@ -10,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
+import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -37,8 +37,8 @@ public class GamePlayState extends BasicTWLGameState {
 
     // UI
     private RootPane rp;
-    private ValueAdjusterInt if_speed;
-    private ValueAdjusterInt if_angle;
+    private AdvancedValueAdjusterInt if_speed; // We are using the advanced with the edit callback for tests
+    private AdvancedValueAdjusterInt if_angle; // We are using the advanced with the edit callback for tests
     private Button btnThrow;
 
     // GameState
@@ -347,7 +347,7 @@ public class GamePlayState extends BasicTWLGameState {
                 if_angle.setValue(getActivePlayer().getLastAngle());
 
                 skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, Game.getInstance().getExplosionRadius());
-                if(!Game.getInstance().isMute()) { explosionSound.play(); }
+                playSound(explosionSound);
                 destroyBanana();
 
                 // TODO: Claculate PlayerDamage
@@ -400,6 +400,11 @@ public class GamePlayState extends BasicTWLGameState {
         }
     }
 
+    /** Plays the passed sound, unless the audio is muted */
+    private void playSound(Sound sound) {
+        if (!Game.getInstance().isMute() && sound != null) { sound.play(); }
+    }
+
     /**
      * Checks if the entity has left the playing field
      * Only checks Left/Right/Bottom
@@ -413,15 +418,15 @@ public class GamePlayState extends BasicTWLGameState {
         // Needed for adding the new Input-Elements
         rp = super.createRootPane();
 
-        if_speed= new ValueAdjusterInt();
-        if_angle = new ValueAdjusterInt();
+        if_speed= new AdvancedValueAdjusterInt();
+        if_angle = new AdvancedValueAdjusterInt();
         btnThrow = new Button("Throw");
 
         if_speed.setMinMaxValue(0,200);
-        if_speed.setValue(80);
+        //if_speed.setValue(80);
 
         if_angle.setMinMaxValue(0,180);
-        if_angle.setValue(120);
+        //if_angle.setValue(120);
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
@@ -481,7 +486,7 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     /** Generates a Banana at the current Player */
-    private void throwBanana() {
+    public void throwBanana() {
         // Save new throw
         getActivePlayer().setThrow();
 
@@ -507,5 +512,37 @@ public class GamePlayState extends BasicTWLGameState {
         roundWinMessage = null;
         state = STATES.THROW;
     }
+
+    // TESTS
+    public void resetPlayerWidget() {
+        if_speed.setValue(-1);
+        if_angle.setValue(-1);
+    }
+
+    public int getVelocity() { return if_speed.getValue(); }
+    public void fillVelocityInput(char c) {
+        if_speed.setValue(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c));
+    }
+
+    public int getAngle() { return if_angle.getValue(); }
+    public void fillAngleInput(char c) {
+        if_angle.setValue(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c));
+    }
+
+    /** This only works for positive numbers */
+    public int verifyInput(int oldValue, int min, int max, char c) {
+        if (Character.isDigit(c)) {
+            int newValue = oldValue * 10 + Character.getNumericValue(c);
+            if (newValue <= max && newValue >= min) {
+                return newValue;
+            }
+        }
+
+        return oldValue;
+    }
+
+
+
+
 
 }
