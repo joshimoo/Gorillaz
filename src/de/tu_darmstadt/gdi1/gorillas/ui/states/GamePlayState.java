@@ -345,7 +345,7 @@ public class GamePlayState extends BasicTWLGameState {
                 System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
-                Game.getInstance().toogleNextPlayerActive();
+                Game.getInstance().toggleNextPlayerActive();
                 if_speed.setValue(getActivePlayer().getLastSpeed());
                 if_angle.setValue(getActivePlayer().getLastAngle());
 

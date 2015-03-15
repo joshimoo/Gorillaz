@@ -24,7 +24,6 @@ public class GameSetupState extends BasicTWLGameState {
     private EditField txtName1, txtName2;
 
     private StateBasedGame game;
-    private GameContainer cont;
     private Label lPlayer1Error;
     private Label lPlayer2Error;
 
@@ -38,7 +37,6 @@ public class GameSetupState extends BasicTWLGameState {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
         this.createRootPane();
         this.game = game;
-        this.cont = gameContainer;
     }
 
     @Override
@@ -50,11 +48,7 @@ public class GameSetupState extends BasicTWLGameState {
         lPlayer1Error = new Label("");
         lPlayer2Error = new Label("");
 
-        btnStart.addCallback(new Runnable() {
-            public void run() {
-                saveNamesAndStartGame(game, cont);
-            }
-        });
+        btnStart.addCallback(this::startGame);
 
         loadPlayerNames();
 
@@ -80,12 +74,11 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) { saveNamesAndStartGame(stateBasedGame, cont); }
-        if (in_key.isKeyPressed(Input.KEY_TAB))
-        {
-            if (txtName1.hasKeyboardFocus()) txtName2.requestKeyboardFocus();
-            else if(txtName2.hasKeyboardFocus()) btnStart.requestKeyboardFocus();
-            else txtName1.requestKeyboardFocus();
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) { startGame(); }
+        if (in_key.isKeyPressed(Input.KEY_TAB)) {
+            if (txtName1.hasKeyboardFocus()) { txtName2.requestKeyboardFocus(); }
+            else if(txtName2.hasKeyboardFocus()) { btnStart.requestKeyboardFocus(); }
+            else { txtName1.requestKeyboardFocus(); }
         }
     }
 
@@ -162,12 +155,16 @@ public class GameSetupState extends BasicTWLGameState {
     public String getPlayer1Error() { return lPlayer1Error.getText(); }
     public String getPlayer2Error() { return lPlayer2Error.getText(); }
 
+    public void startGame() {
+        saveNamesAndStartGame(game);
+    }
+
     /**
      * Stores the playernames and changes to the GAMEPLAYSTATE
      *
      * @param game StateBasedGame
      */
-    private void saveNamesAndStartGame(StateBasedGame game, GameContainer cont) {
+    private void saveNamesAndStartGame(StateBasedGame game) {
         String n1 = txtName1.getText();
         String n2 = txtName2.getText();
 
@@ -175,15 +172,13 @@ public class GameSetupState extends BasicTWLGameState {
             lPlayer1Error.setVisible(false);
             lPlayer2Error.setVisible(false);
             game.enterState(Game.GAMEPLAYSTATE);
-
         } else {
             lPlayer1Error.setVisible(!getPlayer1Error().isEmpty());
             lPlayer2Error.setVisible(!getPlayer2Error().isEmpty());
         }
     }
 
-    private void storePlayerNamesToSql(String player1, String player2)
-    {
+    private void storePlayerNamesToSql(String player1, String player2) {
         // TODO: Move this later to a HIGHSCORE Class
         if(Game.getInstance().getStorePlayerNames()) {
             SqlGorillas sql = new SqlGorillas("player_gorillas.data", "Players");
@@ -191,8 +186,7 @@ public class GameSetupState extends BasicTWLGameState {
         }
     }
 
-    private void loadPlayerNames()
-    {
+    private void loadPlayerNames() {
         if(Game.getInstance().getStorePlayerNames()) {
             SqlGorillas sql = new SqlGorillas("player_gorillas.data", "Players");
             String[] names = sql.getPlayerName();

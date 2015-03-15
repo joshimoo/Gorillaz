@@ -36,13 +36,9 @@ public class HighScoreState extends BasicTWLGameState {
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
-        btnStart = new Button("Back");
 
-        btnStart.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
-            }
-        });
+        btnStart = new Button("Back");
+        btnStart.addCallback(() -> game.enterState(Game.MAINMENUSTATE));
 
         rp.add(btnStart);
         return rp;
@@ -88,8 +84,8 @@ public class HighScoreState extends BasicTWLGameState {
 
         // Layout subject to change
         btnStart.setSize(256, 32);
-        // Center the Textfields on the screen. Jetzt wird duch 2 geteilt :)
-        int x = (paneWidth - btnStart.getWidth()) >> 1;
+        // Center the Textfields on the screen.
+        int x = (paneWidth - btnStart.getWidth()) / 2;
 
         btnStart.setPosition(x, 500);
     }

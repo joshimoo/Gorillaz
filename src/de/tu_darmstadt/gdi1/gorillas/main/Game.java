@@ -68,11 +68,13 @@ public class Game {
 
     public boolean getInverseControlKeys() { return inverseControlKeys; }
     public void setInverseControlKeys(boolean enable) { inverseControlKeys = enable; }
+    public void toggleInverseControlKeys() { inverseControlKeys = !inverseControlKeys; }
 
     public boolean getWind(){ return wind; }
     public void setWind(boolean enable) { wind = enable; }
+    public void toggleWind() { wind = !wind; }
 
-    public Boolean getDebug() { return debug; }
+    public boolean getDebug() { return debug; }
     public void setDebug(boolean enable) { debug = enable; }
 
     public boolean getStorePlayerNames() { return storePlayerNames; }
@@ -97,7 +99,7 @@ public class Game {
     private int activePlayer = 0;
     public Player getActivePlayer() { return players.get(activePlayer); }
     public void setActivePlayer(Player activePlayer) { this.activePlayer = players.indexOf(activePlayer); }
-    public Player toogleNextPlayerActive() {
+    public Player toggleNextPlayerActive() {
         activePlayer = ++activePlayer % MAX_PLAYER_COUNT;
         return players.get(activePlayer);
     }
