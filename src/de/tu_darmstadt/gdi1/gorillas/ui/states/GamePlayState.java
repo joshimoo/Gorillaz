@@ -94,20 +94,17 @@ public class GamePlayState extends BasicTWLGameState {
         return sun;
     }
 
-    public void setGravity(final float g){
-        gravity = g;
-    }
-
     public GamePlayState() { entityManager = StateBasedEntityManager.getInstance(); }
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         // Load All Static Content or Ressources (Background Images, Sounds etc)
         // Lazy Load the UI, this is better for the TestGameContainer
-        // if (rp == null) {this.createRootPane()};
-        background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
-        arrow = Assets.loadImage(Assets.Images.ARROW);
-        explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
+        if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
+            background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
+            arrow = Assets.loadImage(Assets.Images.ARROW);
+            explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
+        }
     }
 
     @Override
@@ -142,23 +139,22 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     void renderDebugShapes(GameContainer gc, StateBasedGame game, Graphics g) {
-        if (Game.getInstance().getDebug()) {
-            // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
-            //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
-            g.draw(sun.getShape());
-            g.draw(skyline.getShape());
-            g.draw(gorilla.getShape());
-            g.draw(gorillb.getShape());
-            g.draw(cloud.getShape());
-            if (banana != null) g.draw(banana.getShape());
+        // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
+        //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
+        g.draw(sun.getShape());
+        g.draw(skyline.getShape());
+        g.draw(gorilla.getShape());
+        g.draw(gorillb.getShape());
+        g.draw(cloud.getShape());
+        if (banana != null) g.draw(banana.getShape());
 
-            // Draw historical collisions
-            debugCollisions.forEach(g::draw);
-        }
+        // Draw historical collisions
+        debugCollisions.forEach(g::draw);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         g.drawImage(background, -20, -10);
         g.setColor(Color.yellow);
         g.drawString(comment, 450, 20);
@@ -173,8 +169,9 @@ public class GamePlayState extends BasicTWLGameState {
 
         if(banana != null) {
             banana.render(gc, game, g);
-            if(banana.getShape().getMaxY() < 0)
+            if(banana.getShape().getMaxY() < 0) {
                 g.drawImage(arrow, banana.getPosition().x - 8, 0);
+            }
         }
 
         drawPlayerNames(g);

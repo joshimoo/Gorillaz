@@ -28,9 +28,10 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
         this.game = game;
-        this.createRootPane();
+        if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
+            background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+        }
 
     }
 
@@ -86,6 +87,7 @@ public class OptionState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         graphics.drawImage(background, -10, -20);
     }
 

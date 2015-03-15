@@ -31,12 +31,12 @@ public class GameVictory extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-        this.createRootPane();
         this.game = game;
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         GamePlayState s = (GamePlayState) game.getState(Game.GAMEPLAYSTATE);
         s.render(gc, game, g);
         g.setColor(color);

@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.test.setup;
 
-import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -30,10 +31,12 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public TestGorillas(boolean debug) {
         super("Gorillas");
         setDebug(debug);
+        Game.getInstance().enableTestMode(true);
     }
 
     public static void setDebug(boolean debuging) {
         debug = debuging;
+        Game.getInstance().setDebug(debuging);
     }
 
     @Override
@@ -41,10 +44,24 @@ public class TestGorillas extends TWLTestStateBasedGame {
 
         // Add states to the StateBasedGame
         this.addState(new MainMenuState());
+        this.addState(new GameSetupState());
+        this.addState(new GamePlayState());
+        this.addState(new HighScoreState());
+        this.addState(new InGamePause());
+        this.addState(new HelpState());
+        this.addState(new GameVictory());
+        this.addState(new OptionState());
         // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
-        StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.MAINMENUSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMESETUPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEPLAYSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.HIGHSCORESTATE);
+        StateBasedEntityManager.getInstance().addState(Game.INGAMEPAUSE);
+        StateBasedEntityManager.getInstance().addState(Game.HELPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEVICTORY);
+        StateBasedEntityManager.getInstance().addState(Game.OPTIONSTATE);
         // TODO: Add the other states...
     }
 

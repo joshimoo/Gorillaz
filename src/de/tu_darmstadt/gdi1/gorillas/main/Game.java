@@ -28,6 +28,7 @@ public class Game {
     public static final int MAX_NAMESIZE = 12;
 
     // Switches
+    private boolean testmode = false;
     private boolean debug = true;
     private boolean developer = true;
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
@@ -76,6 +77,9 @@ public class Game {
 
     public boolean getDebug() { return debug; }
     public void setDebug(boolean enable) { debug = enable; }
+
+    public boolean isTestMode() { return testmode; }
+    public void enableTestMode(boolean enable) { testmode = enable; }
 
     public boolean getStorePlayerNames() { return storePlayerNames; }
     public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
