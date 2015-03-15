@@ -479,7 +479,7 @@ public class GamePlayState extends BasicTWLGameState {
     private void createBanana(Vector2f pos, float throwAngle, float throwSpeed, float gravity, float windAcceleration) {
         // Cleanup any remaining, Bananas since at the moment we can only have a maximum of 1
         if (banana != null) {entityManager.removeEntity(getID(), banana);}
-        banana = new Banana(pos.x, pos.y, (int)throwAngle, (int)throwSpeed, gravity, (int)windAcceleration);
+        banana = new Banana(pos, (int)throwAngle, (int)throwSpeed, gravity, (int)windAcceleration);
         entityManager.addEntity(getID(), banana);
     }
 
