@@ -423,10 +423,12 @@ public class GamePlayState extends BasicTWLGameState {
         btnThrow = new Button("Throw");
 
         if_speed.setMinMaxValue(0,200);
-        //if_speed.setValue(80);
+        if_speed.setValue(80);
+        validVelocity = true;
 
         if_angle.setMinMaxValue(0,180);
-        //if_angle.setValue(120);
+        if_angle.setValue(120);
+        validAngle = true;
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
@@ -514,31 +516,42 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     // TESTS
+    // HACK: This is dirty !_!
+    private boolean validVelocity = false;
+    private boolean validAngle = false;
     public void resetPlayerWidget() {
-        if_speed.setValue(-1);
-        if_angle.setValue(-1);
+        if_speed.setValue(0);
+        if_angle.setValue(0);
+        validVelocity = false;
+        validAngle = false;
     }
 
-    public int getVelocity() { return if_speed.getValue(); }
+    public int getVelocity() { return validVelocity ? if_speed.getValue() : -1; }
     public void fillVelocityInput(char c) {
-        if_speed.setValue(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c));
+        if(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
+            if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
+            validVelocity = true;
+        }
     }
 
-    public int getAngle() { return if_angle.getValue(); }
+    public int getAngle() { return validAngle ? if_angle.getValue() : -1; }
     public void fillAngleInput(char c) {
-        if_angle.setValue(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c));
+        if(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
+            if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
+            validAngle = true;
+        }
     }
 
     /** This only works for positive numbers */
-    public int verifyInput(int oldValue, int min, int max, char c) {
+    public boolean verifyInput(int oldValue, int min, int max, char c) {
         if (Character.isDigit(c)) {
             int newValue = oldValue * 10 + Character.getNumericValue(c);
             if (newValue <= max && newValue >= min) {
-                return newValue;
+                return true;
             }
         }
 
-        return oldValue;
+        return false;
     }
 
 

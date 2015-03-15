@@ -1,5 +1,8 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -267,7 +270,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * GamePlayState
      */
     public int getPlayer1Score() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(0).getScore();
+        }
+
         return -1;
     }
 
@@ -279,7 +285,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * GamePlayState
      */
     public int getPlayer2Score() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(1).getScore();
+        }
+
         return -1;
     }
 
@@ -295,7 +304,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * turn of anyone
      */
     public boolean isPlayer1Turn() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(0) == Game.getInstance().getActivePlayer();
+            // TODO: Turn of anyone does that mean if we are currently having an active banana?
+        }
+
         return false;
     }
 
@@ -311,7 +324,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * turn of anyone
      */
     public boolean isPlayer2Turn() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(1) == Game.getInstance().getActivePlayer();
+            // TODO: Turn of anyone does that mean if we are currently having an active banana?
+        }
+
         return false;
     }
 }
