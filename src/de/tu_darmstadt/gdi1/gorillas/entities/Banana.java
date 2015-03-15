@@ -22,8 +22,14 @@ public class Banana extends Entity {
     public Banana(Vector2f pos, final int angle, final int speed, float g, int w) {
         super("Banana");
 
-        // Rendering
-        addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.BANANA)));
+        if (!Game.getInstance().isTestMode()) {
+            // Rendering
+            addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.BANANA)));
+        } else {
+            // In Test Mode the banana should be 10x10 px
+            setSize(new Vector2f(10, 10));
+        }
+
         rotationSpeed = (speed * 0.02f) * 360f / 1000f;
 
         // Flight Params
