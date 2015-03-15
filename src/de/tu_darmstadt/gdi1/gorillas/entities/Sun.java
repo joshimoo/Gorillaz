@@ -23,13 +23,15 @@ public class Sun extends Entity {
         super("Sun");
         setPosition(pos);
 
-        // Rendering
-        Image[] frames = new Image[] {
-                Assets.loadImage(Assets.Images.SUN_SMILING),
-                Assets.loadImage(Assets.Images.SUN_ASTONISHED)
-        };
-        animation = new FrameRenderComponent(frames, frames[0].getWidth(), frames[0].getHeight());
-        addComponent(animation);
+        if (!Game.getInstance().isTestMode()) {
+            // Rendering
+            Image[] frames = new Image[]{Assets.loadImage(Assets.Images.SUN_SMILING), Assets.loadImage(Assets.Images.SUN_ASTONISHED)};
+            animation = new FrameRenderComponent(frames, frames[0].getWidth(), frames[0].getHeight());
+            addComponent(animation);
+        } else {
+            // In Test Mode the sun should be 100x100 px
+            setSize(new Vector2f(100, 100));
+        }
     }
 
     @Override

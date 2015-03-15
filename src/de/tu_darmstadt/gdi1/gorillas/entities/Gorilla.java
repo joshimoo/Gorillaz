@@ -24,16 +24,25 @@ public class Gorilla extends Entity {
     public Gorilla(Vector2f pos) {
         super("Gorilla");
 
-        // Rendering
-        Image[] frames = new Image[] {
-                Assets.loadImage(Assets.Images.GORRILA_LEFT),
-                Assets.loadImage(Assets.Images.GORRILA),
-                Assets.loadImage(Assets.Images.GORRILA_RIGHT)
-        };
-        addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
+        if (!Game.getInstance().isTestMode()) {
+            // Rendering
+            Image[] frames = new Image[] {
+                    Assets.loadImage(Assets.Images.GORRILA_LEFT),
+                    Assets.loadImage(Assets.Images.GORRILA),
+                    Assets.loadImage(Assets.Images.GORRILA_RIGHT)
+            };
+            addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
 
-        // Change our Center position so that our feet touch the top of the building
-        setPosition(new Vector2f(pos.x - frames[0].getWidth() / 2, pos.y - frames[0].getHeight() / 2));
+            // Change our Center position so that our feet touch the top of the building
+            setPosition(new Vector2f(pos.x - frames[0].getWidth() / 2, pos.y - frames[0].getHeight() / 2));
+
+        } else {
+            // In Test Mode set the size explicitly since we don't have a renderer
+            setSize(new Vector2f(37, 42));
+
+            // Change our Center position so that our feet touch the top of the building
+            setPosition(new Vector2f(pos.x - getSize().x / 2, pos.y - getSize().y / 2));
+        }
     }
 
 }
