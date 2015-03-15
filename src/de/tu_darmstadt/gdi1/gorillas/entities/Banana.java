@@ -38,11 +38,6 @@ public class Banana extends Entity {
         if(angle > 90) rotationSpeed = -rotationSpeed;
     }
 
-    @Deprecated
-    public Banana(final float x, final float y, final int angle, final int speed, float g, int w){
-        this(new Vector2f(x, y), angle, speed, g, w);
-    }
-
     @Override
     public Shape getShape() {
         return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
