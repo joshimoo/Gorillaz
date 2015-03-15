@@ -35,6 +35,7 @@ public class InGamePause extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         game.getState(Game.GAMEPLAYSTATE).render(gc, game, g);
         g.setColor(color);
         g.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);

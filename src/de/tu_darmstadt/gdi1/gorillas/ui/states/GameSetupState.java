@@ -34,9 +34,10 @@ public class GameSetupState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-        this.createRootPane();
         this.game = game;
+        if (!Game.getInstance().isTestMode()) {
+            background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+        }
     }
 
     @Override
@@ -62,6 +63,7 @@ public class GameSetupState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         graphics.drawImage(background, -10, -20);
     }
 
