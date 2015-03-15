@@ -13,7 +13,15 @@ import org.newdawn.slick.state.StateBasedGame;
 public class HelpState extends BasicTWLGameState {
 
     private Image background;
-    private Button btnStart;
+    private Button btnNext;
+    private Button btnBack;
+    private Button btnMainMenu;
+    private int page;
+    private String page0;
+    private String page1;
+    private String page2;
+    private String page3;
+    private String[] pages;
 
     private StateBasedGame game;
 
@@ -27,21 +35,97 @@ public class HelpState extends BasicTWLGameState {
         background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
         this.createRootPane();
         this.game = game;
+
+        page = 0;
+        page0 = "How to play the game:\n" +
+                "\n" +
+                "Each Player takes control of one gorilla and\n" +
+                "throws bananas at the other gorilla.\n" +
+                "The Player who hits tree times first wins the game.\n" +
+                "You can change the starting \n" +
+                "angle and speed to control the flight.\n" +
+                "Moreover, you can influence the gravity and \n" +
+                "switch the wind on or off in the Option Menu.";
+        page1 = "Main menu:\n" +
+                " Enter -> New Game\n" +
+                " Escape -> Exit Game\n" +
+                " M -> Mute\n" +
+                " S -> Highscore\n" +
+                " H -> Help\n" +
+                " O -> Options\n" +
+                " \n" +
+                "Setup New Game:\n" +
+                " Enter -> Start Game\n" +
+                " Tap -> Switch between text fields\n" +
+                " \n" +
+                "In Game:\n" +
+                " Up/W -> Increase Speed(Angle)\n" +
+                " Down/S -> Decrease Speed(Angle)\n" +
+                " Right/D -> Increase Angle(Speed)\n" +
+                " Left/A -> Decrease Angle(Speed)\n" +
+                " \n" +
+                " Enter/Space -> Throw Banana\n" +
+                " Escape/P -> Pause\n" +
+                " M -> Mute";
+        page2 = "Pause:\n" +
+                " Escape/P -> Return to Game\n" +
+                " Enter -> New Game\n" +
+                " E -> Exit Game\n" +
+                " S -> Return to Main Menu\n" +
+                " M -> Mute\n" +
+                " \n" +
+                "Victory:\n" +
+                " Escape -> Return to Main Menu\n" +
+                " Enter -> New Game\n" +
+                " \n" +
+                "Highscore:\n" +
+                " Enter/Escape/S -> Main Menu";
+        page3 = " Options:\n" +
+                " Escape/O -> Except Options and return to Main Menu\n" +
+                " UP -> Increase Gravity\n" +
+                " DOWN -> Decrease Gravity\n" +
+                " C -> Change Control for Angle/Speed\n" +
+                " W -> Turn Wind on/off\n" +
+                " M -> Mute\n" +
+                " \n" +
+                "Help:\n" +
+                " Enter/Escape/H -> Return to Main Menu\n" +
+                " RIGHT/D -> Next Page\n" +
+                " LEFT/A -> Last Page";
+        pages = new String[]{page0, page1, page2, page3};
     }
 
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
-        btnStart = new Button("Back");
+        btnNext = new Button("Next");
+        btnBack = new Button("Back");
+        btnMainMenu = new Button("MainMenu");
 
-        btnStart.addCallback(new Runnable() {
+        btnNext.addCallback(new Runnable() {
+            public void run() {
+                if(page < pages.length - 1) page++;
+                else page = 0;
+            }
+        });
+
+        btnBack.addCallback(new Runnable(){
+            public void run() {
+                if(page > 0) page--;
+                else page = 3;
+            }
+        });
+
+        btnMainMenu.addCallback(new Runnable() {
             public void run() {
                 game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
             }
         });
 
 
-        rp.add(btnStart);
+        rp.add(btnNext);
+        rp.add(btnBack);
+        rp.add(btnMainMenu);
         return rp;
     }
 
@@ -51,37 +135,21 @@ public class HelpState extends BasicTWLGameState {
         graphics.setColor(new Color(50,50,50,150));
         graphics.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
         graphics.setColor(Color.yellow);
-        graphics.drawString(
-                "Mainmenue\n" +
-                        "\n" +
-                        "    Enter -> new Game\n" +
-                        "    H -> Help\n" +
-                        "    O -> Options\n" +
-                        "    S -> HighScore\n" +
-                        "    ESC -> Exit\n" +
-                        "    M -> Mute\n" +
-                        "\n" +
-                        "Game-Setup\n" +
-                        "\n" +
-                        "    Enter -> GO\n" +
-                        "    Tab -> Txt1 - Txt2 - Go-Button (Space aktiviert Button)\n" +
-                        "\n" +
-                        "Game-State\n" +
-                        "\n" +
-                        "    ESC / P -> Pause\n" +
-                        "    WASD und Pfeiltasten -> Speed und Winkel\n" +
-                        "\n" +
-                        "Pause\n" +
-                        "\n" +
-                        "    ESC / P -> Game"
-                ,100,50);
+        graphics.drawString(pages[page],100,50);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
         if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_H)) { game.enterState(Game.MAINMENUSTATE); }
-
+        if (in_key.isKeyPressed(Input.KEY_RIGHT)  || in_key.isKeyPressed(Input.KEY_D)){
+            if(page < pages.length - 1) page++;
+            else page = 0;
+        }
+        if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)){
+            if(page > 0) page--;
+            else page = 3;
+        }
     }
 
     @Override
@@ -90,10 +158,16 @@ public class HelpState extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         // Layout subject to change
-        btnStart.setSize(256, 32);
+        btnNext.setSize(128, 32);
+        btnBack.setSize(128, 32);
+        btnMainMenu.setSize(128, 32);
         // Center the Textfields on the screen. Jetzt wird duch 2 geteilt :)
-        int x = (paneWidth - btnStart.getWidth()) >> 1;
+        int x = (paneWidth - btnNext.getWidth()) >> 1;
 
-        btnStart.setPosition(x, 500);
+        btnNext.setPosition(x, 500);
+        btnBack.setPosition(x - 140, 500);
+        btnMainMenu.setPosition(x + 140, 500);
+
+
     }
 }
