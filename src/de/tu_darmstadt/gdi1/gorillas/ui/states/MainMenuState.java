@@ -73,7 +73,7 @@ public class MainMenuState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         entityManager.updateEntities(container, game, delta);
         Input in_key = container.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_N)) { game.enterState(Game.GAMESETUPSTATE); }
         if (in_key.isKeyPressed(Input.KEY_ESCAPE)) { Game.getInstance().exitGame(); }
         if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
         if (in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Game.HIGHSCORESTATE); }

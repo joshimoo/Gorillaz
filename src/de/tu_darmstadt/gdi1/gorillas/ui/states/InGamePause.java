@@ -43,11 +43,11 @@ public class InGamePause extends BasicTWLGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
-        if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) game.enterState(Game.GAMEPLAYSTATE);
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
-        if (in_key.isKeyPressed(Input.KEY_E)) Game.getInstance().exitGame();
-        if (in_key.isKeyPressed(Input.KEY_S)) game.enterState(Game.MAINMENUSTATE);
-        if (in_key.isKeyPressed(Input.KEY_M)) Game.getInstance().toggleMute();
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_P)) { game.enterState(Game.GAMEPLAYSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_E)) { Game.getInstance().exitGame(); }
+        if (in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Game.MAINMENUSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
     }
 
     @Override
