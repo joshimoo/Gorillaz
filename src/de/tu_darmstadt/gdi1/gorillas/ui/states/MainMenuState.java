@@ -32,9 +32,9 @@ public class MainMenuState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-
-        this.createRootPane();
+        if (!Game.getInstance().isTestMode()) {
+            background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+        }
         this.game = game;
     }
 
@@ -73,7 +73,7 @@ public class MainMenuState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         entityManager.updateEntities(container, game, delta);
         Input in_key = container.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_N)) { game.enterState(Game.GAMESETUPSTATE); }
         if (in_key.isKeyPressed(Input.KEY_ESCAPE)) { Game.getInstance().exitGame(); }
         if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
         if (in_key.isKeyPressed(Input.KEY_S)) { game.enterState(Game.HIGHSCORESTATE); }
@@ -83,6 +83,7 @@ public class MainMenuState extends BasicTWLGameState {
 
 	@Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         g.drawImage(background, -10, -20);
         entityManager.renderEntities(container, game, g);
     }

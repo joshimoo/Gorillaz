@@ -26,7 +26,6 @@ public class Gorillas extends TWLStateBasedGame {
         Game.getInstance().setDebug(debug);
     }
 
-
     public static void main(String[] args) throws SlickException {
         Utils.setNativePath();
         AppGameContainer app = new AppGameContainer(new Gorillas(Game.getInstance().getDebug()));

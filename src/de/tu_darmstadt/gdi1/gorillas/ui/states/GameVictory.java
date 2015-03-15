@@ -31,16 +31,16 @@ public class GameVictory extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-        this.createRootPane();
         this.game = game;
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         GamePlayState s = (GamePlayState) game.getState(Game.GAMEPLAYSTATE);
         s.render(gc, game, g);
         g.setColor(color);
-        g.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
+        g.fillRect(0, 0, gc.getWidth(), gc.getHeight());
 
         if(s.getActivePlayer() != null) {
             Player player = s.getActivePlayer();
@@ -54,11 +54,8 @@ public class GameVictory extends BasicTWLGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
-        if(in_key.isKeyPressed(Input.KEY_ESCAPE)){
-            game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
-        }
-
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) game.enterState(Game.GAMESETUPSTATE);
+        if(in_key.isKeyPressed(Input.KEY_ESCAPE)) { game.enterState(Game.MAINMENUSTATE); }
+        if (in_key.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
     }
 
     @Override
@@ -83,18 +80,10 @@ public class GameVictory extends BasicTWLGameState {
         lWin = new Label("");
 
         btnNewGame = new Button("New Game");
-        btnNewGame.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(Game.GAMESETUPSTATE);
-            }
-        });
+        btnNewGame.addCallback(() -> game.enterState(Game.GAMESETUPSTATE));
 
         btnMainMenu = new Button("OK");
-        btnMainMenu.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(Game.MAINMENUSTATE);
-            }
-        });
+        btnMainMenu.addCallback(() -> game.enterState(Game.MAINMENUSTATE));
 
         rp.add(btnNewGame);
         rp.add(btnMainMenu);

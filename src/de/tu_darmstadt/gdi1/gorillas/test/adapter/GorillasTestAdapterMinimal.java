@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
@@ -110,8 +111,7 @@ public class GorillasTestAdapterMinimal {
      * @param player2Name the name of player 2
      */
     public void setPlayerNames(String player1Name, String player2Name) {
-        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE)
-        {
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
             GameSetupState state = (GameSetupState) gorillas.getCurrentState();
             state.setPlayerNames(player1Name, player2Name);
         }
@@ -124,9 +124,9 @@ public class GorillasTestAdapterMinimal {
      * GamePlayState. Otherwise it should stay in the GameSetupState.
      */
     public void startGameButtonPressed() {
-        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE)
-        {
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
             GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+            state.startGame();
         }
     }
 
@@ -139,9 +139,9 @@ public class GorillasTestAdapterMinimal {
      * @param charac the input character
      */
     public void fillVelocityInput(char charac) {
-        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE)
-        {
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
             GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.fillVelocityInput(charac);
         }
     }
 
@@ -150,8 +150,15 @@ public class GorillasTestAdapterMinimal {
      * nothing was put in the method should return -1.
      */
     public int getVelocityInput() {
-        // TODO: Implement
-        return -1;
+        // In our Game we are setting sensible default angle and speed values
+        // So returning -1 makes no sense.
+        int velocity = -1;
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            velocity = state.getVelocity();
+        }
+
+        return velocity;
     }
 
     /**
@@ -163,7 +170,10 @@ public class GorillasTestAdapterMinimal {
      * @param charac the input character
      */
     public void fillAngleInput(char charac) {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.fillAngleInput(charac);
+        }
     }
 
     /**
@@ -171,8 +181,15 @@ public class GorillasTestAdapterMinimal {
      * was put in the method should return -1.
      */
     public int getAngleInput() {
-        // TODO: Implement
-        return -1;
+        // In our Game we are setting sensible default angle and speed values
+        // So returning -1 makes no sense.
+        int angle = -1;
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            angle = state.getAngle();
+        }
+
+        return angle;
     }
 
     /**
@@ -180,11 +197,17 @@ public class GorillasTestAdapterMinimal {
      * player. Both angle value and velocity value should then be -1.
      */
     public void resetPlayerWidget() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.resetPlayerWidget();
+        }
     }
 
     public void shootButtonPressed() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.throwBanana();
+        }
     }
 
     /**
@@ -210,7 +233,7 @@ public class GorillasTestAdapterMinimal {
     public Vector2f getNextShotPosition(Vector2f startPosition, int angle, int speed, boolean fromLeftToRight, int deltaTime) {
 
         // TODO: Implement
-        return null;
+        return new Vector2f(0, 0);
     }
 
     /**
@@ -221,8 +244,7 @@ public class GorillasTestAdapterMinimal {
      * @return the time scaling factor for the parabolic flight calculation
      */
     public float getTimeScalingFactor() {
-        // TODO: Implement
-        return -1;
+        return Game.getInstance().getTimeScale();
     }
 
     /**

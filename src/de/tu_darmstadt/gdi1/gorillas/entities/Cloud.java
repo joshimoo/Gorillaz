@@ -18,8 +18,13 @@ public class Cloud extends Entity {
         w = windSpeed;
         t = 0;
 
-        // Rendering
-        addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.CLOUD)));
+        if (!Game.getInstance().isTestMode()) {
+            // Rendering
+            addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.CLOUD)));
+        } else {
+            // In Test Mode set the size explicitly
+            setSize(new Vector2f(128, 64));
+        }
     }
 
     @Override
@@ -28,7 +33,7 @@ public class Cloud extends Entity {
 
         // TODO: Add random delay before cloud comes back into screen
         Vector2f pos = getPosition();
-        pos.x += (Game.getInstance().getWindScale() / 2) * w;
+        pos.x += (w / 2) * Game.getInstance().getWindScale();
 
         if(pos.x < -getSize().x) {
             pos.x = gc.getWidth();

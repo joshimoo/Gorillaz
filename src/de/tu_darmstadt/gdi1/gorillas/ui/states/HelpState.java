@@ -17,10 +17,6 @@ public class HelpState extends BasicTWLGameState {
     private Button btnBack;
     private Button btnMainMenu;
     private int page;
-    private String page0;
-    private String page1;
-    private String page2;
-    private String page3;
     private String[] pages;
 
     private StateBasedGame game;
@@ -32,12 +28,12 @@ public class HelpState extends BasicTWLGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame game) throws SlickException {
-        background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
-        this.createRootPane();
         this.game = game;
+        if (!Game.getInstance().isTestMode()) {
+            background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+        }
 
-        page = 0;
-        page0 = "How to play the game:\n" +
+        String page0 = "How to play the game:\n" +
                 "\n" +
                 "Each Player takes control of one gorilla and\n" +
                 "throws bananas at the other gorilla.\n" +
@@ -46,7 +42,7 @@ public class HelpState extends BasicTWLGameState {
                 "angle and speed to control the flight.\n" +
                 "Moreover, you can influence the gravity and \n" +
                 "switch the wind on or off in the Option Menu.";
-        page1 = "Main menu:\n" +
+        String page1 = "Main menu:\n" +
                 " Enter -> New Game\n" +
                 " Escape -> Exit Game\n" +
                 " M -> Mute\n" +
@@ -67,7 +63,7 @@ public class HelpState extends BasicTWLGameState {
                 " Enter/Space -> Throw Banana\n" +
                 " Escape/P -> Pause\n" +
                 " M -> Mute";
-        page2 = "Pause:\n" +
+        String page2 = "Pause:\n" +
                 " Escape/P -> Return to Game\n" +
                 " Enter -> New Game\n" +
                 " E -> Exit Game\n" +
@@ -80,7 +76,7 @@ public class HelpState extends BasicTWLGameState {
                 " \n" +
                 "Highscore:\n" +
                 " Enter/Escape/S -> Main Menu";
-        page3 = " Options:\n" +
+        String page3 = " Options:\n" +
                 " Escape/O -> Except Options and return to Main Menu\n" +
                 " UP -> Increase Gravity\n" +
                 " DOWN -> Decrease Gravity\n" +
@@ -93,7 +89,12 @@ public class HelpState extends BasicTWLGameState {
                 " RIGHT/D -> Next Page\n" +
                 " LEFT/A -> Last Page";
         pages = new String[]{page0, page1, page2, page3};
+        page = 0;
     }
+
+    void backToMenu() { game.enterState(Game.MAINMENUSTATE); }
+    void prevPage() { page = page > 0 ? page - 1 : 3; }
+    void nextPage() { page = page < pages.length - 1 ? page + 1 : 0; }
 
     @Override
     protected RootPane createRootPane() {
@@ -102,26 +103,9 @@ public class HelpState extends BasicTWLGameState {
         btnBack = new Button("Back");
         btnMainMenu = new Button("MainMenu");
 
-        btnNext.addCallback(new Runnable() {
-            public void run() {
-                if(page < pages.length - 1) page++;
-                else page = 0;
-            }
-        });
-
-        btnBack.addCallback(new Runnable(){
-            public void run() {
-                if(page > 0) page--;
-                else page = 3;
-            }
-        });
-
-        btnMainMenu.addCallback(new Runnable() {
-            public void run() {
-                game.enterState(de.tu_darmstadt.gdi1.gorillas.main.Game.MAINMENUSTATE);
-            }
-        });
-
+        btnNext.addCallback(this::nextPage);
+        btnBack.addCallback(this::prevPage);
+        btnMainMenu.addCallback(this::backToMenu);
 
         rp.add(btnNext);
         rp.add(btnBack);
@@ -131,6 +115,7 @@ public class HelpState extends BasicTWLGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         graphics.drawImage(background, -10, -20);
         graphics.setColor(new Color(50,50,50,150));
         graphics.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
@@ -141,15 +126,9 @@ public class HelpState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_H)) { game.enterState(Game.MAINMENUSTATE); }
-        if (in_key.isKeyPressed(Input.KEY_RIGHT)  || in_key.isKeyPressed(Input.KEY_D)){
-            if(page < pages.length - 1) page++;
-            else page = 0;
-        }
-        if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)){
-            if(page > 0) page--;
-            else page = 3;
-        }
+        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_H)) { backToMenu(); }
+        if (in_key.isKeyPressed(Input.KEY_RIGHT)  || in_key.isKeyPressed(Input.KEY_D)) { nextPage(); }
+        if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)) { prevPage(); }
     }
 
     @Override
@@ -161,13 +140,13 @@ public class HelpState extends BasicTWLGameState {
         btnNext.setSize(128, 32);
         btnBack.setSize(128, 32);
         btnMainMenu.setSize(128, 32);
-        // Center the Textfields on the screen. Jetzt wird duch 2 geteilt :)
-        int x = (paneWidth - btnNext.getWidth()) >> 1;
+
+        // Center the Textfields on the screen.
+        int x = (paneWidth - btnNext.getWidth()) / 2;
 
         btnNext.setPosition(x, 500);
         btnBack.setPosition(x - 140, 500);
         btnMainMenu.setPosition(x + 140, 500);
-
 
     }
 }
