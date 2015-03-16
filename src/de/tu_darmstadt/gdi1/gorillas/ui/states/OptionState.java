@@ -15,6 +15,7 @@ public class OptionState extends BasicTWLGameState {
 
     private Image background;
     private ValueAdjusterFloat valueGravity;
+    private ValueAdjusterFloat valueSound;
     private Button btnOK;
     private Label lError;
     private StateBasedGame game;
@@ -41,6 +42,7 @@ public class OptionState extends BasicTWLGameState {
         valueGravity = new ValueAdjusterFloat();
         btnInvertKeyControl = new Button("");
         btnWind = new Button("");
+        valueSound = new ValueAdjusterFloat();
 
         btnOK = new Button("OK");
         lError = new Label("");
@@ -56,11 +58,15 @@ public class OptionState extends BasicTWLGameState {
         valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
         valueGravity.setValue(Game.GRAVITY_DEFAULT);
 
+        valueSound.setMinMaxValue(Game.SOUND_VOLUME_MIN, Game.SOUND_VOLUME_MAX);
+        valueSound.setValue(Game.SOUND_VOLUME_DEFAULT);
+
         rp.add(valueGravity);
         rp.add(btnInvertKeyControl);
         rp.add(btnWind);
         rp.add(btnOK);
         rp.add(lError);
+        rp.add(valueSound);
         return rp;
     }
 
@@ -78,11 +84,14 @@ public class OptionState extends BasicTWLGameState {
         btnWind.setSize(128, 32);
         btnWind.setPosition(20,100);
 
+        valueSound.setSize(128, 32);
+        valueSound.setPosition(20, 140);
+
         lError.setSize(128, 32);
-        lError.setPosition(20, 140);
+        lError.setPosition(20, 180);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(20, 180);
+        btnOK.setPosition(20, 240);
     }
 
     @Override
@@ -94,7 +103,7 @@ public class OptionState extends BasicTWLGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
-        if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O)) { returnToPrevScreen();}
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O) || in_key.isKeyPressed(Input.KEY_ENTER)) { returnToPrevScreen();}
         if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
         if (in_key.isKeyPressed(Input.KEY_UP)) { valueGravity.setValue(valueGravity.getValue() + 1); }
         if (in_key.isKeyPressed(Input.KEY_DOWN)) { valueGravity.setValue(valueGravity.getValue() - 1); }
@@ -104,6 +113,7 @@ public class OptionState extends BasicTWLGameState {
 
     private void returnToPrevScreen() {
         Game.getInstance().setGravity(valueGravity.getValue());
+        Game.getInstance().setSoundVolume(valueSound.getValue());
         game.enterState(Game.MAINMENUSTATE);
     }
 
