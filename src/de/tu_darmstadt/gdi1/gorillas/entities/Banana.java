@@ -6,6 +6,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,9 +23,13 @@ public class Banana extends Entity {
     public Banana(Vector2f pos, final int angle, final int speed, float g, int w) {
         super("Banana");
 
+        Image img = Math.random() < 0.1f ?
+                Assets.loadImage(Assets.Images.SNICKERS)
+                :Assets.loadImage(Assets.Images.BANANA);
+
         if (!Game.getInstance().isTestMode()) {
             // Rendering
-            addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.BANANA)));
+            addComponent(new ImageRenderComponent(img));
         } else {
             // In Test Mode the banana should be 10x10 px
             setSize(new Vector2f(10, 10));
