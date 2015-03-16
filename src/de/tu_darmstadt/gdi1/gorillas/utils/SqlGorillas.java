@@ -80,26 +80,13 @@ public class SqlGorillas
      */
     public void insertPlayerName(String PlayerName, int ID)
     {
-        // NUR für MYSQL
+        // Only for MYSQL
         //String sql = "INSERT INTO " + table +" (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "') ON DUPLICATE KEY UPDATE PlayerName='" + PlayerName + "';";
 
         String sql="INSERT OR REPLACE INTO " + table + " (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "');";
 
-        System.out.println(sql);
         db.update(sql);
     }
-
-    /*
-    public void insertPlayerName(String PlayerName1, String PlayerName2)
-    {
-        String sql = "UPDATE " + table +
-                " SET PlayerName ='" + PlayerName1 + "' WHERE ID=1;";
-        db.update(sql);
-        sql = "UPDATE " + table +
-                " SET PlayerName ='" + PlayerName2 + "' WHERE ID=2;";
-        db.update(sql);
-    }
-    */
 
     public String[] getPlayerName()
     {
