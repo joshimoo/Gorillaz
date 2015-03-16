@@ -78,13 +78,18 @@ public class SqlGorillas
     /**
      *
      */
-    public void insertPlayerName(String PlayerName)
+    public void insertPlayerName(String PlayerName, int ID)
     {
-        String sql = "INSERT INTO " + table +
-                "(ID, PlayerName) VALUES ( NULL, '" + PlayerName + "' );";
+        // NUR für MYSQL
+        //String sql = "INSERT INTO " + table +" (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "') ON DUPLICATE KEY UPDATE PlayerName='" + PlayerName + "';";
+
+        String sql="INSERT OR REPLACE INTO " + table + " (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "');";
+
+        System.out.println(sql);
         db.update(sql);
     }
 
+    /*
     public void insertPlayerName(String PlayerName1, String PlayerName2)
     {
         String sql = "UPDATE " + table +
@@ -94,6 +99,7 @@ public class SqlGorillas
                 " SET PlayerName ='" + PlayerName2 + "' WHERE ID=2;";
         db.update(sql);
     }
+    */
 
     public String[] getPlayerName()
     {
@@ -128,5 +134,10 @@ public class SqlGorillas
             }
             System.out.print("\n");
         }
+    }
+
+    public void shutdown()
+    {
+        db.shutdown();
     }
 }

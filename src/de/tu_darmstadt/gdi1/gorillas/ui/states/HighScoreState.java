@@ -16,7 +16,7 @@ public class HighScoreState extends BasicTWLGameState {
     private Button btnStart;
 
     private StateBasedGame game;
-    private SqlGorillas db = new SqlGorillas("data_gorillas.hsc","Gorillas");
+    private SqlGorillas db = new SqlGorillas(Game.getInstance().getDatabaseFile(),"Gorillas");
     String line = null;
 
     @Override
