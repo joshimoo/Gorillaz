@@ -9,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
+import junit.framework.Test;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -192,7 +193,9 @@ public class GameSetupState extends BasicTWLGameState {
                 }
             }
         }
-        txtName1.setText(Utils.getRandomName());
-        txtName2.setText(Utils.getRandomName());
+        do {
+            txtName1.setText(Utils.getRandomName());
+            txtName2.setText(Utils.getRandomName());
+        }while (txtName1.getText().equals(txtName2.getText()));
     }
 }
