@@ -444,7 +444,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     /** Plays the passed sound, unless the audio is muted */
     private void playSound(Sound sound) {
-        if (!Game.getInstance().isMute() && sound != null) { sound.play(); }
+        if (!Game.getInstance().isMute() && sound != null) { sound.play(1f,Game.getInstance().getSoundVolume()); }
     }
 
     /**
