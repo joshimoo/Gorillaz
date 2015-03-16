@@ -2,18 +2,10 @@ package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
-import eea.engine.action.basicactions.RotateRightAction;
-import eea.engine.component.render.AnimationRenderComponent;
 import eea.engine.component.render.FrameRenderComponent;
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
-import eea.engine.event.basicevents.LoopEvent;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.ShapeFill;
-import org.newdawn.slick.geom.*;
-import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.geom.Vector2f;
 
 public class Sun extends Entity {
     private FrameRenderComponent animation;
@@ -34,11 +26,6 @@ public class Sun extends Entity {
         }
     }
 
-    @Override
-    public Shape getShape() {
-        return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
-    }
-
     /**
      * We collide if there is an intersection
      * But also if the otherEntity is completely contained inside of us
@@ -46,12 +33,24 @@ public class Sun extends Entity {
     @Override
     public boolean collides(Entity otherEntity) {
         boolean collides = super.collides(otherEntity) || getShape().contains(otherEntity.getShape());
-        animation.switchToFrame(collides ? 1 : 0);
+        setHit(collides);
         return collides;
     }
 
     @Deprecated
     public boolean isCollidding(Banana b) {
         return collides(b);
+    }
+
+    private boolean hit;
+    public boolean isHit() {
+        return hit;
+    }
+    private void setHit(boolean collides) {
+
+        hit = collides;
+        if(!Game.getInstance().isTestMode()) {
+            animation.switchToFrame(collides ? 1 : 0);
+        }
     }
 }
