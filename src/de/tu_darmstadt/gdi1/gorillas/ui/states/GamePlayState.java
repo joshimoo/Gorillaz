@@ -51,9 +51,9 @@ public class GamePlayState extends BasicTWLGameState {
     private Image   arrow;
     private Sound   explosionSound;
     private float   gravity = 9.80665f;
-    private String comment = "";
-    private String score = "Score: 0:0";
-    private float slowmoScale;
+    private String  comment = "";
+    private String  score = "Score: 0:0";
+    private float   slowmoScale;
 
     // Entities
     private StateBasedEntityManager entityManager;
@@ -63,6 +63,7 @@ public class GamePlayState extends BasicTWLGameState {
     private Gorilla gorillb;
     private Sun     sun;
     private Cloud   cloud;
+    private Vector2f SCREEN;
 
     // Counter
     private static int totalRoundCounter = 0;
@@ -107,10 +108,12 @@ public class GamePlayState extends BasicTWLGameState {
         // Lazy Load the UI, this is better for the TestGameContainer
         if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
             background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
+            background = background.getScaledCopy(2f);
             arrow = Assets.loadImage(Assets.Images.ARROW);
             explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
             buffer = new Image(1024, 1024);
         }
+        SCREEN = new Vector2f(gc.getWidth(), gc.getHeight());
     }
 
     @Override
@@ -124,10 +127,10 @@ public class GamePlayState extends BasicTWLGameState {
     public void startGame() {
         entityManager.clearEntitiesFromState(getID());
         debugCollisions.clear();
-        skyline = new Skyline(6);
+        skyline = new Skyline(8);
 
         int x1 = (int)(Math.random() * 3 + 0);
-        int x2 = (int)(Math.random() * 3 + 3);
+        int x2 = (int)(Math.random() * 3 + 5);
 
         int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
         int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
@@ -135,7 +138,7 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla = new Gorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)));
         gorillb = new Gorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)));
 
-        sun = new Sun(new Vector2f(400, 60));
+        sun = new Sun(new Vector2f(512, 60));
 
         windSpeed = Game.getInstance().getWind() ? (int) ((Math.random() * 30) - 15) : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
@@ -165,9 +168,9 @@ public class GamePlayState extends BasicTWLGameState {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         Graphics g = buffer.getGraphics();
         g.clear();
+        g.drawImage(background, -10, -20);
 
-        g.drawImage(background, -20, -10);
-        drawTextWithDropShadow(g, sun.getPosition().copy().add(new Vector2f(0, sun.getSize().y)), comment, Color.yellow);
+        drawTextWithDropShadow(g, sun.getPosition().copy().add(new Vector2f(0, sun.getSize().y / 2)), comment, Color.yellow);
         drawTextWithDropShadow(g, sun.getPosition().copy().sub(new Vector2f(0, sun.getSize().y)), score, Color.yellow);
         entityManager.renderEntities(gc, game, g);
         sun.render(gc, game, g);
@@ -203,23 +206,44 @@ public class GamePlayState extends BasicTWLGameState {
             g.drawString(roundWinMessage,this.getRootPane().getWidth()/2 - 150,100);
         }
 
-        // OSB
+        g.resetTransform();
+        gr.resetTransform();
 
+        Vector2f target;
+        switch (state){
+            case THROW:  // OSB
+                if(banana != null) {
+                    float zoom = 1f / (float) Math.sqrt(slowmoScale);
 
-        if(banana != null && slowmoScale != 1f){
-            float zoom = 1f / (float) Math.sqrt(slowmoScale);
-            float a = gc.getWidth() / zoom;
-            float b = gc.getHeight() / zoom;
-            float x = banana.getPosition().x - (a / 2);
-            float y = banana.getPosition().y - (b / 2);
+                    target = getOffsetToCenter(SCREEN, banana.getPosition(), zoom);
+                    gr.drawImage(buffer.getScaledCopy(zoom), -target.x, -target.y);
+                }
+                break;
+            default:
+                Gorilla gor = (Game.getInstance().getActivePlayer() == Game.getInstance().getPlayer(0)) ? gorilla:gorillb;
+                target = getOffsetToCenter(SCREEN, gor.getPosition());
+                gr.drawImage(buffer, -target.x, -target.y);
+                break;
 
-          //  Vector2f center = new Vector2f(gc.getWidth() * zoom / 2, gc.getHeight() * zoom / 2);
-          //  Vector2f target = banana.getPosition().copy().sub(center);//.scale(zoom);
-            gr.drawImage(buffer.getScaledCopy(zoom), -x * zoom, -y * zoom);
         }
-        else
-            gr.drawImage(buffer, 0, 0);
 
+
+    }
+
+    private Vector2f getOffsetToCenter(Vector2f screen, Vector2f center){
+        return getOffsetToCenter(screen, center, 1f);
+    }
+
+    private Vector2f getOffsetToCenter(Vector2f screen, Vector2f center, float scale){
+        float a = screen.x / scale;
+        float b = screen.y / scale;
+        float x = clamp(0, center.x - (a / 2), 1024 - a);
+        float y = clamp(0, center.y - (b / 2),screen.y - b);
+        return new Vector2f(x * scale, y * scale);
+    }
+
+    private float clamp (float a, float x, float b){
+        return Math.max(a, Math.min(x, b));
     }
 
     /**
@@ -282,7 +306,7 @@ public class GamePlayState extends BasicTWLGameState {
         Input input = gc.getInput();
 
         /* ActionCam slowmo :D */
-        delta *= slowmoScale;
+        delta *= slowmoScale * slowmoScale;
 
         // Let the entities update their inputs first
         // Then process all remaining inputs
@@ -334,6 +358,7 @@ public class GamePlayState extends BasicTWLGameState {
                             banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight()
                     );
                     comment = "...";
+                    Game.getInstance().toggleNextPlayerActive();
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
@@ -375,19 +400,19 @@ public class GamePlayState extends BasicTWLGameState {
 
                        if(comment == "") comment = "Fast getroffen!";
                    }
+                    Game.getInstance().toggleNextPlayerActive();
                 }
 
                 // ACTIONSLOWMO
                 Gorilla inactiv = (getActivePlayer() == Game.getInstance().getPlayer(0) ? gorillb:gorilla);
-                float dist = Math.min(getDistanceToBanana(inactiv), 90);
-                slowmoScale = (float) Math.sin(Math.toRadians(dist));
+                float dist = Math.min(getDistanceToBanana(inactiv), 180);
+                slowmoScale = (float) Math.sin(Math.toRadians(dist / 2));
 
                 break;
             case DAMAGE:
                 System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
-                Game.getInstance().toggleNextPlayerActive();
                 if_speed.setValue(getActivePlayer().getLastSpeed());
                 if_angle.setValue(getActivePlayer().getLastAngle());
 
@@ -455,7 +480,7 @@ public class GamePlayState extends BasicTWLGameState {
      * Only checks Left/Right/Bottom
      */
     Boolean outsidePlayingField(Entity entity, int screenWidth, int screenHeight) {
-        return entity.getPosition().x > screenWidth || entity.getPosition().x < 0 || entity.getPosition().y > screenHeight;
+        return entity.getPosition().x > 1024 || entity.getPosition().x < 0 || entity.getPosition().y > screenHeight;
     }
 
     @Override
