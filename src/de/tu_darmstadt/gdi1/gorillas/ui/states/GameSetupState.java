@@ -9,7 +9,6 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
-import junit.framework.Test;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,7 +16,7 @@ public class GameSetupState extends BasicTWLGameState {
 
     private Image background;
     private Button btnStart;
-    private EditField txtName1, txtName2;
+    private static EditField txtName1, txtName2;
 
     private StateBasedGame game;
     private Label lPlayer1Error;
@@ -47,7 +46,7 @@ public class GameSetupState extends BasicTWLGameState {
 
         btnStart.addCallback(this::startGame);
 
-        initalPlayerNames();
+        initialPlayerNames();
 
         rp.add(txtName1);
         rp.add(txtName2);
@@ -66,7 +65,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        initalPlayerNames();
+        initialPlayerNames();
     }
 
     @Override
@@ -181,7 +180,7 @@ public class GameSetupState extends BasicTWLGameState {
         }
     }
 
-    private void initalPlayerNames() {
+    private void initialPlayerNames() {
         if (Game.getInstance().getStorePlayerNames()) {
             if(Game.getInstance().getPlayers().size() == 0) {
                 SqlGorillas sql = new SqlGorillas(Game.getInstance().getDatabaseFile(), "Players");
@@ -191,6 +190,9 @@ public class GameSetupState extends BasicTWLGameState {
                     txtName2.setText(names[1]);
                     return;
                 }
+            }
+            else {
+                return;
             }
         }
         do {

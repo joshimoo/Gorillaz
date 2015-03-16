@@ -128,7 +128,11 @@ public class Game {
 
     private void setPlayer(int num, Player player) {
         if (players != null && num < MAX_PLAYER_COUNT) {
-            players.set(num, player);
+            // size is zero for no players, player one has num zero.
+            if(players.size()-1 < num)
+                players.add(num, player);
+            else
+                players.set(num, player);
         }
         else { throw new IllegalArgumentException(String.format("There is no Player at Index: %d currently there are %d players", num, players.size())); }
     }
