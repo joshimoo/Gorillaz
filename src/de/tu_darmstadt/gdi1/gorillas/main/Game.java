@@ -1,5 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
+import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -49,18 +51,19 @@ public class Game {
     private float gravity = GRAVITY_DEFAULT;
     private float soundVolume = SOUND_VOLUME_DEFAULT;
 
+    private String databaseFile = "data_gorillas.hsc";
+
     public float getGravity() { return gravity; }
+    public String getDatabaseFile() { return databaseFile; }
     public float getSoundVolume() { return soundVolume; }
 
     public void setGravity(float value) { this.gravity = value > GRAVITY_MAX ? GRAVITY_MAX : value < GRAVITY_MIN ? GRAVITY_MIN : value; }
+    public void setDatabaseFile(String value) { this.databaseFile = value; }
     public void setSoundVolume(float value) { this.soundVolume = value > SOUND_VOLUME_MAX ? SOUND_VOLUME_MAX : value < SOUND_VOLUME_MIN ? SOUND_VOLUME_MIN : value; }
 
     /** Singleton Pattern */
     private Game() {
         players = new ArrayList<Player>(MAX_PLAYER_COUNT);
-        for (int i = 0; i < MAX_PLAYER_COUNT; i++) {
-            players.add(new Player("DUMMY"));
-        }
     }
     private static Game game;
     public static Game getInstance() {
@@ -145,6 +148,16 @@ public class Game {
         // Cleanup all used assets
         // Save SQL DB
         // Close SQL DB
+
+        // Store PlayerNames to the SQL-Database
+        if(getStorePlayerNames()) {
+            SqlGorillas sql = new SqlGorillas(getDatabaseFile(), "Players");
+            int num = 0;
+            for(Player p : getPlayers())
+                sql.insertPlayerName(p.getName(),num++);
+            sql.shutdown();
+        }
+
         System.exit(0);
     }
   }

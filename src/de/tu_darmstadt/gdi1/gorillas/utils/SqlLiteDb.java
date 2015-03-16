@@ -1,9 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.utils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -184,5 +181,14 @@ public class SqlLiteDb
         }
         out.trimToSize();
         return out;
+    }
+
+    public void shutdown()
+    {
+        try {
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
