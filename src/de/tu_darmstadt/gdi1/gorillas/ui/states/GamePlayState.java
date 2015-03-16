@@ -422,7 +422,7 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle = new AdvancedValueAdjusterInt();
         btnThrow = new Button("Throw");
 
-        if_speed.setMinMaxValue(0, 200);
+        if_speed.setMinMaxValue(0,200);
         if_speed.setValue(80);
         validVelocity = true;
 
