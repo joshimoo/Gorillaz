@@ -167,9 +167,8 @@ public class GamePlayState extends BasicTWLGameState {
         g.clear();
 
         g.drawImage(background, -20, -10);
-        g.setColor(Color.yellow);
-        g.drawString(comment, 450, 20);
-        g.drawString(score, 250, 20);
+        drawTextWithDropShadow(g, sun.getPosition().copy().add(new Vector2f(0, sun.getSize().y)), comment, Color.yellow);
+        drawTextWithDropShadow(g, sun.getPosition().copy().sub(new Vector2f(0, sun.getSize().y)), score, Color.yellow);
         entityManager.renderEntities(gc, game, g);
         sun.render(gc, game, g);
         skyline.render(gc, game, g);
