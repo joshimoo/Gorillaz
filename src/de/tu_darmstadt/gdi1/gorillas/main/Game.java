@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class Game {
     /** Singleton Pattern */
     private Game() {
         players = new ArrayList<Player>(MAX_PLAYER_COUNT);
+        Database.getInstance().readFromFile();
     }
     private static Game game;
     public static Game getInstance() {
@@ -154,13 +156,7 @@ public class Game {
         // Close SQL DB
 
         // Store PlayerNames to the SQL-Database
-        if(getStorePlayerNames()) {
-            SqlGorillas sql = new SqlGorillas(getDatabaseFile(), "Players");
-            int num = 0;
-            for(Player p : getPlayers())
-                sql.insertPlayerName(p.getName(),num++);
-            sql.shutdown();
-        }
+        Database.getInstance().writeToFile();
 
         System.exit(0);
     }

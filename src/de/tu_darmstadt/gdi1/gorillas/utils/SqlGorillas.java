@@ -7,30 +7,25 @@ import java.util.ArrayList;
  */
 public class SqlGorillas
 {
-    private String file;
     private SqlLiteDb db;
-    private String table;
+    private String tableHighScore;
+    private String tableConfig;
 
     /**
-     * Constructor with default table "Gorillas"
+     * Constructor
+     * @param file
+     * @param tableHighScore
+     * @param tableConfig
      */
-    public SqlGorillas()
+    public SqlGorillas(String file, String tableHighScore, String tableConfig)
     {
-        file = "data_gorillas.hsc";
-        table = "Gorillas";
-        db = new SqlLiteDb(file ,table);
-    }
+        this.tableHighScore = tableHighScore;
+        this.tableConfig = tableConfig;
 
-    /**
-     * Constructor with parameter
-     * @param File  Database filename
-     * @param Table Name of the table
-     */
-    public SqlGorillas(String File, String Table)
-    {
-        file = File;
-        table = Table;
-        db = new SqlLiteDb(File,table);
+        // Open SQL
+        db = new SqlLiteDb(file);
+        db.checkExist(tableHighScore);
+        db.checkExist(tableConfig);
     }
 
     /**
@@ -43,7 +38,7 @@ public class SqlGorillas
      */
     public void insertHighScore(String PlayerName, int NumberRounds, int NumberWinRounds, int NumberThrows)
     {
-        String sql = "INSERT INTO " + table +
+        String sql = "INSERT INTO " + tableHighScore +
                      "(ID, PlayerName, NumberRounds, NumberWinRounds, NumberThrows) " +
                      "VALUES ( NULL, '" + PlayerName + "', " + NumberRounds + "," + NumberWinRounds + "," + NumberThrows + " );";
         db.update(sql);
@@ -54,25 +49,12 @@ public class SqlGorillas
      *
      * @return a String-Array [NR-Player][0=Name|1=Score]
      */
-    public String[][] getHighScore()
+    public ArrayList getHighScore()
     {
         String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds," +
                      "ROUND((CAST(NumberWinRounds as real) / NumberRounds) * 100,0)  AS WinRate, ROUND((CAST(NumberThrows as real) / NumberWinRounds),2) AS HitRate " +
-                     "FROM " + table + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
-        ArrayList list = db.queryArrayList(sql);
-
-        String[][] out = new String[list.size()][5];
-
-        for (int i = 0; i < list.size(); i++)
-        {
-            ArrayList resultList = (ArrayList) list.get(i);
-            out[i][0] = (String) resultList.get(0);
-            out[i][1] = resultList.get(1).toString();
-            out[i][2] = resultList.get(2).toString(); // int
-            out[i][3] = resultList.get(3).toString(); // double
-            out[i][4] = resultList.get(4).toString(); // double
-        }
-        return out;
+                     "FROM " + tableHighScore + " ORDER BY WinRate, HitRate DESC LIMIT 0,10;";
+        return db.queryArrayList(sql);
     }
 
     /**
@@ -83,44 +65,15 @@ public class SqlGorillas
         // Only for MYSQL
         //String sql = "INSERT INTO " + table +" (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "') ON DUPLICATE KEY UPDATE PlayerName='" + PlayerName + "';";
 
-        String sql="INSERT OR REPLACE INTO " + table + " (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "');";
+        String sql="INSERT OR REPLACE INTO " + tableConfig + " (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "');";
 
         db.update(sql);
     }
 
-    public String[] getPlayerName()
+    public ArrayList<String> getPlayerName()
     {
-        String sql = "SELECT PlayerName FROM " + table + " ORDER BY ID DESC LIMIT 0,2;";
-        ArrayList list = db.queryArrayList(sql);
-
-        String[] out = new String[list.size()];
-
-        for (int i = 0; i < list.size(); i++)
-        {
-            ArrayList resultList = (ArrayList) list.get(i);
-            out[i] = (String) resultList.get(0);
-        }
-        return out;
-    }
-
-    /**
-     * For testing only
-     * Shows current highscores
-     * @param args
-     */
-    public static void main(String[] args)
-    {
-        SqlGorillas db = new SqlGorillas();
-
-        String[][] highScore_list = db.getHighScore();
-
-        for (int i = 0; i < highScore_list.length; i++)
-        {
-            for (int j = 0; j < 5; j++) {
-                System.out.print(highScore_list[i][j] + " ");
-            }
-            System.out.print("\n");
-        }
+        String sql = "SELECT PlayerName FROM " + tableConfig + " ORDER BY ID DESC LIMIT 0,2;";
+        return db.queryArrayList(sql);
     }
 
     public void shutdown()

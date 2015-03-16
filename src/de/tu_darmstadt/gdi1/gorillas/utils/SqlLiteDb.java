@@ -10,39 +10,23 @@ public class SqlLiteDb
 {
     private String databaseFile;
     private Connection c;
+    private String createTableCommand;
 
     /**
      * Constructor for a SQL-Lite database
      *
-     * @param Table
      * @param File
      */
-    public SqlLiteDb(String File, String Table)
+    public SqlLiteDb(String File)
     {
-        String table = Table;
-        databaseFile = File;
-        c = ConnectingToDatabase();
-
-        String sql = "";
-        if(table.equals("Players")) {
-            sql = "CREATE TABLE IF NOT EXISTS " + table +
-                    " (" +
-                    "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "PlayerName TEXT NOT NULL" +
-                    ");";
-        }
-        else
-        {
-            sql = "CREATE TABLE IF NOT EXISTS " + table +
-                    " (" +
-                    "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "PlayerName TEXT NOT NULL," +
-                    "NumberRounds INT NOT NULL," +
-                    "NumberWinRounds INT NOT NULL," +
-                    "NumberThrows INT NOT NULL" +
-                    ");";
-        }
-        update(sql);
+        this.databaseFile = File;
+        this.c = ConnectingToDatabase();
+        this.createTableCommand = "CREATE TABLE IF NOT EXISTS Config" +
+                " (" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "Param TEXT NOT NULL," +
+                "Value TEXT NOT NULL" +
+                ");";
     }
 
     /**
@@ -110,6 +94,18 @@ public class SqlLiteDb
             // Work with the result
             while (result.next())
             {
+                /*
+                int i = 0;
+                while (i<4){
+                    String value = result.getString(i++);
+                    System.out.println(value);
+                    if(value == null)
+                        break;
+                    else
+                        column.add(value);
+                }*/
+
+
                 // Depends on the database-structure !
                 try
                 {
@@ -159,6 +155,7 @@ public class SqlLiteDb
                     // Score not set, that is ok
                 }
 
+
                 /*
                 try
                 {
@@ -190,5 +187,42 @@ public class SqlLiteDb
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void checkExist(String table)
+    {
+        String sql;
+        switch (table)
+        {
+            case "Players":
+                sql = "CREATE TABLE IF NOT EXISTS " + table +
+                        " (" +
+                        "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "PlayerName TEXT NOT NULL" +
+                        ");";
+                break;
+            case "HighScore":
+                sql = "CREATE TABLE IF NOT EXISTS " + table +
+                        " (" +
+                        "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "PlayerName TEXT NOT NULL," +
+                        "NumberRounds INT NOT NULL," +
+                        "NumberWinRounds INT NOT NULL," +
+                        "NumberThrows INT NOT NULL" +
+                        ");";
+                break;
+            default:
+                sql = createTableCommand;
+                break;
+        }
+        update(sql);
+    }
+
+    public String getCreateTableCommand() {
+        return createTableCommand;
+    }
+
+    public void setCreateTableCommand(String createTableCommand) {
+        this.createTableCommand = createTableCommand;
     }
 }
