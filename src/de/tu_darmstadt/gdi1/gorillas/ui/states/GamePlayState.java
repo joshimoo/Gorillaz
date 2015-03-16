@@ -20,9 +20,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import sun.util.resources.cldr.mk.TimeZoneNames_mk;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class GamePlayState extends BasicTWLGameState {
 
@@ -50,6 +53,7 @@ public class GamePlayState extends BasicTWLGameState {
     private float   gravity = 9.80665f;
     private String comment = "";
     private String score = "Score: 0:0";
+    private float slowmoScale;
 
     // Entities
     private StateBasedEntityManager entityManager;
@@ -62,6 +66,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     // Counter
     private static int totalRoundCounter = 0;
+    private Image buffer;
 
     public Player getActivePlayer() { return Game.getInstance().getActivePlayer(); }
     public void setActivePlayer(Player activePlayer) {
@@ -104,6 +109,7 @@ public class GamePlayState extends BasicTWLGameState {
             background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
             arrow = Assets.loadImage(Assets.Images.ARROW);
             explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
+            buffer = new Image(1024, 1024);
         }
     }
 
@@ -153,8 +159,11 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     @Override
-    public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+    public void render(GameContainer gc, StateBasedGame game, Graphics gr) throws SlickException {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
+        Graphics g = buffer.getGraphics();
+        g.clear();
+
         g.drawImage(background, -20, -10);
         g.setColor(Color.yellow);
         g.drawString(comment, 450, 20);
@@ -192,6 +201,24 @@ public class GamePlayState extends BasicTWLGameState {
             g.setColor(Color.red);
             g.drawString(roundWinMessage,this.getRootPane().getWidth()/2 - 150,100);
         }
+
+        // OSB
+
+
+        if(banana != null && slowmoScale != 1f){
+            float zoom = 1f / (float) Math.sqrt(slowmoScale);
+            float a = gc.getWidth() / zoom;
+            float b = gc.getHeight() / zoom;
+            float x = banana.getPosition().x - (a / 2);
+            float y = banana.getPosition().y - (b / 2);
+
+          //  Vector2f center = new Vector2f(gc.getWidth() * zoom / 2, gc.getHeight() * zoom / 2);
+          //  Vector2f target = banana.getPosition().copy().sub(center);//.scale(zoom);
+            gr.drawImage(buffer.getScaledCopy(zoom), -x * zoom, -y * zoom);
+        }
+        else
+            gr.drawImage(buffer, 0, 0);
+
     }
 
     /**
@@ -210,6 +237,13 @@ public class GamePlayState extends BasicTWLGameState {
         // Draw Text
         g.setColor(color);
         g.drawString(text, x, pos.y);
+    }
+
+    /** @return the distance off the banana to the given gorilla */
+    private float getDistanceToBanana(final Gorilla g){
+        if(banana == null)
+            throw new RuntimeException("Keine banane");
+        return banana.getPosition().distance(g.getPosition());
     }
 
     private void drawPlayerNames(Graphics g) {
@@ -244,11 +278,14 @@ public class GamePlayState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        Input input = gc.getInput();
+
+        /* ActionCam slowmo :D */
+        delta *= slowmoScale;
+
         // Let the entities update their inputs first
         // Then process all remaining inputs
         entityManager.updateEntities(gc, game, delta);
-        Input input = gc.getInput();
-
         gorilla.update(gc, game, delta);
         gorillb.update(gc, game, delta);
         cloud.update(gc, game, delta);
@@ -273,6 +310,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         switch (state) {
             case INPUT:
+                slowmoScale = 1.0f;
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow();
                 toggleUI(true);
                 updateThrowParameters(input, delta);
@@ -336,6 +374,10 @@ public class GamePlayState extends BasicTWLGameState {
                    }
                 }
 
+                // ACTIONSLOWMO
+                Gorilla inactiv = (getActivePlayer() == Game.getInstance().getPlayer(0) ? gorillb:gorilla);
+                float dist = Math.min(getDistanceToBanana(inactiv), 90);
+                slowmoScale = (float) Math.sin(Math.toRadians(dist));
 
                 break;
             case DAMAGE:
@@ -553,9 +595,5 @@ public class GamePlayState extends BasicTWLGameState {
 
         return false;
     }
-
-
-
-
 
 }

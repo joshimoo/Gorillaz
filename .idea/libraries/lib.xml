@@ -4,7 +4,10 @@
       <root url="file://$PROJECT_DIR$/lib" />
       <root url="jar://$PROJECT_DIR$/lib/lwjgl-2.9.1/lwjgl.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/slickJavaDoc.zip!/" />
+      <root url="file://$PROJECT_DIR$/slickJavaDoc" />
+    </JAVADOC>
     <SOURCES>
       <root url="file://$PROJECT_DIR$/lib" />
     </SOURCES>
