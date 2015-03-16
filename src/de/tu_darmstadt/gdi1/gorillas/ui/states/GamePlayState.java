@@ -402,7 +402,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     /** Plays the passed sound, unless the audio is muted */
     private void playSound(Sound sound) {
-        if (!Game.getInstance().isMute() && sound != null) { sound.play(); }
+        if (!Game.getInstance().isMute() && sound != null) { sound.play(1f,Game.getInstance().getSoundVolume()); }
     }
 
     /**
@@ -422,7 +422,7 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle = new AdvancedValueAdjusterInt();
         btnThrow = new Button("Throw");
 
-        if_speed.setMinMaxValue(0,200);
+        if_speed.setMinMaxValue(0, 200);
         if_speed.setValue(80);
         validVelocity = true;
 

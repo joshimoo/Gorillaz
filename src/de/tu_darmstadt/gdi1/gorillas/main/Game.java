@@ -26,6 +26,9 @@ public class Game {
     public static final float GRAVITY_MAX = 24.79f;
     public static final float GRAVITY_DEFAULT = 9.80665f;
     public static final int MAX_NAMESIZE = 12;
+    public static final float SOUND_VOLUME_MIN = 0;
+    public static final float SOUND_VOLUME_MAX = 1f;
+    public static final float SOUND_VOLUME_DEFAULT = 0.5f;
 
     // Switches
     private boolean testmode = false;
@@ -44,9 +47,13 @@ public class Game {
 
     // Gameplay Variables
     private float gravity = GRAVITY_DEFAULT;
+    private float soundVolume = SOUND_VOLUME_DEFAULT;
 
     public float getGravity() { return gravity; }
+    public float getSoundVolume() { return soundVolume; }
+
     public void setGravity(float value) { this.gravity = value > GRAVITY_MAX ? GRAVITY_MAX : value < GRAVITY_MIN ? GRAVITY_MIN : value; }
+    public void setSoundVolume(float value) { this.soundVolume = value > SOUND_VOLUME_MAX ? SOUND_VOLUME_MAX : value < SOUND_VOLUME_MIN ? SOUND_VOLUME_MIN : value; }
 
     /** Singleton Pattern */
     private Game() {
