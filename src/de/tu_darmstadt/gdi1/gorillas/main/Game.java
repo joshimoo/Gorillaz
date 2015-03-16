@@ -28,7 +28,7 @@ public class Game {
     public static final int MAX_NAMESIZE = 12;
     public static final float SOUND_VOLUME_MIN = 0;
     public static final float SOUND_VOLUME_MAX = 1f;
-    public static final float SOUND_VOLUME_DEFAULT = 0.5f;
+    public static final float SOUND_VOLUME_DEFAULT = 0.2f;
 
     // Switches
     private boolean testmode = false;

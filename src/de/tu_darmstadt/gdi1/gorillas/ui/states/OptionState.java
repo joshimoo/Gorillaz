@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.ValueAdjusterFloat;
+import de.matthiasmann.twl.ValueAdjusterInt;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
@@ -15,7 +16,7 @@ public class OptionState extends BasicTWLGameState {
 
     private Image background;
     private ValueAdjusterFloat valueGravity;
-    private ValueAdjusterFloat valueSound;
+    private ValueAdjusterInt valueSound;
     private Button btnOK;
     private Label lError;
     private StateBasedGame game;
@@ -42,7 +43,7 @@ public class OptionState extends BasicTWLGameState {
         valueGravity = new ValueAdjusterFloat();
         btnInvertKeyControl = new Button("");
         btnWind = new Button("");
-        valueSound = new ValueAdjusterFloat();
+        valueSound = new ValueAdjusterInt();
 
         btnOK = new Button("OK");
         lError = new Label("");
@@ -58,8 +59,8 @@ public class OptionState extends BasicTWLGameState {
         valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
         valueGravity.setValue(Game.GRAVITY_DEFAULT);
 
-        valueSound.setMinMaxValue(Game.SOUND_VOLUME_MIN, Game.SOUND_VOLUME_MAX);
-        valueSound.setValue(Game.SOUND_VOLUME_DEFAULT);
+        valueSound.setMinMaxValue((int) (Game.SOUND_VOLUME_MIN * 100), (int) (Game.SOUND_VOLUME_MAX * 100));
+        valueSound.setValue((int) (Game.SOUND_VOLUME_DEFAULT * 100));
 
         rp.add(valueGravity);
         rp.add(btnInvertKeyControl);
@@ -113,7 +114,7 @@ public class OptionState extends BasicTWLGameState {
 
     private void returnToPrevScreen() {
         Game.getInstance().setGravity(valueGravity.getValue());
-        Game.getInstance().setSoundVolume(valueSound.getValue());
+        Game.getInstance().setSoundVolume(valueSound.getValue()/100f);
         game.enterState(Game.MAINMENUSTATE);
     }
 
