@@ -129,12 +129,11 @@ public class AnimationRenderComponent extends RenderComponent {
      *          component on the game container display
      */
     @Override
-    public void render(GameContainer gc, StateBasedGame sb,
-                       Graphics graphicsContext) {
-        // unless stopped, draw it at the target (x, y) position and size
-        if (!animation.isStopped())
-            animation.draw(getOwnerEntity().getPosition().x - size.x / 2, getOwnerEntity()
-                    .getPosition().y - size.y / 2, size.x, size.y);
+    public void render(GameContainer gc, StateBasedGame sb, Graphics g) {
+        g.drawImage(animation.getCurrentFrame(),
+                getOwnerEntity().getPosition().x - size.x / 2,
+                getOwnerEntity().getPosition().y - size.y / 2);
+
     }
 
     /**
@@ -157,6 +156,7 @@ public class AnimationRenderComponent extends RenderComponent {
      */
     @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
+        animation.update(delta);
         if (animation.isStopped())
             StateBasedEntityManager.getInstance().removeEntity(
                     sb.getCurrentStateID(), getOwnerEntity());

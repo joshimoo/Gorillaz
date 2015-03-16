@@ -13,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Banana extends Entity {
 
     private float gravity   = 9.80665f;
-    public static final float SPEED_MOD = 0.8f;
+    public static final float SPEED_MOD = 0.6f;
     private float rotationSpeed, t;
     private float vx, vy, speed;
     private int windAcceleration, angle;
