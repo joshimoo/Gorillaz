@@ -23,12 +23,11 @@ public class Banana extends Entity {
     public Banana(Vector2f pos, final int angle, final int speed, float g, int w) {
         super("Banana");
 
-        Image img = Math.random() < 0.1f ?
-                Assets.loadImage(Assets.Images.SNICKERS)
-                :Assets.loadImage(Assets.Images.BANANA);
-
         if (!Game.getInstance().isTestMode()) {
             // Rendering
+            Image img = Math.random() < 0.1f ?
+                    Assets.loadImage(Assets.Images.SNICKERS)
+                    :Assets.loadImage(Assets.Images.BANANA);
             addComponent(new ImageRenderComponent(img));
         } else {
             // In Test Mode the banana should be 10x10 px
@@ -47,11 +46,6 @@ public class Banana extends Entity {
         this.angle = angle;
 
         if(angle > 90) rotationSpeed = -rotationSpeed;
-    }
-
-    @Override
-    public Shape getShape() {
-        return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
     }
 
     @Override
