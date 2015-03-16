@@ -92,10 +92,6 @@ public class HelpState extends BasicTWLGameState {
         page = 0;
     }
 
-    void backToMenu() { game.enterState(game.getLastStateID()); }
-    void prevPage() { page = page > 0 ? page - 1 : 3; }
-    void nextPage() { page = page < pages.length - 1 ? page + 1 : 0; }
-
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
@@ -129,7 +125,6 @@ public class HelpState extends BasicTWLGameState {
         if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_H)) { backToMenu(); }
         if (in_key.isKeyPressed(Input.KEY_RIGHT)  || in_key.isKeyPressed(Input.KEY_D)) { nextPage(); }
         if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)) { prevPage(); }
-
     }
 
     @Override
@@ -148,6 +143,9 @@ public class HelpState extends BasicTWLGameState {
         btnNext.setPosition(x, 500);
         btnBack.setPosition(x - 140, 500);
         btnMainMenu.setPosition(x + 140, 500);
-
     }
+
+    void backToMenu() { game.enterState(game.getLastStateID()); }
+    void prevPage() { page = page > 0 ? page - 1 : 3; }
+    void nextPage() { page = page < pages.length - 1 ? page + 1 : 0; }
 }
