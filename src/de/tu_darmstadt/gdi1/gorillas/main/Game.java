@@ -27,7 +27,7 @@ public class Game {
     public static final float GRAVITY_DEFAULT = 9.80665f;
     public static final int MAX_NAMESIZE = 12;
     public static final float SOUND_VOLUME_MIN = 0;
-    public static final float SOUND_VOLUME_MAX = 24.79f;
+    public static final float SOUND_VOLUME_MAX = 1f;
     public static final float SOUND_VOLUME_DEFAULT = 0.5f;
 
     // Switches
