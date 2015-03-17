@@ -2,6 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 import de.matthiasmann.twl.slick.TWLStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.AppGameContainer;
@@ -24,6 +25,7 @@ public class Gorillas extends TWLStateBasedGame {
     public Gorillas(boolean debug) {
         super("Gorillas");
         Game.getInstance().setDebug(debug);
+        Database.getInstance().readFromFile();
     }
 
     public static void main(String[] args) throws SlickException {
