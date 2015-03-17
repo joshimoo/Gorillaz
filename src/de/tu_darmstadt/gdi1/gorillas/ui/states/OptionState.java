@@ -39,6 +39,7 @@ public class OptionState extends BasicTWLGameState {
         this.game = game;
         if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
             background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+            if(Game.BACKGROUND_SCALE != 1) background = background.getScaledCopy(Game.BACKGROUND_SCALE);
         }
     }
 
@@ -121,7 +122,7 @@ public class OptionState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics gr) throws SlickException {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
-        gr.drawImage(background, -10, -20);
+        gr.drawImage(background, 0, 0);
         gr.setColor(Color.black);
         gr.drawString("Gravity", valueGravity.getX() - valueGravity.getWidth() / 1.8f, valueGravity.getY() + 5);
         gr.drawString("Volume", valueSound.getX() - valueGravity.getWidth() / 1.8f, valueSound.getY() + 5);

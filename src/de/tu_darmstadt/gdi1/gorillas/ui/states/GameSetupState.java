@@ -33,6 +33,7 @@ public class GameSetupState extends BasicTWLGameState {
         this.game = game;
         if (!Game.getInstance().isTestMode()) {
             background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+            if(Game.BACKGROUND_SCALE != 1) background = background.getScaledCopy(Game.BACKGROUND_SCALE);
         }
     }
 

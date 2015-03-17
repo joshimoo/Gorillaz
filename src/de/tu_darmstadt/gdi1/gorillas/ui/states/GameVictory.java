@@ -17,7 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * It calls the Game.Save actions on exit, which will Save the Highscore and Config File
  */
 public class GameVictory extends BasicTWLGameState {
-    private Image background;
+
     private Color color = new Color(50,50,50,150);
     private Button btnNewGame;
     private Button btnMainMenu;

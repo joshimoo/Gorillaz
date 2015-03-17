@@ -32,6 +32,7 @@ public class HelpState extends BasicTWLGameState {
         this.game = game;
         if (!Game.getInstance().isTestMode()) {
             background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+            if(Game.BACKGROUND_SCALE != 1) background = background.getScaledCopy(Game.BACKGROUND_SCALE);
         }
 
         String page0 = "How to play the game:\n" +
@@ -117,7 +118,7 @@ public class HelpState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
-        graphics.drawImage(background, -10, -20);
+        graphics.drawImage(background, 0, 0);
         graphics.setColor(new Color(50,50,50,150));
         graphics.fillRect(0, 0, Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
         graphics.setColor(Color.yellow);
