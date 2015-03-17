@@ -32,7 +32,7 @@ public class Gorillas extends TWLStateBasedGame {
     public static void main(String[] args) throws SlickException {
         Utils.setNativePath();
         AppGameContainer app = new AppGameContainer(new Gorillas(Game.getInstance().getDebug()));
-        app.setShowFPS(true);
+        app.setShowFPS(false);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
         app.setTargetFrameRate(TARGET_FPS);
         app.start();

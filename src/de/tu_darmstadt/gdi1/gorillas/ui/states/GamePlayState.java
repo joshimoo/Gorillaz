@@ -186,12 +186,6 @@ public class GamePlayState extends BasicTWLGameState {
 
         drawPlayerNames(g);
 
-        if(state != STATES.THROW) {
-            g.setColor(Color.blue);
-            // Description for the buttons
-            g.drawString("Speed", 20, 10);
-            g.drawString("Angle ", 20, 50);
-        }
         if(throwNumber != null)
         {
             g.setColor(Color.white);
@@ -222,6 +216,14 @@ public class GamePlayState extends BasicTWLGameState {
                 gr.drawImage(buffer, -target.x, -target.y);
                 break;
 
+        }
+
+
+        if(state != STATES.THROW) {
+            gr.setColor(Color.blue);
+            // Description for the buttons
+            gr.drawString("Speed", 20, 10);
+            gr.drawString("Angle ", 20, 50);
         }
 
 
@@ -400,8 +402,8 @@ public class GamePlayState extends BasicTWLGameState {
 
                 // ACTIONSLOWMO
                 Gorilla inactiv = (getActivePlayer() == Game.getInstance().getPlayer(0) ? gorillb:gorilla);
-                float dist = Math.min(getDistanceToBanana(inactiv), 180);
-                slowmoScale = (float) Math.sin(Math.toRadians(dist / 2));
+                float dist = Math.min(getDistanceToBanana(inactiv), 90 * 1.5f);
+                slowmoScale = (float) Math.sin(Math.toRadians(dist / 1.5f));
 
                 break;
             case DAMAGE:
@@ -438,7 +440,7 @@ public class GamePlayState extends BasicTWLGameState {
                     // Restart Game
                     for (Player player : Game.getInstance().getPlayers()) {
                         player.resetThrow();
-                        player.setLastAngle(120);
+                        player.setLastAngle(90);
                         player.setLastSpeed(80);
                     }
                         score = "Score: " + Game.getInstance().getPlayer(0).getWin() + ":" +
@@ -490,7 +492,7 @@ public class GamePlayState extends BasicTWLGameState {
         validVelocity = true;
 
         if_angle.setMinMaxValue(0,180);
-        if_angle.setValue(120);
+        if_angle.setValue(60);
         validAngle = true;
 
         // Wirkungslos
@@ -566,11 +568,11 @@ public class GamePlayState extends BasicTWLGameState {
         if (getActivePlayer() == Game.getInstance().getPlayer(0)) {
             Vector2f pos = getGorilla(0).getPosition();
             Vector2f size = getGorilla(0).getSize();
-            createBanana(new Vector2f(pos.x, pos.y - size.y), angle - 90, speed, Game.getInstance().getGravity(), windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), angle, speed, Game.getInstance().getGravity(), windSpeed);
         } else {
             Vector2f pos = getGorilla(1).getPosition();
             Vector2f size = getGorilla(1).getSize();
-            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle + 90, speed, Game.getInstance().getGravity(), windSpeed);
+            createBanana(new Vector2f(pos.x, pos.y - size.y), 180 - angle, speed, Game.getInstance().getGravity(), windSpeed);
         }
 
         // Remove Win-Message
