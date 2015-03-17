@@ -55,10 +55,10 @@ public class OptionState extends BasicTWLGameState {
         btnOK = new Button("OK");
         lError = new Label("");
 
-        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
+        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
-        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
-        btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound off");
+        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
+        btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound off");
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
         btnWind.addCallback(this::toggleWind);
@@ -115,7 +115,7 @@ public class OptionState extends BasicTWLGameState {
         btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 300);
 
         btnSaveToFile.setSize(256, 32);
-        btnSaveToFile.setPosition((Gorillas.FRAME_WIDTH - btnSaveToFile.getWidth()) / 2,Gorillas.FRAME_HEIGHT - 100);
+        btnSaveToFile.setPosition((Gorillas.FRAME_WIDTH - btnSaveToFile.getWidth()) / 2, Gorillas.FRAME_HEIGHT - 100);
     }
 
     @Override
@@ -123,8 +123,8 @@ public class OptionState extends BasicTWLGameState {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         gr.drawImage(background, -10, -20);
         gr.setColor(Color.black);
-        gr.drawString("Gravity", valueGravity.getX() - valueGravity.getWidth() / 2, valueGravity.getY());
-        gr.drawString("Volume", valueSound.getX() - valueGravity.getWidth() / 2, valueSound.getY());
+        gr.drawString("Gravity", valueGravity.getX() - valueGravity.getWidth() / 1.8f, valueGravity.getY() + 5);
+        gr.drawString("Volume", valueSound.getX() - valueGravity.getWidth() / 1.8f, valueSound.getY() + 5);
     }
 
     @Override
@@ -156,17 +156,17 @@ public class OptionState extends BasicTWLGameState {
 
     private void toggleInverseControlKeys() {
         Game.getInstance().toggleInverseControlKeys();
-        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
+        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
     }
 
      private void toggleStorePlayerNames() {
          Game.getInstance().toggleStorePlayerNames();
-         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
+         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
     }
 
     private void toggleMute() {
         Game.getInstance().toggleMute();
-        btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound on");
+        btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound on");
     }
 
     private void refreshGUI()
@@ -174,10 +174,10 @@ public class OptionState extends BasicTWLGameState {
         /*
             Reset GUI
          */
-        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
+        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
-        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
-        btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound on");
+        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
+        btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound on");
 
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setValue(Game.getInstance().getGravity());
