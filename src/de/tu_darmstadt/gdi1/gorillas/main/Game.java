@@ -65,7 +65,6 @@ public class Game {
     /** Singleton Pattern */
     private Game() {
         players = new ArrayList<Player>(MAX_PLAYER_COUNT);
-        Database.getInstance().readFromFile();
     }
     private static Game game;
     public static Game getInstance() {

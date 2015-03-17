@@ -1,9 +1,13 @@
 package de.tu_darmstadt.gdi1.gorillas.utils;
 
+import com.sun.xml.internal.fastinfoset.util.StringArray;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by User on 16.03.2015.
@@ -18,7 +22,7 @@ public class Database {
     /*
         Cache-Storage to reduce access to the harddrive
      */
-    protected ArrayList<String> playerNames = null;
+    protected String[] playerNames = null;
     protected ArrayList<ArrayList> highScore = null;
 
 
@@ -38,7 +42,7 @@ public class Database {
 
     public void savePlayerNames()
     {
-        if(Game.getInstance().getStorePlayerNames()) {
+        if(Game.getInstance().getStorePlayerNames() && playerNames != null) {
             int num = 0;
             for(Player p : Game.getInstance().getPlayers())
                 db.insertPlayerName(p.getName(),num++);
@@ -48,29 +52,30 @@ public class Database {
 
     public String[] getPlayerNames()
     {
-        if (Game.getInstance().getStorePlayerNames()) {
+        if(!Game.getInstance().getStorePlayerNames()) {
+            this.playerNames = createPlayerNames();
+        }
+        else if(Game.getInstance().getStorePlayerNames())
+        {
+            playerNames = db.getPlayerName();
             if(playerNames == null)
             {
-                this.playerNames = db.getPlayerName();
+                this.playerNames = createPlayerNames();
             }
         }
-        else
-        {
-            playerNames = new ArrayList<String>(Game.getInstance().MAX_PLAYER_COUNT);
-            for (int i = 0; i < Game.getInstance().MAX_PLAYER_COUNT; i++) {
-                String randomName = Utils.getRandomName();
-                if(playerNames.contains(randomName)) {
-                    playerNames.add(randomName);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-        }
-        String[] players = new String[Game.getInstance().MAX_PLAYER_COUNT];
-        this.playerNames.toArray(players);
-        return players;
+
+        return this.playerNames;
+
+    }
+
+    public String[] createPlayerNames()
+    {
+        String[] newNames = new String[Game.getInstance().MAX_PLAYER_COUNT];
+        do{
+            newNames[0] = Utils.getRandomName();
+            newNames[1] = Utils.getRandomName();
+        }while(newNames[0].equals(newNames[1]));
+        return newNames;
     }
 
     public void setHighScore(String PlayerName, int NumberRounds, int NumberWinRounds, int NumberThrows)

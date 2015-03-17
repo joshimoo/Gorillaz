@@ -1,6 +1,9 @@
 package de.tu_darmstadt.gdi1.gorillas.utils;
 
+import com.sun.xml.internal.fastinfoset.util.StringArray;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Georg Schmidt on 17.02.2015.
@@ -9,23 +12,23 @@ public class SqlGorillas
 {
     private SqlLiteDb db;
     private String tableHighScore;
-    private String tableConfig;
+    private String tablePlayer;
 
     /**
      * Constructor
      * @param file
      * @param tableHighScore
-     * @param tableConfig
+     * @param tablePlayer
      */
-    public SqlGorillas(String file, String tableHighScore, String tableConfig)
+    public SqlGorillas(String file, String tableHighScore, String tablePlayer)
     {
         this.tableHighScore = tableHighScore;
-        this.tableConfig = tableConfig;
+        this.tablePlayer = tablePlayer;
 
         // Open SQL
         db = new SqlLiteDb(file);
         db.checkExist(tableHighScore);
-        db.checkExist(tableConfig);
+        db.checkExist(tablePlayer);
     }
 
     /**
@@ -65,15 +68,16 @@ public class SqlGorillas
         // Only for MYSQL
         //String sql = "INSERT INTO " + table +" (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "') ON DUPLICATE KEY UPDATE PlayerName='" + PlayerName + "';";
 
-        String sql="INSERT OR REPLACE INTO " + tableConfig + " (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "');";
+        String sql="INSERT OR REPLACE INTO " + tablePlayer + " (ID, PlayerName) VALUES (" + ID + ", '" + PlayerName + "');";
 
         db.update(sql);
     }
 
-    public ArrayList<String> getPlayerName()
+    public String[] getPlayerName()
     {
-        String sql = "SELECT PlayerName FROM " + tableConfig + " ORDER BY ID DESC LIMIT 0,2;";
-        return db.queryArrayList(sql);
+        String sql = "SELECT PlayerName FROM " + tablePlayer + " ORDER BY ID ASC LIMIT 0,2;";
+        ArrayList<String> a = db.queryArrayList(sql);
+        return new String[]{a.get(0),a.get(1)};
     }
 
     public void shutdown()
