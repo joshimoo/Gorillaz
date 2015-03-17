@@ -11,6 +11,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
+import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
@@ -299,19 +300,10 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         Input input = gc.getInput();
-
-        /* ActionCam slowmo :D */
-        delta *= slowmoScale * slowmoScale;
-
-        // Let the entities update their inputs first
-        // Then process all remaining inputs
-        entityManager.updateEntities(gc, game, delta);
-        gorilla.update(gc, game, delta);
-        gorillb.update(gc, game, delta);
-        cloud.update(gc, game, delta);
+        KeyMap.globalKeyPressedActions(input,game);
 
         if(Game.getInstance().isDeveloperMode()) {
-            /* DEBUG: Reroll the LevelGeneration */
+            // Reroll the LevelGeneration
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
 
             // Win the Game
@@ -323,11 +315,15 @@ public class GamePlayState extends BasicTWLGameState {
             }
         }
 
-        /* Auf [ESC] muss unabhängig vom state reagiert werden */
-        if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P)) game.enterState(Game.INGAMEPAUSE);
-        if(input.isKeyPressed(Input.KEY_M)) Game.getInstance().toggleMute();
-        if(input.isKeyPressed(Input.KEY_H)) game.enterState(Game.HELPSTATE);
-        if(input.isKeyPressed(Input.KEY_O)) game.enterState(Game.OPTIONSTATE);
+        /* ActionCam slowmo :D */
+        delta *= slowmoScale * slowmoScale;
+
+        // Let the entities update their inputs first
+        // Then process all remaining inputs
+        entityManager.updateEntities(gc, game, delta);
+        gorilla.update(gc, game, delta);
+        gorillb.update(gc, game, delta);
+        cloud.update(gc, game, delta);
 
         switch (state) {
             case INPUT:

@@ -58,11 +58,15 @@ public class KeyMap {
                  * KEY_RETURN / KEY_SPACE                   -> throwBanana()
                  * KEY_RIGHT / KEY_LEFT / KEY_UP / KEY_DOWN -> Values
                  * KEY_D / KEY_A / KEY_W / KEY_S            -> Values
+                 *
+                 * IF DEVELOPER-MODE
+                 * KEY_Q                                    -> startGame()
+                 * KEY_V                                    -> VICTORY
                  */
-                if (input.isKeyPressed(Input.KEY_P))             game.enterState(Game.INGAMEPAUSE);
-                if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
-                if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
-                if (input.isKeyPressed(Input.KEY_M))             Game.getInstance().toggleMute();
+                if (input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))    game.enterState(Game.INGAMEPAUSE);
+                if (input.isKeyPressed(Input.KEY_H))                                            game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))                                            game.enterState(Game.OPTIONSTATE);
+                if (input.isKeyPressed(Input.KEY_M))                                            Game.getInstance().toggleMute();
                 break;
             case Game.GAMESETUPSTATE:
                 /**
