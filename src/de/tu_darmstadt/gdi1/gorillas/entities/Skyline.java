@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
@@ -15,7 +16,7 @@ public class Skyline extends Entity {
     public Skyline(final int n){
         super("Skyline");
         BUILD_COUNT = n;
-        BUILD_WIDTH = 1024 / BUILD_COUNT;
+        BUILD_WIDTH = Gorillas.FRAME_WIDTH / BUILD_COUNT;
         skyscrapers = new Skyscraper[BUILD_COUNT];
         for(int i = 0; i < BUILD_COUNT; i++)
             skyscrapers[i] = new Skyscraper(i, BUILD_WIDTH);
