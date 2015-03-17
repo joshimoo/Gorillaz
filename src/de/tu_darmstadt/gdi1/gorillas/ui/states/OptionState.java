@@ -56,9 +56,8 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
-        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
-        btnMute.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
-
+        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
+        btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound off");
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
         btnWind.addCallback(this::toggleWind);
@@ -137,6 +136,7 @@ public class OptionState extends BasicTWLGameState {
         if (in_key.isKeyPressed(Input.KEY_DOWN)) { valueGravity.setValue(valueGravity.getValue() - 1); }
         if (in_key.isKeyPressed(Input.KEY_C)) { toggleInverseControlKeys(); }
         if (in_key.isKeyPressed(Input.KEY_W)) { toggleWind(); }
+        if (in_key.isKeyPressed(Input.KEY_P)) { toggleStorePlayerNames();}
     }
 
     private void returnToPrevScreen() {
@@ -158,12 +158,12 @@ public class OptionState extends BasicTWLGameState {
 
      private void toggleStorePlayerNames() {
         Game.getInstance().toggleStorePlayerNames();
-         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
+         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
     }
 
     private void toggleMute() {
         Game.getInstance().toggleMute();
-        btnMute.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
+        btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound on");
     }
 
     private void resetGUI()
@@ -173,8 +173,8 @@ public class OptionState extends BasicTWLGameState {
          */
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
-        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
-        btnMute.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
+        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
+        btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound on");
 
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setValue(Game.getInstance().getGravity());
