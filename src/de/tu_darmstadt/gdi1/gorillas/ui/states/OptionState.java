@@ -23,6 +23,7 @@ public class OptionState extends BasicTWLGameState {
     private StateBasedGame game;
     private Button btnInvertKeyControl;
     private Button btnWind;
+    private Button btnStorePlayerNames;
 
     @Override
     public int getID() {
@@ -44,6 +45,7 @@ public class OptionState extends BasicTWLGameState {
         valueGravity = new ValueAdjusterFloat();
         btnInvertKeyControl = new Button("");
         btnWind = new Button("");
+        btnStorePlayerNames = new Button("");
         valueSound = new ValueAdjusterInt();
 
         btnOK = new Button("OK");
@@ -51,10 +53,12 @@ public class OptionState extends BasicTWLGameState {
 
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
+        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
 
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
         btnWind.addCallback(this::toggleWind);
+        btnStorePlayerNames.addCallback(this::toggleStorePlayerNames);
 
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
@@ -66,6 +70,7 @@ public class OptionState extends BasicTWLGameState {
         rp.add(valueGravity);
         rp.add(btnInvertKeyControl);
         rp.add(btnWind);
+        rp.add(btnStorePlayerNames);
         rp.add(btnOK);
         rp.add(lError);
         rp.add(valueSound);
@@ -89,11 +94,14 @@ public class OptionState extends BasicTWLGameState {
         valueSound.setSize(128, 32);
         valueSound.setPosition(Gorillas.FRAME_WIDTH / 2 - 64, 140);
 
+        btnStorePlayerNames.setSize(168, 32);
+        btnStorePlayerNames.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,180);
+
         lError.setSize(128, 32);
-        lError.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 180);
+        lError.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 220);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 240);
+        btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 260);
     }
 
     @Override
@@ -133,4 +141,37 @@ public class OptionState extends BasicTWLGameState {
         Game.getInstance().toggleInverseControlKeys();
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
     }
+
+     private void toggleStorePlayerNames() {
+        Game.getInstance().toggleStorePlayerNames();
+         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
+    }
+
+    private void toggleMute() {
+        Game.getInstance().toggleMute();
+        btnInvertKeyControl.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
+    }
+
+
+    /*
+        Save Settings
+        Game.getInstance().
+
+
+        getWind()
+        getInverseControlKeys
+        getGravity
+        getSoundVolume
+        getStorePlayerNames
+
+        isMute
+        getDebug
+        isTestMode
+
+        isDeveloper
+
+
+
+
+     */
 }
