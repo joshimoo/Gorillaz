@@ -10,6 +10,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -460,9 +461,7 @@ public class GamePlayState extends BasicTWLGameState {
                 System.out.println("Win Nr" + getActivePlayer().getWin());
                 game.enterState(Game.GAMEVICTORY);
 
-                // Store Win to SQL-DB
-                SqlGorillas db = new SqlGorillas("data_gorillas.hsc","Gorillas");
-                db.insertHighScore(getActivePlayer().getName(), totalRoundCounter, getActivePlayer().getWin(), getActivePlayer().getTotalThrows());
+                Database.getInstance().setHighScore(getActivePlayer().getName(), totalRoundCounter, getActivePlayer().getWin(), getActivePlayer().getTotalThrows());
 
                 // Reset Values
                 totalRoundCounter = 0;
@@ -472,7 +471,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     /** Plays the passed sound, unless the audio is muted */
     private void playSound(Sound sound) {
-        if (!Game.getInstance().isMute() && sound != null) { sound.play(1f,Game.getInstance().getSoundVolume()); }
+        if (!Game.getInstance().isMute() && sound != null) { sound.play(1f, Game.getInstance().getSoundVolume()); }
     }
 
     /**
@@ -492,7 +491,7 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle = new AdvancedValueAdjusterInt();
         btnThrow = new Button("Throw");
 
-        if_speed.setMinMaxValue(0,200);
+        if_speed.setMinMaxValue(0, 200);
         if_speed.setValue(80);
         validVelocity = true;
 

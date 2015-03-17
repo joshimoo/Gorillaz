@@ -7,8 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
-import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
-import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -46,7 +45,7 @@ public class GameSetupState extends BasicTWLGameState {
 
         btnStart.addCallback(this::startGame);
 
-        initialPlayerNames();
+        getPlayerNames();
 
         rp.add(txtName1);
         rp.add(txtName2);
@@ -65,7 +64,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        initialPlayerNames();
+        getPlayerNames();
     }
 
     @Override
@@ -121,9 +120,9 @@ public class GameSetupState extends BasicTWLGameState {
         if (checkValidPlayerNames(n1, n2)) {
             Game.getInstance().createPlayer(n1);
             Game.getInstance().createPlayer(n2);
+            Database.getInstance().setPlayerNames(new String[]{n1,n2});
             return true;
         }
-
         return false;
     }
 
@@ -170,7 +169,7 @@ public class GameSetupState extends BasicTWLGameState {
         String n1 = txtName1.getText();
         String n2 = txtName2.getText();
 
-        if (setPlayerNames(n1, n2)) {
+        if (this.setPlayerNames(n1, n2)) {
             lPlayer1Error.setVisible(false);
             lPlayer2Error.setVisible(false);
             game.enterState(Game.GAMEPLAYSTATE);
@@ -181,24 +180,11 @@ public class GameSetupState extends BasicTWLGameState {
         }
     }
 
-    private void initialPlayerNames() {
-        if (Game.getInstance().getStorePlayerNames()) {
-            if(Game.getInstance().getPlayers().size() == 0) {
-                SqlGorillas sql = new SqlGorillas(Game.getInstance().getDatabaseFile(), "Players");
-                String[] names = sql.getPlayerName();
-                if (names.length == 2) {
-                    txtName1.setText(names[0]);
-                    txtName2.setText(names[1]);
-                    return;
-                }
-            }
-            else {
-                return;
-            }
+    private void getPlayerNames() {
+        String[] names = Database.getInstance().getPlayerNames();
+        if(names.length == Game.getInstance().MAX_PLAYER_COUNT) {
+            txtName1.setText(names[0]);
+            txtName2.setText(names[1]);
         }
-        do {
-            txtName1.setText(Utils.getRandomName());
-            txtName2.setText(Utils.getRandomName());
-        }while (txtName1.getText().equals(txtName2.getText()));
     }
 }

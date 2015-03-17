@@ -6,6 +6,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -16,7 +17,6 @@ public class HighScoreState extends BasicTWLGameState {
     private Button btnStart;
 
     private StateBasedGame game;
-    private SqlGorillas db = new SqlGorillas(Game.getInstance().getDatabaseFile(),"Gorillas");
     String line = null;
 
     @Override
@@ -95,7 +95,7 @@ public class HighScoreState extends BasicTWLGameState {
      * Refresh the high score
      */
     private void refreshScore(){
-        String[][] highScore_list = db.getHighScore();
+        String[][] highScore_list = Database.getInstance().getHighScore();
 
         for (int i = 0; i < highScore_list.length; i++)
         {
