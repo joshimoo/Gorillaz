@@ -43,9 +43,6 @@ public class KeyMap {
      */
     public static void globalKeyPressedActions(Input input, StateBasedGame game)
     {
-        // Always possible
-        if(input.isKeyPressed(Input.KEY_M)) Game.getInstance().toggleMute();
-
         switch (game.getCurrentStateID()) {
             case Game.MAINMENUSTATE:
                 if (input.isKeyPressed(Input.KEY_N))                                            game.enterState(Game.GAMESETUPSTATE);
@@ -54,6 +51,7 @@ public class KeyMap {
                 if (input.isKeyPressed(Input.KEY_S))                                            game.enterState(Game.HIGHSCORESTATE);
                 if (input.isKeyPressed(Input.KEY_H))                                            game.enterState(Game.HELPSTATE);
                 if (input.isKeyPressed(Input.KEY_O))                                            game.enterState(Game.OPTIONSTATE);
+                if (input.isKeyPressed(Input.KEY_M))                                            Game.getInstance().toggleMute();
                 break;
             case Game.GAMEPLAYSTATE:
                 /**
@@ -61,19 +59,17 @@ public class KeyMap {
                  * KEY_RIGHT / KEY_LEFT / KEY_UP / KEY_DOWN -> Values
                  * KEY_D / KEY_A / KEY_W / KEY_S            -> Values
                  */
-                if (input.isKeyPressed(Input.KEY_P))            game.enterState(Game.INGAMEPAUSE);
-                if (input.isKeyPressed(Input.KEY_H))            game.enterState(Game.HELPSTATE);
-                if (input.isKeyPressed(Input.KEY_O))            game.enterState(Game.OPTIONSTATE);
+                if (input.isKeyPressed(Input.KEY_P))             game.enterState(Game.INGAMEPAUSE);
+                if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
+                if (input.isKeyPressed(Input.KEY_M))             Game.getInstance().toggleMute();
                 break;
             case Game.GAMESETUPSTATE:
                 /**
                  * KEY_RETURN   -> startGame();
                  * KEY_TAB      -> requestKeyboardFocus()
                  */
-                if (input.isKeyPressed(Input.KEY_S))             game.enterState(Game.HIGHSCORESTATE);
                 if (input.isKeyPressed(Input.KEY_ESCAPE))        game.enterState(Game.MAINMENUSTATE);
-                if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
-                if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
                 break;
             case Game.GAMEVICTORY:
                 if (input.isKeyPressed(Input.KEY_S))             game.enterState(Game.HIGHSCORESTATE);
@@ -81,6 +77,7 @@ public class KeyMap {
                 if (input.isKeyPressed(Input.KEY_RETURN))        game.enterState(Game.GAMESETUPSTATE);
                 if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
                 if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
+                if (input.isKeyPressed(Input.KEY_M))             Game.getInstance().toggleMute();
                 break;
             case Game.HELPSTATE:
                 /**
@@ -100,10 +97,10 @@ public class KeyMap {
                 if (input.isKeyPressed(Input.KEY_S))            game.enterState(Game.MAINMENUSTATE);
                 if (input.isKeyPressed(Input.KEY_H))            game.enterState(Game.HELPSTATE);
                 if (input.isKeyPressed(Input.KEY_O))            game.enterState(Game.OPTIONSTATE);
+                if (input.isKeyPressed(Input.KEY_M))            Game.getInstance().toggleMute();
                 break;
             case Game.OPTIONSTATE:
                 /**
-                 * Only local functions
                  * KEY_ESCAPE / KEY_O / KEY_ENTER   -> returnToPrevScreen()
                  * KEY_UP                           -> valueGravity.setValue( + )
                  * KEY_DOWN                         -> valueGravity.setValue( - )
@@ -111,6 +108,7 @@ public class KeyMap {
                  * KEY_W                            -> toggleWind()
                  * KEY_P                            -> toggleStorePlayerNames()
                   */
+                if (input.isKeyPressed(Input.KEY_M))            Game.getInstance().toggleMute();
                 break;
             default:
         }
