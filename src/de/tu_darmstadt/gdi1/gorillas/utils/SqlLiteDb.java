@@ -105,31 +105,37 @@ public class SqlLiteDb {
                 try {
                     column.add(result.getString("PlayerName"));
                 } catch (Exception e) {
-                    // ID not set, that is ok
+                    // PlayerName not set, that is ok
                 }
 
                 try {
                     column.add(result.getInt("NumberRounds"));
                 } catch (Exception e) {
-                    // Score not set, that is ok
+                    // NumberRounds not set, that is ok
                 }
 
                 try {
                     column.add(result.getInt("NumberWinRounds"));
                 } catch (Exception e) {
-                    // Score not set, that is ok
+                    // NumberWinRounds not set, that is ok
                 }
 
                 try {
-                    column.add(result.getDouble("WinRate"));
+                    column.add(result.getInt("NumberThrows"));
                 } catch (Exception e) {
-                    // Score not set, that is ok
+                    // NumberWinRounds not set, that is ok
+                }
+
+                try {
+                    column.add(result.getInt("WinRate"));
+                } catch (Exception e) {
+                    // WinRate not set, that is ok
                 }
 
                 try {
                     column.add(result.getDouble("HitRate"));
                 } catch (Exception e) {
-                    // Score not set, that is ok
+                    // HitRate not set, that is ok
                 }
 
 
