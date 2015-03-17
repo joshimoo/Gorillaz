@@ -12,8 +12,6 @@ public class Database {
     protected String tableHighScore;
     protected String tablePlayers;
     protected SqlGorillas dbSQL;
-    protected final boolean debug = true;
-
 
     /*
         Cache-Storage to reduce access to the harddrive
@@ -51,8 +49,8 @@ public class Database {
             this.playerNames = createPlayerNames();
         }
         else if (Game.getInstance().getStorePlayerNames() && playerNames == null) {
-            playerNames = dbSQL.getPlayerName();
-            if (playerNames == null) {
+            this.playerNames = dbSQL.getPlayerName();
+            if (this.playerNames.length == 0) {
                 this.playerNames = createPlayerNames();
             }
             debug(1);
@@ -108,7 +106,7 @@ public class Database {
     }
 
     private void debug(int id) {
-        if (debug) {
+        if (Game.getInstance().getDebug()) {
             String message;
             switch (id) {
                 case 0:
