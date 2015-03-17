@@ -184,6 +184,6 @@ public class OptionState extends BasicTWLGameState {
     public void saveConfigToFile() {
         Game.getInstance().setGravity(valueGravity.getValue());
         Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
-        Database.saveConfigToFile();
+        Database.getInstance().saveConfigToFile();
     }
 }
