@@ -25,7 +25,7 @@ public class Gorillas extends TWLStateBasedGame {
     public Gorillas(boolean debug) {
         super("Gorillas");
         Game.getInstance().setDebug(debug);
-        Database.getInstance();
+        Database.getInstance().readFromFile();
     }
 
     public static void main(String[] args) throws SlickException {

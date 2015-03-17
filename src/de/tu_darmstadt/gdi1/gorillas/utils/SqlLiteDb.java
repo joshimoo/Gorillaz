@@ -6,8 +6,7 @@ import java.util.ArrayList;
 /**
  * Created by Georg Schmidt on 17.02.2015.
  */
-public class SqlLiteDb
-{
+public class SqlLiteDb {
     private String databaseFile;
     private Connection c;
     private String createTableCommand;
@@ -17,8 +16,7 @@ public class SqlLiteDb
      *
      * @param File
      */
-    public SqlLiteDb(String File)
-    {
+    public SqlLiteDb(String File) {
         this.databaseFile = File;
         this.c = ConnectingToDatabase();
         this.createTableCommand = "CREATE TABLE IF NOT EXISTS Config" +
@@ -34,15 +32,12 @@ public class SqlLiteDb
      *
      * @return Connection of the db
      */
-    public Connection ConnectingToDatabase()
-    {
+    public Connection ConnectingToDatabase() {
         Connection c = null;
-        try
-        {
+        try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + databaseFile);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
@@ -55,18 +50,15 @@ public class SqlLiteDb
      * @param sql_in
      * @return boolean if update was fine
      */
-    public boolean update(String sql_in)
-    {
+    public boolean update(String sql_in) {
         Statement stmt;
-        try
-        {
+        try {
             // c.setAutoCommit(false);
             stmt = c.createStatement();
             stmt.executeUpdate(sql_in);
             stmt.close();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
@@ -79,21 +71,18 @@ public class SqlLiteDb
      * @param sql_in
      * @return ArrayList
      */
-    public ArrayList queryArrayList(String sql_in)
-    {
+    public ArrayList queryArrayList(String sql_in) {
         ArrayList out = new ArrayList();
 
         Statement stmt;
-        try
-        {
+        try {
             // c.setAutoCommit(false);
             stmt = c.createStatement();
             ResultSet result = stmt.executeQuery(sql_in);
 
             ArrayList column = new ArrayList();
             // Work with the result
-            while (result.next())
-            {
+            while (result.next()) {
                 /*
                 int i = 0;
                 while (i<4){
@@ -107,51 +96,39 @@ public class SqlLiteDb
 
 
                 // Depends on the database-structure !
-                try
-                {
+                try {
                     column.add(result.getInt("ID"));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     // ID not set, that is ok
                 }
 
-                try
-                {
+                try {
                     column.add(result.getString("PlayerName"));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     // ID not set, that is ok
                 }
 
-                try
-                {
+                try {
                     column.add(result.getInt("NumberRounds"));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     // Score not set, that is ok
                 }
 
-                try
-                {
-                   column.add(result.getInt("NumberWinRounds"));
-                } catch (Exception e)
-                {
+                try {
+                    column.add(result.getInt("NumberWinRounds"));
+                } catch (Exception e) {
                     // Score not set, that is ok
                 }
 
-                try
-                {
+                try {
                     column.add(result.getDouble("WinRate"));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     // Score not set, that is ok
                 }
 
-                try
-                {
+                try {
                     column.add(result.getDouble("HitRate"));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     // Score not set, that is ok
                 }
 
@@ -165,14 +142,12 @@ public class SqlLiteDb
                     // Score not set, that is ok
                 }
                 */
-                if (column.size() > 0)
-                    out.add(column);
+                if (column.size() > 0) { out.add(column); }
                 column = new ArrayList();
             }
             stmt.close();
             result.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return null;
         }
@@ -180,8 +155,7 @@ public class SqlLiteDb
         return out;
     }
 
-    public void shutdown()
-    {
+    public void shutdown() {
         try {
             c.close();
         } catch (SQLException e) {
@@ -189,11 +163,9 @@ public class SqlLiteDb
         }
     }
 
-    public void checkExist(String table)
-    {
+    public void checkExist(String table) {
         String sql;
-        switch (table)
-        {
+        switch (table) {
             case "Players":
                 sql = "CREATE TABLE IF NOT EXISTS " + table +
                         " (" +
