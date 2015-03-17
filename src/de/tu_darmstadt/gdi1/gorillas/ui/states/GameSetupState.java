@@ -69,9 +69,10 @@ public class GameSetupState extends BasicTWLGameState {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+    public void update(GameContainer gameContainer, StateBasedGame game, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
         if (in_key.isKeyPressed(Input.KEY_RETURN)) { startGame(); }
+        if (in_key.isKeyPressed(Input.KEY_ESCAPE)) { game.enterState(Game.MAINMENUSTATE);}
         if (in_key.isKeyPressed(Input.KEY_TAB)) {
             if (txtName1.hasKeyboardFocus()) { txtName2.requestKeyboardFocus(); }
             else if (txtName2.hasKeyboardFocus()) { btnStart.requestKeyboardFocus(); }

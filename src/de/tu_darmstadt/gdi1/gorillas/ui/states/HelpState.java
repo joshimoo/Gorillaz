@@ -43,7 +43,7 @@ public class HelpState extends BasicTWLGameState {
                 "Moreover, you can influence the gravity and \n" +
                 "switch the wind on or off in the Option Menu.";
         String page1 = "Main menu:\n" +
-                " Enter -> New Game\n" +
+                " Return/N -> New Game\n" +
                 " Escape -> Exit Game\n" +
                 " M -> Mute\n" +
                 " S -> Highscore\n" +
@@ -51,7 +51,8 @@ public class HelpState extends BasicTWLGameState {
                 " O -> Options\n" +
                 " \n" +
                 "Setup New Game:\n" +
-                " Enter -> Start Game\n" +
+                " Return -> Start Game\n" +
+                " Escape -> Return to Main Menu\n" +
                 " Tap -> Switch between text fields\n" +
                 " \n" +
                 "In Game:\n" +
@@ -60,24 +61,26 @@ public class HelpState extends BasicTWLGameState {
                 " Right/D -> Increase Angle(Speed)\n" +
                 " Left/A -> Decrease Angle(Speed)\n" +
                 " \n" +
-                " Enter/Space -> Throw Banana\n" +
+                " Return/Space -> Throw Banana\n" +
                 " Escape/P -> Pause\n" +
-                " M -> Mute";
+                " M -> Mute" +
+                " H -> Help" +
+                " O -> Options";
         String page2 = "Pause:\n" +
                 " Escape/P -> Return to Game\n" +
-                " Enter -> New Game\n" +
+                " Return -> New Game\n" +
                 " E -> Exit Game\n" +
                 " S -> Return to Main Menu\n" +
                 " M -> Mute\n" +
                 " \n" +
                 "Victory:\n" +
                 " Escape -> Return to Main Menu\n" +
-                " Enter -> New Game\n" +
+                " Return -> New Game\n" +
                 " \n" +
                 "Highscore:\n" +
-                " Enter/Escape/S -> Main Menu";
+                " Return/Escape/S -> Main Menu";
         String page3 = " Options:\n" +
-                " Escape/O -> Except Options and return to Main Menu\n" +
+                " Escape/O/Enter -> Except Options and return to previous Screen\n" +
                 " UP -> Increase Gravity\n" +
                 " DOWN -> Decrease Gravity\n" +
                 " C -> Change Control for Angle/Speed\n" +
@@ -85,7 +88,7 @@ public class HelpState extends BasicTWLGameState {
                 " M -> Mute\n" +
                 " \n" +
                 "Help:\n" +
-                " Enter/Escape/H -> Return to Main Menu\n" +
+                " Enter/Escape/H -> Return to previous Screen\n" +
                 " RIGHT/D -> Next Page\n" +
                 " LEFT/A -> Last Page";
         pages = new String[]{page0, page1, page2, page3};
