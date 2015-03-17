@@ -31,9 +31,9 @@ public class SqlGorillas {
     }
 
     /**
-     * Inserts a new highscore
+     * Inserts a new HighScore
      *
-     * @param PlayerName
+     * @param PlayerName      PlayerName
      * @param NumberRounds    Total number of rounds
      * @param NumberWinRounds Number of rounds you won
      * @param NumberThrows    Total number of throws
@@ -101,7 +101,9 @@ public class SqlGorillas {
     }
 
     /**
-     *
+     * Store PlayerName to Database
+     * @param PlayerName PlayerName
+     * @param ID    ID for ordering the names
      */
     public void insertPlayerName(String PlayerName, int ID) {
         // Only for MYSQL
@@ -112,6 +114,10 @@ public class SqlGorillas {
         db.update(sql);
     }
 
+    /**
+     * Returns a String-Array with all PlayerNames
+     * @return all PlayerNames
+     */
     public String[] getPlayerName() {
         String sql = "SELECT PlayerName FROM " + tablePlayer + " ORDER BY ID ASC LIMIT 0,2;";
         ArrayList list = db.queryArrayList(sql);
@@ -125,6 +131,9 @@ public class SqlGorillas {
         return out;
     }
 
+    /**
+     * Clears the HighScore-Storage
+     */
     public void clearHighScore()
     {
         String sql = "DROP TABLE " + tableHighScore + ";";
@@ -132,7 +141,11 @@ public class SqlGorillas {
         db.checkExist(tableHighScore);
     }
 
-
+    /**
+     * Store a String-Value
+     * @param id    String-ID
+     * @param value Value to store
+     */
     public void setValue(String id, String value) {
         String sql;
         if(value.equals("")) {
@@ -144,11 +157,19 @@ public class SqlGorillas {
         db.update(sql);
     }
 
+    /**
+     * Get a String-Value
+     * @param id    String-ID
+     * @return String-Value
+     */
     public String getValue(String id) {
         String sql = "SELECT Value FROM " + tableConfig + " WHERE ID='" + id + "';";
         return db.getValue(sql);
     }
 
+    /**
+     * Close the DB-Connection
+     */
     public void shutdown() {
         db.shutdown();
     }

@@ -14,7 +14,7 @@ public class Database {
     protected String tablePlayers;
     protected SqlGorillas dbSQL;
 
-    /*
+    /**
         Cache-Storage to reduce access to the harddrive
      */
     protected String[] playerNames = null;
@@ -25,14 +25,20 @@ public class Database {
         this.tablePlayers = "Players";
         this.dbSQL = new SqlGorillas(this.fileName, this.tableHighScore, this.tablePlayers);
     }
-
+    
+    /**
+     * Returns a instance of database
+     * @return database
+     */
     private static Database database;
-
     public static Database getInstance() {
         if (database == null) { database = new Database(); }
         return database;
     }
 
+    /**
+     * Inserts the PlayerNames to the database
+     */
     public void savePlayerNames() {
         if (Game.getInstance().getStorePlayerNames() && (playerNames != null)) {
             int num = 0;
@@ -41,6 +47,10 @@ public class Database {
         }
     }
 
+    /**
+     * Returns a String-Array of PlayerNames from the Cache, SQL or RandomGenerator
+     * @return
+     */
     public String[] getPlayerNames() {
         if (!Game.getInstance().getStorePlayerNames()) {
             this.playerNames = createPlayerNames();
@@ -55,10 +65,18 @@ public class Database {
         return this.playerNames;
     }
 
+    /**
+     * Stores a String-Array of Playernames in the Cache
+     * @param playerNames String-Array of Playernames
+     */
     public void setPlayerNames(String[] playerNames) {
         this.playerNames = playerNames;
     }
 
+    /**
+     * Creates Random 2 PlayerNames not identical
+     * @return String-Array of PlayerNames
+     */
     public String[] createPlayerNames() {
         String[] newNames = new String[Game.getInstance().MAX_PLAYER_COUNT];
         do {
@@ -69,22 +87,37 @@ public class Database {
         return newNames;
     }
 
+    /**
+     * Saves a HighScore to the SQL-DB
+     * @param PlayerName    PlayerName
+     * @param NumberRounds  Number of rounds
+     * @param NumberWinRounds   Number of won rounds
+     * @param NumberThrows      Number of throws
+     */
     public void setHighScore(String PlayerName, int NumberRounds, int NumberWinRounds, int NumberThrows) {
         dbSQL.insertHighScore(PlayerName, NumberRounds, NumberWinRounds, NumberThrows);
         debug(3);
     }
 
+    /**
+     * Saves the PlayerNames to the SQL-Database
+     */
     public void writeToFile() {
         savePlayerNames();
         dbSQL.shutdown();
     }
 
+    /**
+     * Loads the PlayerNames from SQL
+     */
     public void readFromFile() {
+        /*
         String[][] temp = dbSQL.getHighScore();
         for (int i = 0; i < temp.length; i++) {
             setHighScore(temp[i][0], Integer.parseInt(temp[i][1]), Integer.parseInt(temp[i][2]), Integer.parseInt(temp[i][3]));
         }
         debug(4);
+        */
 
         // Also read PlayerNames
         getPlayerNames();
@@ -99,8 +132,10 @@ public class Database {
         return dbSQL.getHighScore();
     }
 
-
-
+    /**
+     * Shows the Debug-Messages depending on the ID-Number
+     * @param id ID-Number
+     */
     private void debug(int id) {
         if (Game.getInstance().getDebug()) {
             String message;
@@ -134,16 +169,23 @@ public class Database {
         }
     }
 
-
+    /**
+     * Clear the stores HighScores
+     */
     public void clearHighScore()
     {
         this.dbSQL.clearHighScore();
     }
 
     /*
-        For Tests
+        For Tests only
      */
 
+    /**
+     * Return the HighScore on position pos
+     * @param pos Position from 0
+     * @return String-Array of the HighScore-Values
+     */
     public String[] getHighScore(int pos)
     {
         if(pos >= 0 && pos < getHighScore().length)
@@ -152,25 +194,43 @@ public class Database {
             return new String[0];
     }
 
-
+    /**
+     * Calculates the WinRate
+     * @param wonRounds
+     * @param totalRounds
+     * @return WinRate
+     */
     public double calcWinRate(int wonRounds, int totalRounds) {
         return (double) wonRounds / totalRounds;
     }
 
+    /**
+     * Calculates the HitRate
+     * @param totalThrows
+     * @param wonRounds
+     * @return HitRate
+     */
     public double calcHitRate(int totalThrows, int wonRounds) {
         return (double) totalThrows / wonRounds;
     }
 
+    /**
+     * Store a String-Value
+     * @param id    String-ID
+     * @param value Value to store
+     */
     public void setValue(String id, String value) {
         dbSQL.setValue(id,value);
     }
 
+    /**
+     * Get a String-Value
+     * @param id    String-ID
+     * @return String-Value
+     */
     public String getValue(String id) {
         return dbSQL.getValue(id);
     }
-
-
-
 
     /**
      Saves the settings:
@@ -237,25 +297,66 @@ public class Database {
         debug(5);
     }
 
+    /**
+     * Converts String to boolean
+     * @param in    String
+     * @return      boolean
+     */
     private static boolean decodeBoolean(String in)
     {
         return in.equals("1");
 
     }
 
+    /**
+     * Converts boolean to String
+     * @param in    boolean
+     * @return      String
+     */
     private static String encodeBoolean(boolean in)
     {
         return in ? "1" : "0";
     }
 
+    /**
+     * Converts String to Float
+     * @param in    String
+     * @return      Float
+     */
     private static float decodeFloat(String in)
     {
         return Float.parseFloat(in);
 
     }
 
+    /**
+     * Converts Float to String
+     * @param in    Float
+     * @return      String
+     */
     private static String encodeFloat(float in)
     {
-        return in+"";
+        return Float.toString(in);
+    }
+
+    /**
+     * Converts String to Double
+     * @param in    String
+     * @return      Double
+     */
+    private static double decodeDouble(String in)
+    {
+        return Double.parseDouble(in);
+
+    }
+
+    /**
+     * Converts Double to String
+     * @param in    Double
+     * @return      String
+     */
+    private static String encodeDouble(double in)
+    {
+        return Double.toString(in);
     }
 }
