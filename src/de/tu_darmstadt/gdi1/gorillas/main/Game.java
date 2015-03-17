@@ -34,9 +34,9 @@ public class Game {
     public static final float SOUND_VOLUME_DEFAULT = 0.2f;
 
     // Switches
-    private boolean testmode = false;
-    private boolean debug = true;
-    private boolean developer = true;
+    private boolean testmode = false;   // Graphically debug
+    private boolean debug = true;       // Debug outputs
+    private boolean developer = true;   // Cheating options
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
     private boolean storePlayerNames = true; // Possible candidate for an internal Option Class
     private boolean mute = false;
@@ -52,7 +52,10 @@ public class Game {
     private float gravity = GRAVITY_DEFAULT;
     private float soundVolume = SOUND_VOLUME_DEFAULT;
 
+    // Settings
     private String databaseFile = "data_gorillas.hsc";
+
+
 
     public float getGravity() { return gravity; }
     public String getDatabaseFile() { return databaseFile; }
@@ -94,6 +97,7 @@ public class Game {
 
     public boolean getStorePlayerNames() { return storePlayerNames; }
     public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
+    public void toggleStorePlayerNames() { storePlayerNames = !storePlayerNames; }
 
     public boolean isDeveloper() { return developer; }
     public void setDeveloperMode(boolean enable){ developer = enable; }
