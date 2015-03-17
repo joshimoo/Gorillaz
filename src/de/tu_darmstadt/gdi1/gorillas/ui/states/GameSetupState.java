@@ -119,6 +119,7 @@ public class GameSetupState extends BasicTWLGameState {
         if (checkValidPlayerNames(n1, n2)) {
             Game.getInstance().createPlayer(n1);
             Game.getInstance().createPlayer(n2);
+            Database.getInstance().setPlayerNames(new String[]{n1,n2});
             return true;
         }
         return false;
