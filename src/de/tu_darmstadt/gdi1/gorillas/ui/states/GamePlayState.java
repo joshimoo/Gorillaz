@@ -215,9 +215,7 @@ public class GamePlayState extends BasicTWLGameState {
                 target = getOffsetToCenter(SCREEN, gor.getPosition());
                 gr.drawImage(buffer, -target.x, -target.y);
                 break;
-
         }
-
 
         if(state != STATES.THROW) {
             gr.setColor(Color.blue);
@@ -225,8 +223,6 @@ public class GamePlayState extends BasicTWLGameState {
             gr.drawString("Speed", 20, 10);
             gr.drawString("Angle ", 20, 50);
         }
-
-
     }
 
     private Vector2f getOffsetToCenter(Vector2f screen, Vector2f center){
@@ -615,8 +611,6 @@ public class GamePlayState extends BasicTWLGameState {
                 return true;
             }
         }
-
         return false;
     }
-
 }
