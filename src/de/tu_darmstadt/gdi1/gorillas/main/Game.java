@@ -76,6 +76,7 @@ public class Game {
     }
 
     public boolean isMute() { return mute; }
+    public void setMute(boolean value) { mute = value; }
     public void toggleMute() {
         mute = !mute;
         if( getDebug() ) System.out.println("Mute: " + mute);
@@ -99,7 +100,7 @@ public class Game {
     public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
     public void toggleStorePlayerNames() { storePlayerNames = !storePlayerNames; }
 
-    public boolean isDeveloper() { return developer; }
+    public boolean isDeveloperMode() { return developer; }
     public void setDeveloperMode(boolean enable){ developer = enable; }
 
     /** Time Constants */

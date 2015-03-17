@@ -11,7 +11,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
-import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
@@ -21,12 +20,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import sun.util.resources.cldr.mk.TimeZoneNames_mk;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class GamePlayState extends BasicTWLGameState {
 
@@ -316,7 +312,7 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.update(gc, game, delta);
         cloud.update(gc, game, delta);
 
-        if(Game.getInstance().isDeveloper()) {
+        if(Game.getInstance().isDeveloperMode()) {
             /* DEBUG: Reroll the LevelGeneration */
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
 

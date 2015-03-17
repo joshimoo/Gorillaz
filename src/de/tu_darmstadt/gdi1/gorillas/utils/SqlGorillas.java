@@ -9,6 +9,7 @@ public class SqlGorillas {
     private SqlLiteDb db;
     private String tableHighScore;
     private String tablePlayer;
+    private String tableConfig;
 
     /**
      * Constructor
@@ -20,11 +21,13 @@ public class SqlGorillas {
     public SqlGorillas(String file, String tableHighScore, String tablePlayer) {
         this.tableHighScore = tableHighScore;
         this.tablePlayer = tablePlayer;
+        this.tableConfig = "Config";
 
         // Open SQL
         db = new SqlLiteDb(file);
         db.checkExist(tableHighScore);
         db.checkExist(tablePlayer);
+        db.checkExist(tableConfig);
     }
 
     /**
@@ -132,6 +135,23 @@ public class SqlGorillas {
         String sql = "DROP TABLE " + tableHighScore + ";";
         db.update(sql);
         db.checkExist(tableHighScore);
+    }
+
+
+    public void setValue(String id, String value) {
+        String sql;
+        if(value.equals("")) {
+            sql = "DELETE FROM " + tableConfig + " WHERE ID='" + id + "';";
+        }
+        else {
+            sql = "INSERT OR REPLACE INTO " + tableConfig + " (ID, Value) VALUES ('" + id + "', '" + value + "');";
+        }
+        db.update(sql);
+    }
+
+    public String getValue(String id) {
+        String sql = "SELECT Value FROM " + tableConfig + " WHERE ID='" + id + "';";
+        return db.getValue(sql);
     }
 
     public void shutdown() {

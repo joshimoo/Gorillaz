@@ -9,6 +9,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -24,6 +25,8 @@ public class OptionState extends BasicTWLGameState {
     private Button btnInvertKeyControl;
     private Button btnWind;
     private Button btnStorePlayerNames;
+    private Button btnMute;
+    private Button btnSaveToFile;
 
     @Override
     public int getID() {
@@ -36,36 +39,39 @@ public class OptionState extends BasicTWLGameState {
         if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
             background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
         }
-
     }
 
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
         valueGravity = new ValueAdjusterFloat();
-        btnInvertKeyControl = new Button("");
-        btnWind = new Button("");
-        btnStorePlayerNames = new Button("");
         valueSound = new ValueAdjusterInt();
-
+        btnInvertKeyControl = new Button("");
+        btnStorePlayerNames = new Button("");
+        btnWind = new Button("");
+        btnMute = new Button("");
+        btnSaveToFile = new Button("Save Configuration to File");
         btnOK = new Button("OK");
         lError = new Label("");
 
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
+        btnMute.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
 
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
         btnWind.addCallback(this::toggleWind);
         btnStorePlayerNames.addCallback(this::toggleStorePlayerNames);
+        btnMute.addCallback(this::toggleMute);
+        btnSaveToFile.addCallback(this::saveConfigToFile);
 
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
-        valueGravity.setValue(Game.GRAVITY_DEFAULT);
+        valueGravity.setValue(Game.getInstance().getGravity());
 
         valueSound.setMinMaxValue((int) (Game.SOUND_VOLUME_MIN * 100), (int) (Game.SOUND_VOLUME_MAX * 100));
-        valueSound.setValue((int) (Game.SOUND_VOLUME_DEFAULT * 100));
+        valueSound.setValue((int) (Game.getInstance().getSoundVolume() * 100));
 
         rp.add(valueGravity);
         rp.add(btnInvertKeyControl);
@@ -74,6 +80,8 @@ public class OptionState extends BasicTWLGameState {
         rp.add(btnOK);
         rp.add(lError);
         rp.add(valueSound);
+        rp.add(btnMute);
+        rp.add(btnSaveToFile);
         return rp;
     }
 
@@ -97,11 +105,17 @@ public class OptionState extends BasicTWLGameState {
         btnStorePlayerNames.setSize(168, 32);
         btnStorePlayerNames.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,180);
 
+        btnMute.setSize(168, 32);
+        btnMute.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,220);
+
         lError.setSize(128, 32);
-        lError.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 220);
+        lError.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 260);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 260);
+        btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 300);
+
+        btnSaveToFile.setSize(256, 32);
+        btnSaveToFile.setPosition((Gorillas.FRAME_WIDTH - btnSaveToFile.getWidth()) / 2,Gorillas.FRAME_HEIGHT - 100);
     }
 
     @Override
@@ -149,29 +163,27 @@ public class OptionState extends BasicTWLGameState {
 
     private void toggleMute() {
         Game.getInstance().toggleMute();
-        btnInvertKeyControl.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
+        btnMute.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
     }
 
+    private void resetGUI()
+    {
+        /*
+            Reset GUI
+         */
+        btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys()? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
+        btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
+        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Random PlayerNames" : "Store PlayerNames");
+        btnMute.setText(Game.getInstance().isMute()? "Unmute" : "Mute");
 
-    /*
-        Save Settings
-        Game.getInstance().
+        //Max ist Gravitationsbeschleunigung des Jupiters
+        valueGravity.setValue(Game.getInstance().getGravity());
+        valueSound.setValue((int) (Game.SOUND_VOLUME_DEFAULT * 100));
+    }
 
-
-        getWind()
-        getInverseControlKeys
-        getGravity
-        getSoundVolume
-        getStorePlayerNames
-
-        isMute
-        getDebug
-        isTestMode
-
-        isDeveloper
-
-
-
-
-     */
+    public void saveConfigToFile() {
+        Game.getInstance().setGravity(valueGravity.getValue());
+        Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
+        Database.saveConfigToFile();
+    }
 }
