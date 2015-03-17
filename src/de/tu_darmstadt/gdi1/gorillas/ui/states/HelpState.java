@@ -79,13 +79,14 @@ public class HelpState extends BasicTWLGameState {
                 " \n" +
                 "Highscore:\n" +
                 " Return/Escape/S -> Main Menu";
-        String page3 = " Options:\n" +
+        String page3 = "Options:\n" +
                 " Escape/O/Enter -> Except Options and return to previous Screen\n" +
                 " UP -> Increase Gravity\n" +
                 " DOWN -> Decrease Gravity\n" +
                 " C -> Change Control for Angle/Speed\n" +
                 " W -> Turn Wind on/off\n" +
                 " M -> Mute\n" +
+                " P -> Switch Random Player Names/Store Player Names\n" +
                 " \n" +
                 "Help:\n" +
                 " Enter/Escape/H -> Return to previous Screen\n" +
