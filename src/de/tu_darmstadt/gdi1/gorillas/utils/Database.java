@@ -25,7 +25,7 @@ public class Database {
         this.tablePlayers = "Players";
         this.dbSQL = new SqlGorillas(this.fileName, this.tableHighScore, this.tablePlayers);
     }
-    
+
     /**
      * Returns a instance of database
      * @return database
