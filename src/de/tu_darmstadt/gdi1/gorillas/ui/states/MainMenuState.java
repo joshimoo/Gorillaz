@@ -73,7 +73,7 @@ public class MainMenuState extends BasicTWLGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         entityManager.updateEntities(container, game, delta);
-        KeyMap.keyPressedStateChange(container.getInput(),game);
+        KeyMap.globalKeyPressedActions(container.getInput(), game);
     }
 
 	@Override

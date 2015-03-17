@@ -44,7 +44,7 @@ public class InGamePause extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
-        KeyMap.keyPressedStateChange(container.getInput(), game);
+        KeyMap.globalKeyPressedActions(container.getInput(), game);
     }
 
     @Override

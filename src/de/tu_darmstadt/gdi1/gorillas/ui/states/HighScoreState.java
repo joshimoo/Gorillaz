@@ -8,7 +8,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
-import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -59,7 +58,7 @@ public class HighScoreState extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        KeyMap.keyPressedStateChange(gameContainer.getInput(),stateBasedGame);
+        KeyMap.globalKeyPressedActions(gameContainer.getInput(), stateBasedGame);
     }
 
     /**
