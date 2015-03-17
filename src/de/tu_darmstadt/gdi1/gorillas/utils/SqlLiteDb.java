@@ -21,8 +21,7 @@ public class SqlLiteDb {
         this.c = ConnectingToDatabase();
         this.createTableCommand = "CREATE TABLE IF NOT EXISTS Config" +
                 " (" +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "Param TEXT NOT NULL," +
+                "ID TEXT PRIMARY KEY NOT NULL," +
                 "Value TEXT NOT NULL" +
                 ");";
     }
@@ -57,7 +56,6 @@ public class SqlLiteDb {
             stmt = c.createStatement();
             stmt.executeUpdate(sql_in);
             stmt.close();
-
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
@@ -121,7 +119,7 @@ public class SqlLiteDb {
                 }
 
                 try {
-                    column.add(result.getInt("NumberThrows"));
+                    column.add(result.getInt("NumberWinRounds"));
                 } catch (Exception e) {
                     // NumberWinRounds not set, that is ok
                 }
@@ -159,6 +157,27 @@ public class SqlLiteDb {
         }
         out.trimToSize();
         return out;
+    }
+
+
+    public String getValue(String sql_in) {
+        Statement stmt;
+        try {
+            // c.setAutoCommit(false);
+            stmt = c.createStatement();
+            ResultSet result = stmt.executeQuery(sql_in);
+
+            if (result.next()) {
+                return result.getString("Value");
+            }
+            else {
+                return "";
+            }
+        }catch (Exception e)
+        {
+            System.err.println(this.getClass().getName()+ " getValue(String) has failed !");
+        }
+        return "";
     }
 
     public void shutdown() {

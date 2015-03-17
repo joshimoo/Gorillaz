@@ -155,4 +155,103 @@ public class Database {
         return (double) totalThrows / wonRounds;
     }
 
+    public void setValue(String id, String value) {
+        dbSQL.setValue(id,value);
+    }
+
+    public String getValue(String id) {
+        return dbSQL.getValue(id);
+    }
+
+
+
+
+    /**
+     Saves the settings:
+     - Wind
+     - InverseControlKeys
+     - Gravity
+     - SoundVolume
+     - StorePlayerNames
+     - Mute
+     - Debug
+     - TestMode
+     - DeveloperMode
+     */
+    public static void saveConfigToFile()
+    {
+        Database db = Database.getInstance();
+        Game gameInstance = Game.getInstance();
+
+        db.setValue("ConfigSaved","1");
+
+        // Boolean
+                db.setValue("Wind", encodeBoolean(gameInstance.getWind()));
+        db.setValue("Mute",encodeBoolean(gameInstance.isMute()));
+        db.setValue("InverseControlKeys",encodeBoolean(gameInstance.getInverseControlKeys()));
+        db.setValue("StorePlayerNames",encodeBoolean(gameInstance.getStorePlayerNames()));
+        db.setValue("Debug",encodeBoolean(gameInstance.getDebug()));
+        db.setValue("TestMode",encodeBoolean(gameInstance.isTestMode()));
+        db.setValue("Developer",encodeBoolean(gameInstance.isDeveloperMode()));
+
+        //Number
+        db.setValue("Gravity",encodeFloat(gameInstance.getGravity()));
+        db.setValue("SoundVolume",encodeFloat(gameInstance.getSoundVolume()));
+    }
+
+    /**
+     Loads the settings:
+     - Wind
+     - InverseControlKeys
+     - Gravity
+     - SoundVolume
+     - StorePlayerNames
+     - Mute
+     - Debug
+     - TestMode
+     - DeveloperMode
+     */
+    public static void restoreConfigFromFile() {
+        // Notwendig in OptionState direkt resetGUI()
+
+        Database db = Database.getInstance();
+        if(db.getValue("ConfigSaved").equals("1")) {
+            Game gameInstance = Game.getInstance();
+
+            // Boolean
+            gameInstance.setWind(decodeBoolean(db.getValue("Wind")));
+            gameInstance.setMute(decodeBoolean(db.getValue("Mute")));
+            gameInstance.setInverseControlKeys(decodeBoolean(db.getValue("InverseControlKeys")));
+            gameInstance.setStorePlayerNames(decodeBoolean(db.getValue("StorePlayerNames")));
+            gameInstance.setDebug(decodeBoolean(db.getValue("Debug")));
+            gameInstance.enableTestMode(decodeBoolean(db.getValue("TestMode")));
+            gameInstance.setDeveloperMode(decodeBoolean(db.getValue("Developer")));
+
+            //Number
+            gameInstance.setGravity(decodeFloat(db.getValue("Gravity")));
+            gameInstance.setSoundVolume(decodeFloat(db.getValue("SoundVolume")));
+        }
+    }
+
+    private static boolean decodeBoolean(String in)
+    {
+        return in.equals("1");
+
+    }
+
+    private static String encodeBoolean(boolean in)
+    {
+        return in ? "1" : "0";
+    }
+
+    private static float decodeFloat(String in)
+    {
+        return Float.parseFloat(in);
+
+    }
+
+    private static String encodeFloat(float in)
+    {
+        return in+"";
+    }
 }
