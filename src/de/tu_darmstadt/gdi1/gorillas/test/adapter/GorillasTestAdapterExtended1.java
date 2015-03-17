@@ -254,7 +254,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * position or -1 if position is invalid
      */
     public int getPercentageWonAtHighscorePosition(int position) {
-        String[]score = Database.getInstance().getHighScore(position);
+        String[] score = Database.getInstance().getHighScore(position);
+
         if(score.length >= position) {
             return Integer.parseInt(score[3]);
         }

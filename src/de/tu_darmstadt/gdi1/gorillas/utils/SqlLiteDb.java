@@ -119,7 +119,7 @@ public class SqlLiteDb {
                 }
 
                 try {
-                    column.add(result.getInt("NumberWinRounds"));
+                    column.add(result.getInt("NumberThrows"));
                 } catch (Exception e) {
                     // NumberWinRounds not set, that is ok
                 }
