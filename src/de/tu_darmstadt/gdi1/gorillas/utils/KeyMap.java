@@ -39,7 +39,7 @@ public class KeyMap {
     public enum Actions { ANGLE_INC, ANGLE_DEC, SPEED_INC, SPEED_DEC, THROW_NOW }
 
     /**
-     * KeyPress for GamePlay-State-Changes
+     * Global KeyPressAction Switch mostly State-Transitions
      */
     public static void globalKeyPressedActions(Input input, StateBasedGame game)
     {
