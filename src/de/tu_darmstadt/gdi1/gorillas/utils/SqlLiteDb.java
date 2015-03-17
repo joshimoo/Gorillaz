@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class SqlLiteDb {
     private String databaseFile;
-    private Connection c;
     private String createTableCommand;
+    private Connection c;
 
     /**
      * Constructor for a SQL-Lite database
@@ -19,8 +19,8 @@ public class SqlLiteDb {
     public SqlLiteDb(String File) {
         this.databaseFile = File;
         this.c = ConnectingToDatabase();
-        this.createTableCommand = "CREATE TABLE IF NOT EXISTS Config" +
-                " (" +
+        this.createTableCommand = "CREATE TABLE IF NOT EXISTS Config " +
+                "(" +
                 "ID TEXT PRIMARY KEY NOT NULL," +
                 "Value TEXT NOT NULL" +
                 ");";
@@ -159,7 +159,11 @@ public class SqlLiteDb {
         return out;
     }
 
-
+    /**
+     * Load String-Value by sql-command with one String-Result named "Value"
+     * @param sql_in SQL-Command
+     * @return Value
+     */
     public String getValue(String sql_in) {
         Statement stmt;
         try {
@@ -180,6 +184,9 @@ public class SqlLiteDb {
         return "";
     }
 
+    /**
+     * Close the db-connection
+     */
     public void shutdown() {
         try {
             c.close();
@@ -188,6 +195,10 @@ public class SqlLiteDb {
         }
     }
 
+    /**
+     * Checks if the table exist
+     * @param table Name of the table
+     */
     public void checkExist(String table) {
         String sql;
         switch (table) {
@@ -209,16 +220,24 @@ public class SqlLiteDb {
                         ");";
                 break;
             default:
-                sql = createTableCommand;
+                sql = getCreateTableCommand();
                 break;
         }
         update(sql);
     }
 
+    /**
+     * Provides a Standard-Table-Create-String
+     * @return like "CREATE TABLE ..."
+     */
     public String getCreateTableCommand() {
         return createTableCommand;
     }
 
+    /**
+     * Set a Standard-Table-Create-String
+     * @param createTableCommand  like "CREATE TABLE ..."
+     */
     public void setCreateTableCommand(String createTableCommand) {
         this.createTableCommand = createTableCommand;
     }
