@@ -8,6 +8,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -77,28 +78,31 @@ public class OptionState extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         valueGravity.setSize(128, 32);
-        valueGravity.setPosition(20, 20);
+        valueGravity.setPosition(Gorillas.FRAME_WIDTH / 2 - 64, 20);
 
-        btnInvertKeyControl.setSize(255, 32);
-        btnInvertKeyControl.setPosition(20, 60);
+        btnInvertKeyControl.setSize(256, 32);
+        btnInvertKeyControl.setPosition(Gorillas.FRAME_WIDTH / 2 - 128, 60);
 
         btnWind.setSize(128, 32);
-        btnWind.setPosition(20,100);
+        btnWind.setPosition(Gorillas.FRAME_WIDTH / 2 - 64,100);
 
         valueSound.setSize(128, 32);
-        valueSound.setPosition(20, 140);
+        valueSound.setPosition(Gorillas.FRAME_WIDTH / 2 - 64, 140);
 
         lError.setSize(128, 32);
-        lError.setPosition(20, 180);
+        lError.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 180);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(20, 240);
+        btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 240);
     }
 
     @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics gr) throws SlickException {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
-        graphics.drawImage(background, -10, -20);
+        gr.drawImage(background, -10, -20);
+        gr.setColor(Color.black);
+        gr.drawString("Gravity", valueGravity.getX() - valueGravity.getWidth() / 2, valueGravity.getY());
+        gr.drawString("Volume", valueSound.getX() - valueGravity.getWidth() / 2, valueSound.getY());
     }
 
     @Override
@@ -115,7 +119,7 @@ public class OptionState extends BasicTWLGameState {
 
     private void returnToPrevScreen() {
         Game.getInstance().setGravity(valueGravity.getValue());
-        Game.getInstance().setSoundVolume(valueSound.getValue()/100f);
+        Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
         game.enterState(game.getLastStateID());
     }
 
