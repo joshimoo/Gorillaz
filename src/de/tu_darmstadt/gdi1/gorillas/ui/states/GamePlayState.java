@@ -116,8 +116,8 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        // Do not restart game after Support-States
-        if(game.getLastStateID() != Game.INGAMEPAUSE && game.getLastStateID() != Game.HELPSTATE && game.getLastStateID() != Game.OPTIONSTATE)
+        // Only restart game when setup again
+        if(game.getLastStateID() == Game.GAMESETUPSTATE)
             startGame();
     }
 

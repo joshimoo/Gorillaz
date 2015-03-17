@@ -562,4 +562,12 @@ public abstract class StateBasedGame implements Game, InputListener {
     public int getLastStateID() {
         return lastState.getID();
     }
+
+    /**
+     * Enters to the LastState-State
+     */
+    public void enterLastState()
+    {
+        enterState(getLastStateID());
+    }
 }
