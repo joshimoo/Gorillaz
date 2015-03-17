@@ -47,7 +47,6 @@ public class SqlGorillas {
             NumberRounds += (int) former.get(2);
             NumberWinRounds += (int) former.get(3);
             NumberThrows += (int) former.get(4);
-            System.out.println("Update" + NumberRounds +" "+NumberWinRounds+" "+NumberThrows +" "+(int) former.get(4));
         }
 
         String sql = "INSERT OR REPLACE INTO " + tableHighScore +
@@ -77,9 +76,6 @@ public class SqlGorillas {
             out[i][2] = resultList.get(2).toString(); // int
             out[i][3] = resultList.get(3).toString(); // int
             out[i][4] = resultList.get(4).toString(); // double
-            for(String x : out[i])
-                System.out.print(x +" ");
-            System.out.println("\n");
         }
         return out;
     }
@@ -94,7 +90,6 @@ public class SqlGorillas {
                 "CAST(ROUND((CAST(NumberWinRounds AS real) * 100 / NumberRounds),0) AS int) AS WinRate," +
                 "ROUND((CAST(NumberThrows as real) / NumberWinRounds),2) AS HitRate " +
                 "FROM " + tableHighScore + " WHERE PlayerName='" + name + "';";
-        System.out.println(sql);
         ArrayList result = db.queryArrayList(sql);
         if(result.size()>0) {
             return (ArrayList) result.get(0);

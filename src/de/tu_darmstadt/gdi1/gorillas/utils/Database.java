@@ -120,6 +120,12 @@ public class Database {
                 case 4:
                     message = "Lese von File: HighScore";
                     break;
+                case 5:
+                    if(dbSQL.getValue("ConfigSaved").equals("1"))
+                        message = "Loading config form database";
+                    else
+                        message = "No config to load form database";
+                    break;
                 default:
                     message = "";
             }
@@ -178,25 +184,24 @@ public class Database {
      - TestMode
      - DeveloperMode
      */
-    public static void saveConfigToFile()
+    public void saveConfigToFile()
     {
-        Database db = Database.getInstance();
         Game gameInstance = Game.getInstance();
 
-        db.setValue("ConfigSaved","1");
+        dbSQL.setValue("ConfigSaved", "1");
 
         // Boolean
-                db.setValue("Wind", encodeBoolean(gameInstance.getWind()));
-        db.setValue("Mute",encodeBoolean(gameInstance.isMute()));
-        db.setValue("InverseControlKeys",encodeBoolean(gameInstance.getInverseControlKeys()));
-        db.setValue("StorePlayerNames",encodeBoolean(gameInstance.getStorePlayerNames()));
-        db.setValue("Debug",encodeBoolean(gameInstance.getDebug()));
-        db.setValue("TestMode",encodeBoolean(gameInstance.isTestMode()));
-        db.setValue("Developer",encodeBoolean(gameInstance.isDeveloperMode()));
+                dbSQL.setValue("Wind", encodeBoolean(gameInstance.getWind()));
+        dbSQL.setValue("Mute", encodeBoolean(gameInstance.isMute()));
+        dbSQL.setValue("InverseControlKeys", encodeBoolean(gameInstance.getInverseControlKeys()));
+        dbSQL.setValue("StorePlayerNames", encodeBoolean(gameInstance.getStorePlayerNames()));
+        dbSQL.setValue("Debug", encodeBoolean(gameInstance.getDebug()));
+        dbSQL.setValue("TestMode", encodeBoolean(gameInstance.isTestMode()));
+        dbSQL.setValue("Developer", encodeBoolean(gameInstance.isDeveloperMode()));
 
         //Number
-        db.setValue("Gravity",encodeFloat(gameInstance.getGravity()));
-        db.setValue("SoundVolume",encodeFloat(gameInstance.getSoundVolume()));
+        dbSQL.setValue("Gravity", encodeFloat(gameInstance.getGravity()));
+        dbSQL.setValue("SoundVolume", encodeFloat(gameInstance.getSoundVolume()));
     }
 
     /**
@@ -211,26 +216,25 @@ public class Database {
      - TestMode
      - DeveloperMode
      */
-    public static void restoreConfigFromFile() {
-        // Notwendig in OptionState direkt resetGUI()
-
-        Database db = Database.getInstance();
-        if(db.getValue("ConfigSaved").equals("1")) {
+    public void restoreConfigFromFile() {
+        if (dbSQL.getValue("ConfigSaved").equals("1")) {
             Game gameInstance = Game.getInstance();
 
             // Boolean
-            gameInstance.setWind(decodeBoolean(db.getValue("Wind")));
-            gameInstance.setMute(decodeBoolean(db.getValue("Mute")));
-            gameInstance.setInverseControlKeys(decodeBoolean(db.getValue("InverseControlKeys")));
-            gameInstance.setStorePlayerNames(decodeBoolean(db.getValue("StorePlayerNames")));
-            gameInstance.setDebug(decodeBoolean(db.getValue("Debug")));
-            gameInstance.enableTestMode(decodeBoolean(db.getValue("TestMode")));
-            gameInstance.setDeveloperMode(decodeBoolean(db.getValue("Developer")));
+            gameInstance.setWind(decodeBoolean(dbSQL.getValue("Wind")));
+            gameInstance.setMute(decodeBoolean(dbSQL.getValue("Mute")));
+            gameInstance.setInverseControlKeys(decodeBoolean(dbSQL.getValue("InverseControlKeys")));
+            gameInstance.setStorePlayerNames(decodeBoolean(dbSQL.getValue("StorePlayerNames")));
+            gameInstance.setDebug(decodeBoolean(dbSQL.getValue("Debug")));
+            gameInstance.enableTestMode(decodeBoolean(dbSQL.getValue("TestMode")));
+            gameInstance.setDeveloperMode(decodeBoolean(dbSQL.getValue("Developer")));
 
             //Number
-            gameInstance.setGravity(decodeFloat(db.getValue("Gravity")));
-            gameInstance.setSoundVolume(decodeFloat(db.getValue("SoundVolume")));
+            gameInstance.setGravity(decodeFloat(dbSQL.getValue("Gravity")));
+            gameInstance.setSoundVolume(decodeFloat(dbSQL.getValue("SoundVolume")));
         }
+
+        debug(5);
     }
 
     private static boolean decodeBoolean(String in)
