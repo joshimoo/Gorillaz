@@ -28,10 +28,16 @@ public class Game {
     public static final float GRAVITY_MIN = 0;
     public static final float GRAVITY_MAX = 24.79f;
     public static final float GRAVITY_DEFAULT = 9.80665f;
-    public static final int MAX_NAMESIZE = 12;
+    public static final int   MAX_NAMESIZE = 12;
     public static final float SOUND_VOLUME_MIN = 0;
     public static final float SOUND_VOLUME_MAX = 1f;
     public static final float SOUND_VOLUME_DEFAULT = 0.2f;
+    public static final int   ANGLE_MIN = 0;
+    public static final int   ANGLE_MAX = 180;
+    public static final int   ANGLE_DEFAULT = 60;
+    public static final int   SPEED_MIN = 0;
+    public static final int   SPEED_MAX = 200;
+    public static final int   SPEED_DEFAULT = 80;
 
     // Switches
     private boolean testmode = false;   // Graphically debug

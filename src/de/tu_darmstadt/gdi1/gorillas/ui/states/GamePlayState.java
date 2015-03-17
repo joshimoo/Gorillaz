@@ -432,8 +432,8 @@ public class GamePlayState extends BasicTWLGameState {
                     // Restart Game
                     for (Player player : Game.getInstance().getPlayers()) {
                         player.resetThrow();
-                        player.setLastAngle(90);
-                        player.setLastSpeed(80);
+                        player.setLastAngle(Game.ANGLE_DEFAULT);
+                        player.setLastSpeed(Game.SPEED_DEFAULT);
                     }
                         score = "Score: " + Game.getInstance().getPlayer(0).getWin() + ":" +
                                 Game.getInstance().getPlayer(1).getWin();
@@ -479,12 +479,12 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle = new AdvancedValueAdjusterInt();
         btnThrow = new Button("Throw");
 
-        if_speed.setMinMaxValue(0, 200);
-        if_speed.setValue(80);
+        if_speed.setMinMaxValue(Game.SPEED_MIN, Game.SPEED_MAX);
+        if_speed.setValue(Game.SPEED_DEFAULT);
         validVelocity = true;
 
-        if_angle.setMinMaxValue(0,180);
-        if_angle.setValue(60);
+        if_angle.setMinMaxValue(Game.ANGLE_MIN, Game.ANGLE_MAX);
+        if_angle.setValue(Game.ANGLE_DEFAULT);
         validAngle = true;
 
         // Wirkungslos
