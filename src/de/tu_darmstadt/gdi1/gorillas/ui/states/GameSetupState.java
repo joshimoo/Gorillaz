@@ -121,7 +121,6 @@ public class GameSetupState extends BasicTWLGameState {
             Game.getInstance().createPlayer(n2);
             return true;
         }
-
         return false;
     }
 
@@ -168,7 +167,7 @@ public class GameSetupState extends BasicTWLGameState {
         String n1 = txtName1.getText();
         String n2 = txtName2.getText();
 
-        if (setPlayerNames(n1, n2)) {
+        if (this.setPlayerNames(n1, n2)) {
             lPlayer1Error.setVisible(false);
             lPlayer2Error.setVisible(false);
             game.enterState(Game.GAMEPLAYSTATE);
@@ -181,7 +180,9 @@ public class GameSetupState extends BasicTWLGameState {
 
     private void getPlayerNames() {
         String[] names = Database.getInstance().getPlayerNames();
-                txtName1.setText(names[0]);
-                txtName2.setText(names[1]);
+        if(names.length == Game.getInstance().MAX_PLAYER_COUNT) {
+            txtName1.setText(names[0]);
+            txtName2.setText(names[1]);
+        }
     }
 }
