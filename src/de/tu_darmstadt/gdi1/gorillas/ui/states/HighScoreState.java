@@ -99,12 +99,16 @@ public class HighScoreState extends BasicTWLGameState {
 
         for (int i = 0; i < highScore_list.length; i++)
         {
-            if(i == 0)
-                line = "Place  Name            Rounds     Wins   WinRate   HitRate\n"; // TODO: use StringFormat for all of this formatting.
-            if(i<10)
-                line += " " + i + "     ";
-            else
-                line += i + "     ";
+            if(i == 0) {
+                line =
+                        String.format("%-6s","Place") + "  " +
+                        String.format("%-" + Game.MAX_NAMESIZE + "s", "Name") + "  " +
+                        String.format("%8s","Rounds") + "  " +
+                        String.format("%8s","Wins") + "  " +
+                        String.format("%8s","WinRate") + "  " +
+                        String.format("%8s","HitRate") + "\n";
+            }
+                line += String.format("%-6s", (i+1)) + "  ";
             for (int j = 0; j < 5; j++) {
                 if(j==0)
                     line += String.format("%-" + Game.MAX_NAMESIZE + "s", highScore_list[i][j]) + "  ";
