@@ -138,7 +138,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(new Vector2f(512, 60));
 
-        windSpeed = Game.getInstance().getWind() ? (int) ((Math.random() * 30) - 15) : 0;
+        windSpeed = Game.getInstance().getWind() ? calculateWind(0) : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
         destroyBanana();
@@ -300,7 +300,7 @@ public class GamePlayState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         Input input = gc.getInput();
-        KeyMap.globalKeyPressedActions(input,game);
+        KeyMap.globalKeyPressedActions(input, game);
 
         if(Game.getInstance().isDeveloperMode()) {
             // Reroll the LevelGeneration
@@ -608,5 +608,20 @@ public class GamePlayState extends BasicTWLGameState {
             }
         }
         return false;
+    }
+
+    /**
+     * Generates wind speed if "set" is "0"
+     * @param set allows you to set your own wind speed
+     * @return wind speed not 0
+     */
+    public int calculateWind(int set)
+    {
+        int wind = set;
+        while(wind < 2)
+            wind = (int) ((Math.random() * 30) - 15);
+        if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
+        return wind;
+
     }
 }
