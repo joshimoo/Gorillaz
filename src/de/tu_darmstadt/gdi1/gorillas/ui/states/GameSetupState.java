@@ -7,6 +7,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
@@ -59,7 +60,9 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
-        graphics.drawImage(background, -10, -20);
+        float scaleFactor = (float) Gorillas.FRAME_WIDTH / background.getWidth();
+        background = background.getScaledCopy(scaleFactor);
+        graphics.drawImage(background, 0, 0);
     }
 
     @Override
@@ -95,6 +98,7 @@ public class GameSetupState extends BasicTWLGameState {
 
         // Center the Textfields on the screen.
         int x = (paneWidth - txtName1.getWidth()) / 2;
+        int btnX = (paneWidth - btnStart.getWidth()) / 2;
 
         txtName1.setPosition(x, 40);
         lPlayer1Error.setPosition(x + 96, 40);
@@ -102,7 +106,7 @@ public class GameSetupState extends BasicTWLGameState {
         txtName2.setPosition(x, 80);
         lPlayer2Error.setPosition(x + 96, 80);
 
-        btnStart.setPosition(x, 120);
+        btnStart.setPosition(btnX, 120);
     }
 
     // Placeholder Implementation TODO: Add Translator Support

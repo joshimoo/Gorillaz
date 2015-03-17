@@ -106,10 +106,11 @@ public class GamePlayState extends BasicTWLGameState {
         // Lazy Load the UI, this is better for the TestGameContainer
         if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
             background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
-            background = background.getScaledCopy(2f);
+            float scaleFactor = (float) Gorillas.FRAME_WIDTH / background.getWidth();
+            background = background.getScaledCopy(scaleFactor);
             arrow = Assets.loadImage(Assets.Images.ARROW);
             explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
-            buffer = new Image(1024, 1024);
+            buffer = new Image(Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
         }
         SCREEN = new Vector2f(gc.getWidth(), gc.getHeight());
     }
@@ -166,7 +167,7 @@ public class GamePlayState extends BasicTWLGameState {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         Graphics g = buffer.getGraphics();
         g.clear();
-        g.drawImage(background, -10, -20);
+        g.drawImage(background, 0, 0);
 
         drawTextWithDropShadow(g, sun.getPosition().copy().add(new Vector2f(0, sun.getSize().y / 2)), comment, Color.yellow);
         drawTextWithDropShadow(g, sun.getPosition().copy().sub(new Vector2f(0, sun.getSize().y)), score, Color.yellow);
@@ -517,7 +518,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         pos=2;
         // Button kleiner und verschoben
-        btnThrow.setSize(50, 25);
+        btnThrow.setSize(60, 25);
         btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
     }
 
