@@ -322,7 +322,6 @@ public class GamePlayState extends BasicTWLGameState {
                 getActivePlayer().setWin();
                 getActivePlayer().setWin();
                 state = STATES.VICTORY;
-                System.out.println("V Cheat");
             }
         }
 
@@ -351,22 +350,21 @@ public class GamePlayState extends BasicTWLGameState {
                 // Bounds Check
                 if(outsidePlayingField(banana, gc.getWidth(), gc.getHeight())) {
                     state = STATES.DAMAGE;
-                    System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",
-                            banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight()
-                    );
+                    if(Game.getInstance().getDebug())
+                        System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",  banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight() );
                     comment = "...";
                     Game.getInstance().toggleNextPlayerActive();
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
-                    System.out.println("Hit Player 1");
+                    if(Game.getInstance().getDebug()) System.out.println("Hit Player 1");
                     comment = "Treffer!";
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(0) && getGorilla(1).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
-                    System.out.println("Hit Player 2");
+                    if(Game.getInstance().getDebug()) System.out.println("Hit Player 2");
                     comment = "Treffer!";
                 }
 
@@ -407,7 +405,7 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
-                System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
+                if(Game.getInstance().getDebug()) System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
                 if_speed.setValue(getActivePlayer().getLastSpeed());
@@ -430,8 +428,8 @@ public class GamePlayState extends BasicTWLGameState {
                 if(getActivePlayer().getWin() > 2)
                     state = STATES.VICTORY;
                 else {
-                    System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
-                    System.out.println("Win Nr" + getActivePlayer().getWin());
+                    if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
+                    if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
 
                     roundWinMessage = "Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !\n" +
                                         "Sieg Nummer " + getActivePlayer().getWin() + ".\n"+
@@ -453,8 +451,8 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
             case VICTORY:
                 // TODO: VICTORY
-                System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
-                System.out.println("Win Nr" + getActivePlayer().getWin());
+                if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
+                if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
                 game.enterState(Game.GAMEVICTORY);
 
                 Database.getInstance().setHighScore(getActivePlayer().getName(), totalRoundCounter, getActivePlayer().getWin(), getActivePlayer().getTotalThrows());
@@ -560,7 +558,7 @@ public class GamePlayState extends BasicTWLGameState {
         int speed = if_speed.getValue();
         int angle = if_angle.getValue();
 
-        System.out.println("Throw Banana " + speed + " " + angle);
+        if(Game.getInstance().getDebug()) System.out.println("Throw Banana " + speed + " " + angle);
 
         getActivePlayer().setLastSpeed(speed);
         getActivePlayer().setLastAngle(angle);
