@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 
 /**
  * Created by Georg Schmidt on 16.03.2015.
@@ -17,15 +18,12 @@ public class Database {
         Cache-Storage to reduce access to the harddrive
      */
     protected String[] playerNames = null;
-    protected ArrayList<ArrayList> highScore = null;
-
 
     public Database() {
         this.fileName = Game.getInstance().getDatabaseFile();
         this.tableHighScore = "HighScore";
         this.tablePlayers = "Players";
         this.dbSQL = new SqlGorillas(this.fileName, this.tableHighScore, this.tablePlayers);
-        this.highScore = new ArrayList<>(200);
     }
 
     private static Database database;
@@ -39,7 +37,6 @@ public class Database {
         if (Game.getInstance().getStorePlayerNames() && (playerNames != null)) {
             int num = 0;
             for (String p : getPlayerNames()) { dbSQL.insertPlayerName(p, num++); }
-            dbSQL.shutdown();
             debug(0);
         }
     }
@@ -73,17 +70,11 @@ public class Database {
     }
 
     public void setHighScore(String PlayerName, int NumberRounds, int NumberWinRounds, int NumberThrows) {
-        ArrayList player = new ArrayList(4);
-        player.add(PlayerName);
-        player.add(NumberRounds);
-        player.add(NumberWinRounds);
-        player.add(NumberThrows);
-        highScore.add(player);
+        dbSQL.insertHighScore(PlayerName, NumberRounds, NumberWinRounds, NumberThrows);
+        debug(3);
     }
 
     public void writeToFile() {
-        for (ArrayList l : highScore) { dbSQL.insertHighScore((String) l.get(0), (Integer) l.get(1), (Integer) l.get(2), (Integer) l.get(3)); }
-        debug(3);
         savePlayerNames();
         dbSQL.shutdown();
     }
@@ -99,11 +90,16 @@ public class Database {
         getPlayerNames();
     }
 
+    /**
+     * Gets the 10 best Players ever
+     *
+     * @return a String-Array [NR-Player][0 = Name | 1 = NumberRounds | 2 = NumberWinRounds| 3 = WinRate| 4 = HitRate]
+     */
     public String[][] getHighScore() {
-        String[][] highScores = new String[this.highScore.size()][4];
-        this.highScore.toArray(highScores);
-        return highScores;
+        return dbSQL.getHighScore();
     }
+
+
 
     private void debug(int id) {
         if (Game.getInstance().getDebug()) {
@@ -131,4 +127,32 @@ public class Database {
             /* Color-Codes: https://en.wikipedia.org/wiki/ANSI_escape_code#Colors */
         }
     }
+
+
+    public void clearHighScore()
+    {
+        this.dbSQL.clearHighScore();
+    }
+
+    /*
+        For Tests
+     */
+
+    public String[] getHighScore(int pos)
+    {
+        if(pos >= 0 && pos < getHighScore().length)
+            return this.getHighScore()[pos];
+        else
+            return new String[0];
+    }
+
+
+    public double calcWinRate(int wonRounds, int totalRounds) {
+        return (double) wonRounds / totalRounds;
+    }
+
+    public double calcHitRate(int totalThrows, int wonRounds) {
+        return (double) totalThrows / wonRounds;
+    }
+
 }

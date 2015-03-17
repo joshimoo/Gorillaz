@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -166,7 +167,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @param bananasThrown  the number of bananas the player has thrown
      */
     public void addHighscore(String name, int numberOfRounds, int roundsWon, int bananasThrown) {
-        // TODO: Implement
+        Database.getInstance().setHighScore(name,numberOfRounds,roundsWon,bananasThrown);
     }
 
     /**
@@ -174,7 +175,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * {@link #getHighscoreCount()} should return 0.
      */
     public void resetHighscore() {
-        // TODO: Implement
+        Database.getInstance().clearHighScore();
     }
 
     /**
@@ -183,8 +184,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return number of highscore entries
      */
     public int getHighscoreCount() {
-        // TODO: Implement
-        return -1;
+        return Database.getInstance().getHighScore().length;
     }
 
     /**
@@ -198,8 +198,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * if position is invalid
      */
     public String getNameAtHighscorePosition(int position) {
-        // TODO: Implement
-        return null;
+        String[] score = Database.getInstance().getHighScore(position);
+        if(score.length != 0)
+            return score[0];
+        else
+            return null;
     }
 
     /**
@@ -213,8 +216,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * passed position or -1 if position is invalid
      */
     public int getRoundsPlayedAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[] score = Database.getInstance().getHighScore(position);
+        if(score.length >= position) {
+            return Integer.parseInt(score[1]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -228,8 +235,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * position or -1 if position is invalid
      */
     public int getRoundsWonAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[]score = Database.getInstance().getHighScore(position);
+        if(score.length >= position) {
+            return Integer.parseInt(score[2]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -243,8 +254,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * position or -1 if position is invalid
      */
     public int getPercentageWonAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[]score = Database.getInstance().getHighScore(position);
+        if(score.length >= position) {
+            return Integer.parseInt(score[3]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -258,8 +273,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * if position is invalid
      */
     public double getMeanAccuracyAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[]score = Database.getInstance().getHighScore(position);
+        if(position < score.length && position > 0) {
+            return Double.parseDouble(score[4]);
+        }
+        else
+            return -1;
     }
 
     /**
