@@ -6,6 +6,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -53,9 +54,7 @@ public class GameVictory extends BasicTWLGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
-        Input in_key = container.getInput();
-        if(in_key.isKeyPressed(Input.KEY_ESCAPE)) { game.enterState(Game.MAINMENUSTATE); }
-        if (in_key.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
+        KeyMap.keyPressedStateChange(container.getInput(), game);
     }
 
     @Override

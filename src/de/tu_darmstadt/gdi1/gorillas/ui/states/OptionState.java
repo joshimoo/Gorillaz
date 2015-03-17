@@ -10,6 +10,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
+import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -130,8 +131,9 @@ public class OptionState extends BasicTWLGameState {
     public void update(GameContainer container, StateBasedGame game, int i) throws SlickException {
         Input in_key = container.getInput();
 
+        KeyMap.keyPressedStateChange(in_key, game);
+
         if (in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_O) || in_key.isKeyPressed(Input.KEY_ENTER)) { returnToPrevScreen();}
-        if (in_key.isKeyPressed(Input.KEY_M)) { Game.getInstance().toggleMute(); }
         if (in_key.isKeyPressed(Input.KEY_UP)) { valueGravity.setValue(valueGravity.getValue() + 1); }
         if (in_key.isKeyPressed(Input.KEY_DOWN)) { valueGravity.setValue(valueGravity.getValue() - 1); }
         if (in_key.isKeyPressed(Input.KEY_C)) { toggleInverseControlKeys(); }
@@ -142,7 +144,7 @@ public class OptionState extends BasicTWLGameState {
     private void returnToPrevScreen() {
         Game.getInstance().setGravity(valueGravity.getValue());
         Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
-        game.enterState(game.getLastStateID());
+        game.enterLastState();
     }
 
     // TODO: Map Text Strings to Constants

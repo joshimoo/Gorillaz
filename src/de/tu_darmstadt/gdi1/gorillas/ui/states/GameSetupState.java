@@ -8,6 +8,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
+import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -70,8 +71,9 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame game, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
+        KeyMap.keyPressedStateChange(in_key,game);
+
         if (in_key.isKeyPressed(Input.KEY_RETURN)) { startGame(); }
-        if (in_key.isKeyPressed(Input.KEY_ESCAPE)) { game.enterState(Game.MAINMENUSTATE);}
         if (in_key.isKeyPressed(Input.KEY_TAB)) {
             if (txtName1.hasKeyboardFocus()) { txtName2.requestKeyboardFocus(); }
             else if (txtName2.hasKeyboardFocus()) { btnStart.requestKeyboardFocus(); }

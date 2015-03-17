@@ -7,6 +7,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -105,7 +106,7 @@ public class HelpState extends BasicTWLGameState {
 
         btnNext.addCallback(this::nextPage);
         btnBack.addCallback(this::prevPage);
-        btnMainMenu.addCallback(this::backToMenu);
+        btnMainMenu.addCallback(game::enterLastState);
 
         rp.add(btnNext);
         rp.add(btnBack);
@@ -126,7 +127,8 @@ public class HelpState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        if (in_key.isKeyPressed(Input.KEY_RETURN) || in_key.isKeyPressed(Input.KEY_ESCAPE) || in_key.isKeyPressed(Input.KEY_H)) { backToMenu(); }
+        KeyMap.keyPressedStateChange(gameContainer.getInput(), game);
+
         if (in_key.isKeyPressed(Input.KEY_RIGHT)  || in_key.isKeyPressed(Input.KEY_D)) { nextPage(); }
         if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)) { prevPage(); }
     }
@@ -149,7 +151,6 @@ public class HelpState extends BasicTWLGameState {
         btnMainMenu.setPosition(x + 140, 500);
     }
 
-    void backToMenu() { game.enterState(game.getLastStateID()); }
     void prevPage() { page = page > 0 ? page - 1 : 3; }
     void nextPage() { page = page < pages.length - 1 ? page + 1 : 0; }
 }
