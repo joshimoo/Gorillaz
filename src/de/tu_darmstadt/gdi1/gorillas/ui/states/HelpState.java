@@ -127,7 +127,7 @@ public class HelpState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        KeyMap.keyPressedStateChange(gameContainer.getInput(), game);
+        KeyMap.globalKeyPressedActions(gameContainer.getInput(), game);
 
         if (in_key.isKeyPressed(Input.KEY_RIGHT)  || in_key.isKeyPressed(Input.KEY_D)) { nextPage(); }
         if (in_key.isKeyPressed(Input.KEY_LEFT) || in_key.isKeyPressed(Input.KEY_A)) { prevPage(); }

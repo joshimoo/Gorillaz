@@ -41,72 +41,76 @@ public class KeyMap {
     /**
      * KeyPress for GamePlay-State-Changes
      */
-    public static void keyPressedStateChange(Input input, StateBasedGame game)
+    public static void globalKeyPressedActions(Input input, StateBasedGame game)
     {
         // Always possible
         if(input.isKeyPressed(Input.KEY_M)) Game.getInstance().toggleMute();
 
-        if(game.getCurrentStateID() != Game.HELPSTATE)
-            if(input.isKeyPressed(Input.KEY_H)) game.enterState(Game.HELPSTATE);
-        if(game.getCurrentStateID() != Game.OPTIONSTATE)
-            if(input.isKeyPressed(Input.KEY_O)) game.enterState(Game.OPTIONSTATE);
-
         switch (game.getCurrentStateID()) {
             case Game.MAINMENUSTATE:
-                if(input.isKeyPressed(Input.KEY_S)) game.enterState(Game.HIGHSCORESTATE);
-
-                if(input.isKeyPressed(Input.KEY_N)) game.enterState(Game.GAMESETUPSTATE);
-                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_N)) { game.enterState(Game.GAMESETUPSTATE); }
-                if (input.isKeyPressed(Input.KEY_ESCAPE)) { Game.getInstance().exitGame(); }
+                if (input.isKeyPressed(Input.KEY_N))                                            game.enterState(Game.GAMESETUPSTATE);
+                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_N))    game.enterState(Game.GAMESETUPSTATE);
+                if (input.isKeyPressed(Input.KEY_ESCAPE))                                       Game.getInstance().exitGame();
+                if (input.isKeyPressed(Input.KEY_S))                                            game.enterState(Game.HIGHSCORESTATE);
+                if (input.isKeyPressed(Input.KEY_H))                                            game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))                                            game.enterState(Game.OPTIONSTATE);
                 break;
             case Game.GAMEPLAYSTATE:
                 /**
-                 * KEY_RETURN / KEY_SPACE -> throwBanana()
+                 * KEY_RETURN / KEY_SPACE                   -> throwBanana()
                  * KEY_RIGHT / KEY_LEFT / KEY_UP / KEY_DOWN -> Values
-                 * KEY_D / KEY_A / KEY_W / KEY_S -> Values
+                 * KEY_D / KEY_A / KEY_W / KEY_S            -> Values
                  */
-                if(input.isKeyPressed(Input.KEY_P)) game.enterState(Game.INGAMEPAUSE);
+                if (input.isKeyPressed(Input.KEY_P))            game.enterState(Game.INGAMEPAUSE);
+                if (input.isKeyPressed(Input.KEY_H))            game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))            game.enterState(Game.OPTIONSTATE);
                 break;
             case Game.GAMESETUPSTATE:
                 /**
-                 * KEY_RETURN -> startGame();
-                 * KEY_TAB -> requestKeyboardFocus()
+                 * KEY_RETURN   -> startGame();
+                 * KEY_TAB      -> requestKeyboardFocus()
                  */
-                if(input.isKeyPressed(Input.KEY_S)) game.enterState(Game.HIGHSCORESTATE);
-                if (input.isKeyPressed(Input.KEY_ESCAPE)) { game.enterState(Game.MAINMENUSTATE);}
+                if (input.isKeyPressed(Input.KEY_S))             game.enterState(Game.HIGHSCORESTATE);
+                if (input.isKeyPressed(Input.KEY_ESCAPE))        game.enterState(Game.MAINMENUSTATE);
+                if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
                 break;
             case Game.GAMEVICTORY:
-                if(input.isKeyPressed(Input.KEY_S)) game.enterState(Game.HIGHSCORESTATE);
-                if(input.isKeyPressed(Input.KEY_ESCAPE)) { game.enterState(Game.MAINMENUSTATE); }
-                if (input.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMESETUPSTATE); }
+                if (input.isKeyPressed(Input.KEY_S))             game.enterState(Game.HIGHSCORESTATE);
+                if (input.isKeyPressed(Input.KEY_ESCAPE))        game.enterState(Game.MAINMENUSTATE);
+                if (input.isKeyPressed(Input.KEY_RETURN))        game.enterState(Game.GAMESETUPSTATE);
+                if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
                 break;
             case Game.HELPSTATE:
                 /**
-                 * KEY_RIGHT / KEY_D -> nextPage()
-                 * KEY_LEFT / KEY_A -> prevPage()
+                 * KEY_RIGHT / KEY_D    ->  nextPage()
+                 * KEY_LEFT / KEY_A     ->  prevPage()
                  */
-                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_H)) { game.enterLastState(); }
+                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_H))    game.enterLastState();
                 break;
             case Game.HIGHSCORESTATE:
-                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_S)) { game.enterLastState(); }
+                if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_S))    game.enterLastState();
                 break;
             case Game.INGAMEPAUSE:
-                if (input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_RETURN)) { game.enterState(Game.GAMEPLAYSTATE); }
-                if (input.isKeyPressed(Input.KEY_N)) { game.enterState(Game.GAMESETUPSTATE); }
-                if (input.isKeyPressed(Input.KEY_E)) { Game.getInstance().exitGame(); }
-                if (input.isKeyPressed(Input.KEY_S)) { game.enterState(Game.MAINMENUSTATE); }
+                if (input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_RETURN))
+                                                                game.enterState(Game.GAMEPLAYSTATE);
+                if (input.isKeyPressed(Input.KEY_N))            game.enterState(Game.GAMESETUPSTATE);
+                if (input.isKeyPressed(Input.KEY_E))            Game.getInstance().exitGame();
+                if (input.isKeyPressed(Input.KEY_S))            game.enterState(Game.MAINMENUSTATE);
+                if (input.isKeyPressed(Input.KEY_H))            game.enterState(Game.HELPSTATE);
+                if (input.isKeyPressed(Input.KEY_O))            game.enterState(Game.OPTIONSTATE);
                 break;
             case Game.OPTIONSTATE:
                 /**
                  * Only local functions
-                 * KEY_ESCAPE / KEY_O / KEY_ENTER -> returnToPrevScreen()
-                 * KEY_UP -> valueGravity.setValue( + )
-                 * KEY_DOWN -> valueGravity.setValue( - )
-                 * KEY_C -> toggleInverseControlKeys()
-                 * KEY_W -> toggleWind()
-                 * KEY_P -> toggleStorePlayerNames()
+                 * KEY_ESCAPE / KEY_O / KEY_ENTER   -> returnToPrevScreen()
+                 * KEY_UP                           -> valueGravity.setValue( + )
+                 * KEY_DOWN                         -> valueGravity.setValue( - )
+                 * KEY_C                            -> toggleInverseControlKeys()
+                 * KEY_W                            -> toggleWind()
+                 * KEY_P                            -> toggleStorePlayerNames()
                   */
-
                 break;
             default:
         }

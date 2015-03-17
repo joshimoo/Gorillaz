@@ -71,7 +71,7 @@ public class GameSetupState extends BasicTWLGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame game, int i) throws SlickException {
         Input in_key = gameContainer.getInput();
-        KeyMap.keyPressedStateChange(in_key,game);
+        KeyMap.globalKeyPressedActions(in_key, game);
 
         if (in_key.isKeyPressed(Input.KEY_RETURN)) { startGame(); }
         if (in_key.isKeyPressed(Input.KEY_TAB)) {
