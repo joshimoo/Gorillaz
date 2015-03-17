@@ -5,6 +5,7 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
@@ -35,6 +36,9 @@ public class MainMenuState extends BasicTWLGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         if (!Game.getInstance().isTestMode()) {
             background = Assets.loadImage(Assets.Images.MAINMENU_BACKGROUND);
+            float scaleFactor = (float) Gorillas.FRAME_WIDTH / background.getWidth();
+            Game.BACKGROUND_SCALE = scaleFactor;
+            if(Game.BACKGROUND_SCALE != 1) background = background.getScaledCopy(Game.BACKGROUND_SCALE);
         }
         this.game = game;
     }
@@ -79,7 +83,7 @@ public class MainMenuState extends BasicTWLGameState {
 	@Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
-        g.drawImage(background, -10, -20);
+        g.drawImage(background, 0, 0);
         entityManager.renderEntities(container, game, g);
     }
 	

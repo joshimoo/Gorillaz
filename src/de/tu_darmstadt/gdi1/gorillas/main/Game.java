@@ -53,6 +53,7 @@ public class Game {
     private float TIME_SCALE = 1 / 500f;
     private float ROTATION_DRAG = 0.02f;
     private int EXPLOSION_RADIUS = 32;
+    public static float BACKGROUND_SCALE = 1f;
 
     // Gameplay Variables
     private float gravity = GRAVITY_DEFAULT;
@@ -60,7 +61,6 @@ public class Game {
 
     // Settings
     private String databaseFile = "data_gorillas.hsc";
-
 
 
     public float getGravity() { return gravity; }
@@ -170,4 +170,4 @@ public class Game {
 
         System.exit(0);
     }
-  }
+}
