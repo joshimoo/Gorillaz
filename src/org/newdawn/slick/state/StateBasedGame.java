@@ -151,6 +151,11 @@ public abstract class StateBasedGame implements Game, InputListener {
         leaveTransition = leave;
         enterTransition = enter;
 
+        // All inputs only in the current state
+        container.getInput().clearControlPressedRecord();
+        container.getInput().clearKeyPressedRecord();
+        container.getInput().clearMousePressedRecord();
+
         lastState = currentState;
         nextState = getState(id);
         if (nextState == null) {
