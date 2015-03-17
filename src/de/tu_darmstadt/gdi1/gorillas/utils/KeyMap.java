@@ -112,7 +112,6 @@ public class KeyMap {
                  * KEY_W                            -> toggleWind()
                  * KEY_P                            -> toggleStorePlayerNames()
                   */
-                if (input.isKeyPressed(Input.KEY_M))            Game.getInstance().toggleMute();
                 break;
             default:
         }

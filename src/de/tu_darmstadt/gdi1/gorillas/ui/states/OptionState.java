@@ -139,6 +139,7 @@ public class OptionState extends BasicTWLGameState {
         if (in_key.isKeyPressed(Input.KEY_C)) { toggleInverseControlKeys(); }
         if (in_key.isKeyPressed(Input.KEY_W)) { toggleWind(); }
         if (in_key.isKeyPressed(Input.KEY_P)) { toggleStorePlayerNames();}
+        if (in_key.isKeyPressed(Input.KEY_M))  { toggleMute();}
     }
 
     private void returnToPrevScreen() {
@@ -159,7 +160,7 @@ public class OptionState extends BasicTWLGameState {
     }
 
      private void toggleStorePlayerNames() {
-        Game.getInstance().toggleStorePlayerNames();
+         Game.getInstance().toggleStorePlayerNames();
          btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames()? "Store PlayerNames" : "Random PlayerNames");
     }
 
@@ -168,7 +169,7 @@ public class OptionState extends BasicTWLGameState {
         btnMute.setText(Game.getInstance().isMute()? "Sound off" : "Sound on");
     }
 
-    private void resetGUI()
+    private void refreshGUI()
     {
         /*
             Reset GUI
