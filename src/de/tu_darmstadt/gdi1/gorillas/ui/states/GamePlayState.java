@@ -597,28 +597,33 @@ public class GamePlayState extends BasicTWLGameState {
 
     public int getVelocity() { return validVelocity ? if_speed.getValue() : -1; }
     public void fillVelocityInput(char c) {
-        if(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
-            if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
+        if (Character.isDigit(c)){
             validVelocity = true;
+            if(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
+                if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
+            }
         }
+        else validVelocity = false;
     }
 
     public int getAngle() { return validAngle ? if_angle.getValue() : -1; }
     public void fillAngleInput(char c) {
-        if(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
-            if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
+        if (Character.isDigit(c)) {
             validAngle = true;
+            if(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
+                if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
+            }
         }
+        else validAngle = false;
     }
 
     /** This only works for positive numbers */
     public boolean verifyInput(int oldValue, int min, int max, char c) {
-        if (Character.isDigit(c)) {
-            int newValue = oldValue * 10 + Character.getNumericValue(c);
-            if (newValue <= max && newValue >= min) {
-                return true;
-            }
+        int newValue = oldValue * 10 + Character.getNumericValue(c);
+        if (newValue <= max && newValue >= min) {
+            return true;
         }
+
         return false;
     }
 
