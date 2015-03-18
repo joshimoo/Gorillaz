@@ -61,10 +61,12 @@ public class GamePlayState extends BasicTWLGameState {
     private Gorilla gorillb;
     private Sun     sun;
     private Cloud   cloud;
-    private Vector2f SCREEN;
+    private Vector2f SCREENSIZE;
+    private Camera camera;
 
     // Counter
     private static int totalRoundCounter = 0;
+
     private Image buffer;
 
     public Player getActivePlayer() { return Game.getInstance().getActivePlayer(); }
@@ -107,15 +109,13 @@ public class GamePlayState extends BasicTWLGameState {
         if (!Game.getInstance().isTestMode()) {
             background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
 
-            float scaleFactor = (float) Gorillas.CANVAS_WIDTH / background.getWidth();
-            Game.CANVAS_SCALE = scaleFactor;
-
-            if(Game.CANVAS_SCALE != 1) background = background.getScaledCopy(Game.CANVAS_SCALE);
             arrow = Assets.loadImage(Assets.Images.ARROW);
             explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
-            buffer = new Image(Gorillas.CANVAS_WIDTH, Gorillas.CANVAS_HEIGHT);
+
+            camera = new Camera(background);
+            buffer = camera.getBuffer();
         }
-        SCREEN = new Vector2f(gc.getWidth(), gc.getHeight());
+        SCREENSIZE = new Vector2f(gc.getWidth(), gc.getHeight());
     }
 
     @Override
@@ -140,7 +140,6 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla = new Gorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)));
         gorillb = new Gorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)));
 
-        sun = new Sun(new Vector2f(512, 60));
         sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
         windSpeed = Game.getInstance().getWind() ? calculateWind(0) : 0;
@@ -212,13 +211,13 @@ public class GamePlayState extends BasicTWLGameState {
                 if(banana != null) {
                     float zoom = 1f / (float) Math.sqrt(slowmoScale);
 
-                    target = getOffsetToCenter(SCREEN, banana.getPosition(), zoom);
+                    target = getOffsetToCenter(SCREENSIZE, banana.getPosition(), zoom);
                     gr.drawImage(buffer.getScaledCopy(zoom), -target.x, -target.y);
                 }
                 break;
             default:
                 Gorilla gor = (Game.getInstance().getActivePlayer() == Game.getInstance().getPlayer(0)) ? gorilla:gorillb;
-                target = getOffsetToCenter(SCREEN, gor.getPosition());
+                target = getOffsetToCenter(SCREENSIZE, gor.getPosition());
                 gr.drawImage(buffer, -target.x, -target.y);
                 break;
         }
