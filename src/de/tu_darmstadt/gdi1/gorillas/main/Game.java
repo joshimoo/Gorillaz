@@ -24,19 +24,41 @@ public class Game {
     public static final int GAMEVICTORY     = 8;
 
     // Constants
-    public static final float GRAVITY_MIN = 0;
-    public static final float GRAVITY_MAX = 24.79f;
-    public static final float GRAVITY_DEFAULT = 9.80665f;
-    public static final int   MAX_NAMESIZE = 12;
-    public static final float SOUND_VOLUME_MIN = 0;
-    public static final float SOUND_VOLUME_MAX = 1f;
-    public static final float SOUND_VOLUME_DEFAULT = 0.2f;
-    public static final int   ANGLE_MIN = 0;
-    public static final int   ANGLE_MAX = 180;
-    public static int   ANGLE_DEFAULT = 60;
-    public static final int   SPEED_MIN = 0;
-    public static final int   SPEED_MAX = 200;
-    public static int   SPEED_DEFAULT = 80;
+    public static final float GRAVITY_MIN;
+    public static final float GRAVITY_MAX;
+    public static final float GRAVITY_DEFAULT;
+    public static final int   MAX_NAMESIZE;
+    public static final float SOUND_VOLUME_MIN;
+    public static final float SOUND_VOLUME_MAX;
+    public static final float SOUND_VOLUME_DEFAULT;
+    public static final int   ANGLE_MIN;
+    public static final int   ANGLE_MAX;
+    public static final int   ANGLE_DEFAULT;
+    public static final int   SPEED_MIN;
+    public static final int   SPEED_MAX;
+    public static final int   SPEED_DEFAULT;
+
+    static {
+        if (!Game.getInstance().isTestMode()) {
+            ANGLE_DEFAULT = 60;
+            SPEED_DEFAULT = 80;
+        }
+        else {
+            ANGLE_DEFAULT = 0;
+            SPEED_DEFAULT = 0;
+        }
+        GRAVITY_MIN = 0;
+        GRAVITY_MAX = 24.79f;
+        GRAVITY_DEFAULT = 9.80665f;
+        MAX_NAMESIZE = 12;
+        SOUND_VOLUME_MIN = 0;
+        SOUND_VOLUME_MAX = 1f;
+        SOUND_VOLUME_DEFAULT = 0.2f;
+        ANGLE_MIN = 0;
+        ANGLE_MAX = 180;
+        SPEED_MIN = 0;
+        SPEED_MAX = 200;
+    }
 
     // Switches
     private boolean testmode = false;   // Graphically debug
