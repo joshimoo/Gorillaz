@@ -150,8 +150,11 @@ public final class Assets {
         GORRILA_RIGHT("gorillas/gorilla_right_up.png"),
         GORRILA_HIT("gorillaHit.png"),
 
-        BANANA("banana.png"),
-        SNICKERS("snickers.png"),
+        BANANA("projectiles/banana.png"),
+        SNICKERS("projectiles/snickers.png"),
+        COCONUT("projectiles/coconut.png"),
+        PINEAPPLE("projectiles/pineapple.png"),
+
         DESTRUCTION_OVERLAY("destruction.png"),
         ARROW("arrow.png"),
         CLOUD("cloud.png");

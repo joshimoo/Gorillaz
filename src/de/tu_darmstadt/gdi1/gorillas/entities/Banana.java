@@ -25,9 +25,13 @@ public class Banana extends Entity {
 
         if (!Game.getInstance().isTestMode()) {
             // Rendering
-            Image img = Math.random() < 0.1f ?
-                    Assets.loadImage(Assets.Images.SNICKERS)
-                    :Assets.loadImage(Assets.Images.BANANA);
+            Image img;
+            if(Math.random() < 0.1f){
+               if(Math.random() < 1 / 3f)  img = Assets.loadImage(Assets.Images.SNICKERS);
+                else if(Math.random() < 1 / 2f) img = Assets.loadImage(Assets.Images.PINEAPPLE);
+                else img = Assets.loadImage(Assets.Images.COCONUT);
+            }
+            else img = Assets.loadImage(Assets.Images.BANANA);
             addComponent(new ImageRenderComponent(img));
         } else {
             // In Test Mode the banana should be 10x10 px
