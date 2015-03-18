@@ -47,6 +47,8 @@ public class GameSetupState extends BasicTWLGameState {
         lPlayer2Error = new Label("");
 
         btnStart.addCallback(this::startGame);
+        txtName1.setMaxTextLength(Game.MAX_NAMESIZE);
+        txtName2.setMaxTextLength(Game.MAX_NAMESIZE);
 
         getPlayerNames();
 
