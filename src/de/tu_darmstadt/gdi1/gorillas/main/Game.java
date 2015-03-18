@@ -1,10 +1,9 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
-import de.tu_darmstadt.gdi1.gorillas.utils.SqlGorillas;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Singleton Class, that contains all globals.
@@ -110,8 +109,8 @@ public class Game {
     public void setDeveloperMode(boolean enable){ developer = enable; }
 
     /** Time Constants */
-    public float getTimeScale() { return TIME_SCALE; }
-    public float getWindScale() { return WIND_SCALE; }
+    public float getTimeScale() { return !isTestMode() ? TIME_SCALE : 1/100; }
+    public float getWindScale() { return !isTestMode() ? WIND_SCALE : 1/5; }
     public float getRotationFactor() { return ROTATION_DRAG; }
     public int getExplosionRadius() {return EXPLOSION_RADIUS; }
 

@@ -73,7 +73,7 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
             GamePlayState state = (GamePlayState) gorillas.getCurrentState();
 
             // Our sun is only Astonished, while being in contact with the projectile
-            return state.getSun().isHit();
+            return state.getSun().isAstonished();
         }
 
         return false;

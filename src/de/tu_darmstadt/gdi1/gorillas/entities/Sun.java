@@ -33,7 +33,7 @@ public class Sun extends Entity {
     @Override
     public boolean collides(Entity otherEntity) {
         boolean collides = super.collides(otherEntity) || getShape().contains(otherEntity.getShape());
-        setHit(collides);
+        if (collides) { triggerAstonished(false); }
         return collides;
     }
 
@@ -42,15 +42,16 @@ public class Sun extends Entity {
         return collides(b);
     }
 
-    private boolean hit;
-    public boolean isHit() {
-        return hit;
+    private boolean astonished;
+    public boolean isAstonished() {
+        return astonished;
     }
-    private void setHit(boolean collides) {
-
-        hit = collides;
+    public void resetAstonished() { triggerAstonished(true); }
+    private void triggerAstonished(boolean reset) {
+        // Tests are stupid, require the sun to be astonished for XXX Amount (whole round)
+        astonished = !reset;
         if(!Game.getInstance().isTestMode()) {
-            animation.switchToFrame(collides ? 1 : 0);
+            animation.switchToFrame(astonished ? 1 : 0);
         }
     }
 }
