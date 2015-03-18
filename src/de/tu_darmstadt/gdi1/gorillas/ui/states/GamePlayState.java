@@ -311,6 +311,11 @@ public class GamePlayState extends BasicTWLGameState {
 
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
+                totalRoundCounter = 3;
+                int throwfake = (int) (Math.random()*20);
+                for (int i = 0; i < throwfake; i++) {
+                    getActivePlayer().setThrow();
+                }
                 getActivePlayer().setWin();
                 getActivePlayer().setWin();
                 getActivePlayer().setWin();
@@ -453,7 +458,10 @@ public class GamePlayState extends BasicTWLGameState {
                 if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
                 game.enterState(Game.GAMEVICTORY);
 
-                Database.getInstance().setHighScore(getActivePlayer().getName(), totalRoundCounter, getActivePlayer().getWin(), getActivePlayer().getTotalThrows());
+                for(Player p : Game.getInstance().getPlayers())
+                {
+                    Database.getInstance().setHighScore(p.getName(), totalRoundCounter, p.getWin(), p.getTotalThrows());
+                }
 
                 // Reset Values
                 totalRoundCounter = 0;
