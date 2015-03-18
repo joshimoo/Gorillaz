@@ -116,8 +116,10 @@ public class GorillasTestAdapterMinimal {
      * @param player2Name the name of player 2
      */
     public void setPlayerNames(String player1Name, String player2Name) {
-        GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
-        state.setPlayerNames(player1Name, player2Name);
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
+            GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+            state.setPlayerNames(player1Name, player2Name);
+        }
     }
 
     /**
@@ -127,9 +129,10 @@ public class GorillasTestAdapterMinimal {
      * GamePlayState. Otherwise it should stay in the GameSetupState.
      */
     public void startGameButtonPressed() {
-            GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
+            GameSetupState state = (GameSetupState) gorillas.getCurrentState();
             state.startGame();
-
+        }
     }
 
     /**
@@ -282,7 +285,8 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer1Error() {
-        GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
+        if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
+        GameSetupState state = (GameSetupState) gorillas.getCurrentState();
         return state.getPlayer1Error();
     }
 
@@ -294,7 +298,8 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer2Error() {
-        GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
+        if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
+        GameSetupState state = (GameSetupState) gorillas.getCurrentState();
         return state.getPlayer2Error();
     }
 
