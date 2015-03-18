@@ -128,8 +128,10 @@ public class GameSetupState extends BasicTWLGameState {
      * @see de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState#checkValidPlayerNames(String, String)
      */
     public Boolean setPlayerNames(String n1, String n2) {
-        txtName1.setText(n1);
-        txtName2.setText(n2);
+        if(Game.getInstance().isTestMode()) {
+            txtName1.setText(n1);
+            txtName2.setText(n2);
+        }
         if (checkValidPlayerNames(n1, n2)) {
             Game.getInstance().createPlayer(n1);
             Game.getInstance().createPlayer(n2);
