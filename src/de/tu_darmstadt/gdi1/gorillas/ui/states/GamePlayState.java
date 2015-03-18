@@ -383,7 +383,7 @@ public class GamePlayState extends BasicTWLGameState {
                        else if(banana.getPosition().getY() < gorilla.getPosition().getY() - 64)
                            comment += " Viel zu hoch!";
 
-                       if(comment.equals("")) comment = "Fast getroffen!";
+                       if(comment.isEmpty()) comment = "Fast getroffen!";
                    }
                     else{
                        if(banana.getPosition().getX() > gorillb.getPosition().getX() + 64)
@@ -395,7 +395,7 @@ public class GamePlayState extends BasicTWLGameState {
                        else if(banana.getPosition().getY() < gorillb.getPosition().getY() - 64)
                            comment += " Viel zu hoch!";
 
-                       if(comment.equals("")) comment = "Fast getroffen!";
+                       if(comment.isEmpty()) comment = "Fast getroffen!";
                    }
                     Game.getInstance().toggleNextPlayerActive();
                 }

@@ -148,7 +148,7 @@ public class SqlGorillas {
      */
     public void setValue(String id, String value) {
         String sql;
-        if(value.equals("")) {
+        if(value.isEmpty()) {
             sql = "DELETE FROM " + tableConfig + " WHERE ID='" + id + "';";
         }
         else {
