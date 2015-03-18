@@ -89,7 +89,16 @@ public class Game {
 
     /** Singleton Pattern */
     private Game() {
+
         players = new ArrayList<Player>(MAX_PLAYER_COUNT);
+
+        // Set Test-Defaults
+        if(isTestMode())
+        {
+            Game.ANGLE_DEFAULT = 0;
+            Game.SPEED_DEFAULT = 0;
+            gravity = 10;
+        }
     }
     private static Game game;
     public static Game getInstance() {
