@@ -34,7 +34,10 @@ public class Sun extends Entity {
     public boolean collides(Entity otherEntity) {
         boolean collides = super.collides(otherEntity) || getShape().contains(otherEntity.getShape());
         if (collides) { triggerAstonished(false); }
-        else { triggerAstonished(true); }
+        else {
+            if(!Game.getInstance().isTestMode())
+                triggerAstonished(true);
+        }
         return collides;
     }
 
