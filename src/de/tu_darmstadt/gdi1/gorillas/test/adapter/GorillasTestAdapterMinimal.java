@@ -27,6 +27,7 @@ public class GorillasTestAdapterMinimal {
 
         // Enable Testmode for the total Game
         Game.getInstance().enableTestMode(true);
+        Game.getInstance().setStorePlayerNames(false);
     }
 
     /* ***************************************************
@@ -115,10 +116,8 @@ public class GorillasTestAdapterMinimal {
      * @param player2Name the name of player 2
      */
     public void setPlayerNames(String player1Name, String player2Name) {
-        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
-            GameSetupState state = (GameSetupState) gorillas.getCurrentState();
-            state.setPlayerNames(player1Name, player2Name);
-        }
+        GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
+        state.setPlayerNames(player1Name, player2Name);
     }
 
     /**
@@ -128,10 +127,9 @@ public class GorillasTestAdapterMinimal {
      * GamePlayState. Otherwise it should stay in the GameSetupState.
      */
     public void startGameButtonPressed() {
-        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
-            GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+            GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
             state.startGame();
-        }
+
     }
 
     /**
@@ -284,8 +282,8 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer1Error() {
-        if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
-        GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+        //if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
+        GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
         return state.getPlayer1Error();
     }
 
@@ -297,8 +295,8 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer2Error() {
-        if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
-        GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+        //if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
+        GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
         return state.getPlayer2Error();
     }
 
