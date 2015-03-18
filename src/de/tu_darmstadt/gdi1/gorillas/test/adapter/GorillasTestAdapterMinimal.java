@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.entities.Banana;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
@@ -234,9 +235,10 @@ public class GorillasTestAdapterMinimal {
      * @return the next position of the shot
      */
     public Vector2f getNextShotPosition(Vector2f startPosition, int angle, int speed, boolean fromLeftToRight, int deltaTime) {
-
-        // TODO: Implement
-        return new Vector2f(0, 0);
+        angle = fromLeftToRight ? angle : 180 - angle;
+        Banana banana = new Banana(startPosition, angle, speed, 10, 0);
+        banana.update(null, null, deltaTime);
+        return banana.getPosition();
     }
 
     /**

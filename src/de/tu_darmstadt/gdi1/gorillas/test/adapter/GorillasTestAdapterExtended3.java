@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.entities.Banana;
 import org.newdawn.slick.geom.Vector2f;
 
 public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
@@ -46,7 +47,9 @@ public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
      * @return the next position of the shot
      */
     public Vector2f getNextShotPosition(Vector2f startPosition, int angle, int speed, int wind, int gravity, boolean fromLeftToRight, int deltaTime) {
-        // TODO: Implement
-        return null;
+        angle = fromLeftToRight ? angle : 180 - angle;
+        Banana banana = new Banana(startPosition, angle, speed, gravity, wind);
+        banana.update(null, null, deltaTime);
+        return banana.getPosition();
     }
 }

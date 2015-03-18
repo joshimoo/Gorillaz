@@ -49,13 +49,13 @@ public class Game {
         SOUND_VOLUME_MAX = 1f;
         SOUND_VOLUME_DEFAULT = 0.2f;
         ANGLE_MIN = 0;
-        ANGLE_MAX = 180;
+        ANGLE_MAX = 360;
         SPEED_MIN = 0;
         SPEED_MAX = 200;
     }
 
     // Switches
-    private boolean testmode = false;   // Graphically debug
+    private boolean testmode = true;   // Graphically debug
     private boolean debug = true;       // Debug outputs
     private boolean developer = true;   // Cheating options
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
@@ -136,8 +136,8 @@ public class Game {
     public void setDeveloperMode(boolean enable){ developer = enable; }
 
     /** Time Constants */
-    public float getTimeScale() { return !isTestMode() ? TIME_SCALE : 1/100; }
-    public float getWindScale() { return !isTestMode() ? WIND_SCALE : 1/5; }
+    public float getTimeScale() { return !isTestMode() ? TIME_SCALE : 1/100f; }
+    public float getWindScale() { return !isTestMode() ? WIND_SCALE : 1/5f; }
     public float getRotationFactor() { return ROTATION_DRAG; }
     public int getExplosionRadius() {return EXPLOSION_RADIUS; }
 

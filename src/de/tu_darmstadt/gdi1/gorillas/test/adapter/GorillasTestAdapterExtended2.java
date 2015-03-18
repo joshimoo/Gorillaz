@@ -48,10 +48,10 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
      */
     public Vector2f getNextShotPosition(Vector2f startPosition, int angle, int speed, int wind, boolean fromLeftToRight, int deltaTime) {
         angle = fromLeftToRight ? angle : 180 - angle;
-        Banana banana = new Banana(startPosition, angle, speed, 10, wind );
+        Banana banana = new Banana(startPosition, angle, speed, 10, wind);
         banana.update(null, null, deltaTime);
-        // TODO: Implement
         return banana.getPosition();
+
     }
 
     /**
