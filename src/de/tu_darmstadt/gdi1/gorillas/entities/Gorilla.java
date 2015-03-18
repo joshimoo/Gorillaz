@@ -31,7 +31,8 @@ public class Gorilla extends Entity {
                     Assets.loadImage(Assets.Images.GORRILA),
                     Assets.loadImage(Assets.Images.GORRILA_RIGHT)
             };
-            addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
+            //addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
+            addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, Game.GORILLA_WIDTH, Game.GORILLA_HEIGHT, true));
 
             // Change our Center position so that our feet touch the top of the building
             setPosition(new Vector2f(pos.x - frames[0].getWidth() / 2, pos.y - frames[0].getHeight() / 2));

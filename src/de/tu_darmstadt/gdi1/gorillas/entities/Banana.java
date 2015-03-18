@@ -31,6 +31,9 @@ public class Banana extends Entity {
                 else img = Assets.loadImage(Assets.Images.COCONUT);
             }
             else img = Assets.loadImage(Assets.Images.BANANA);
+
+            float scale = Game.BANANA_SIZE/img.getWidth();
+            if(scale != 1f) img.getScaledCopy(scale);
             addComponent(new ImageRenderComponent(img));
         } else {
             // In Test Mode the banana should be 10x10 px
