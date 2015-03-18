@@ -53,7 +53,7 @@ public class Game {
     private float ROTATION_DRAG = 0.02f;
     private int EXPLOSION_RADIUS = 32;
     public static float BACKGROUND_SCALE = 1f;
-    public static float CANVAS_SCALE = 1f;
+    public static float CANVAS_SCALE = 2f;
 
     // Gameplay Variables
     private float gravity = GRAVITY_DEFAULT;
