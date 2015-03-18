@@ -72,6 +72,8 @@ public class GameSetupState extends BasicTWLGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         getPlayerNames();
+        lPlayer1Error.setText("");
+        lPlayer2Error.setText("");
     }
 
     @Override
