@@ -33,20 +33,14 @@ public class Game {
     public static final float SOUND_VOLUME_DEFAULT;
     public static final int   ANGLE_MIN;
     public static final int   ANGLE_MAX;
-    public static final int   ANGLE_DEFAULT;
+    public static       int   ANGLE_DEFAULT;
     public static final int   SPEED_MIN;
     public static final int   SPEED_MAX;
-    public static final int   SPEED_DEFAULT;
+    public static       int   SPEED_DEFAULT;
 
     static {
-        if (!Game.getInstance().isTestMode()) {
-            ANGLE_DEFAULT = 60;
-            SPEED_DEFAULT = 80;
-        }
-        else {
-            ANGLE_DEFAULT = 0;
-            SPEED_DEFAULT = 0;
-        }
+        ANGLE_DEFAULT = 60;
+        SPEED_DEFAULT = 80;
         GRAVITY_MIN = 0;
         GRAVITY_MAX = 24.79f;
         GRAVITY_DEFAULT = 9.80665f;
