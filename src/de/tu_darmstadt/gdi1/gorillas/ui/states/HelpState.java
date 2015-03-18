@@ -68,12 +68,19 @@ public class HelpState extends BasicTWLGameState {
                 " M -> Mute" +
                 " H -> Help" +
                 " O -> Options";
+        if(Game.getInstance().isDeveloperMode())
+        {
+            page1 +=  " Q -> New Background" +
+                      " V -> Instant win";
+        }
         String page2 = "Pause:\n" +
-                " Escape/P -> Return to Game\n" +
-                " Return -> New Game\n" +
+                " Escape/P/Return -> Return to Game\n" +
+                " N -> New Game\n" +
                 " E -> Exit Game\n" +
                 " S -> Return to Main Menu\n" +
                 " M -> Mute\n" +
+                " H -> Help" +
+                " O -> Options" +
                 " \n" +
                 "Victory:\n" +
                 " Escape -> Return to Main Menu\n" +

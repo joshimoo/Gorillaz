@@ -45,7 +45,6 @@ public class KeyMap {
     {
         switch (game.getCurrentStateID()) {
             case Game.MAINMENUSTATE:
-                if (input.isKeyPressed(Input.KEY_N))                                            game.enterState(Game.GAMESETUPSTATE);
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_N))    game.enterState(Game.GAMESETUPSTATE);
                 if (input.isKeyPressed(Input.KEY_ESCAPE))                                       Game.getInstance().exitGame();
                 if (input.isKeyPressed(Input.KEY_S))                                            game.enterState(Game.HIGHSCORESTATE);
@@ -76,12 +75,12 @@ public class KeyMap {
                 if (input.isKeyPressed(Input.KEY_ESCAPE))        game.enterState(Game.MAINMENUSTATE);
                 break;
             case Game.GAMEVICTORY:
-                if (input.isKeyPressed(Input.KEY_S))             game.enterState(Game.HIGHSCORESTATE);
+                //if (input.isKeyPressed(Input.KEY_S))             game.enterState(Game.HIGHSCORESTATE);
                 if (input.isKeyPressed(Input.KEY_ESCAPE))        game.enterState(Game.MAINMENUSTATE);
                 if (input.isKeyPressed(Input.KEY_RETURN))        game.enterState(Game.GAMESETUPSTATE);
-                if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
-                if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
-                if (input.isKeyPressed(Input.KEY_M))             Game.getInstance().toggleMute();
+                //if (input.isKeyPressed(Input.KEY_H))             game.enterState(Game.HELPSTATE);
+                //if (input.isKeyPressed(Input.KEY_O))             game.enterState(Game.OPTIONSTATE);
+                //if (input.isKeyPressed(Input.KEY_M))             Game.getInstance().toggleMute();
                 break;
             case Game.HELPSTATE:
                 /**
@@ -111,6 +110,7 @@ public class KeyMap {
                  * KEY_C                            -> toggleInverseControlKeys()
                  * KEY_W                            -> toggleWind()
                  * KEY_P                            -> toggleStorePlayerNames()
+                 * KEY_M                            -> Option::toggleMute()
                   */
                 break;
             default:
