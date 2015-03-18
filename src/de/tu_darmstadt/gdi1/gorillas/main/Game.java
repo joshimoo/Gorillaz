@@ -88,18 +88,7 @@ public class Game {
     public void setSoundVolume(float value) { this.soundVolume = value > SOUND_VOLUME_MAX ? SOUND_VOLUME_MAX : value < SOUND_VOLUME_MIN ? SOUND_VOLUME_MIN : value; }
 
     /** Singleton Pattern */
-    private Game() {
-
-        players = new ArrayList<Player>(MAX_PLAYER_COUNT);
-
-        // Set Test-Defaults
-        if(isTestMode())
-        {
-            Game.ANGLE_DEFAULT = 0;
-            Game.SPEED_DEFAULT = 0;
-            gravity = 10;
-        }
-    }
+    private Game() { players = new ArrayList<Player>(MAX_PLAYER_COUNT); }
     private static Game game;
     public static Game getInstance() {
         if (game == null) { game = new Game(); }
@@ -125,7 +114,19 @@ public class Game {
     public void setDebug(boolean enable) { debug = enable; }
 
     public boolean isTestMode() { return testmode; }
-    public void enableTestMode(boolean enable) { testmode = enable; }
+    public void enableTestMode(boolean enable) {
+        testmode = enable;
+        if(testmode)
+        {
+            // Set Test-Defaults
+            if(isTestMode())
+            {
+                Game.ANGLE_DEFAULT = 0;
+                Game.SPEED_DEFAULT = 0;
+                gravity = 10;
+            }
+        }
+    }
 
     public boolean getStorePlayerNames() { return storePlayerNames; }
     public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
