@@ -56,7 +56,9 @@ public class OptionState extends BasicTWLGameState {
         lError = new Label("");
         resolution = new EditField();
         resolution.setMaxTextLength(9);
-        resolution.setVisible(false);// TODO: reactivate if all GUI can scale
+        // TODO: reactivate if all GUI can scale
+        resolution.setVisible(false);
+        resolution.setEnabled(false);
 
         resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");

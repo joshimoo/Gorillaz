@@ -104,11 +104,12 @@ public class GamePlayState extends BasicTWLGameState {
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         // Load All Static Content or Ressources (Background Images, Sounds etc)
         // Lazy Load the UI, this is better for the TestGameContainer
-        if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
+        if (!Game.getInstance().isTestMode()) {
             background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
+
             float scaleFactor = (float) Gorillas.CANVAS_WIDTH / background.getWidth();
             Game.CANVAS_SCALE = scaleFactor;
-            System.out.println(Game.CANVAS_SCALE);
+
             if(Game.CANVAS_SCALE != 1) background = background.getScaledCopy(Game.CANVAS_SCALE);
             arrow = Assets.loadImage(Assets.Images.ARROW);
             explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
@@ -352,8 +353,7 @@ public class GamePlayState extends BasicTWLGameState {
                 // Bounds Check
                 if(outsidePlayingField(banana, gc.getWidth(), gc.getHeight())) {
                     state = STATES.DAMAGE;
-                    if(Game.getInstance().getDebug())
-                        System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",  banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight() );
+                    if(Game.getInstance().getDebug()) System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",  banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight() );
                     comment = "...";
                     Game.getInstance().toggleNextPlayerActive();
                 }
@@ -639,6 +639,5 @@ public class GamePlayState extends BasicTWLGameState {
             wind = (int) ((Math.random() * 30) - 15);
         if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
         return wind;
-
     }
 }

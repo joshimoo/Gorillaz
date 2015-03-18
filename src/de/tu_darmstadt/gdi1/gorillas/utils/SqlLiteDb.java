@@ -59,7 +59,7 @@ public class SqlLiteDb {
         } catch (Exception e) {
             if(e.getMessage().equals("database is locked"))
                 //ToDO: What can we do?
-                System.out.println("Close all Games ! [ update(String) ]");
+                System.err.println("Please close all Games to solve a database conflict [ database is locked ] ! [ SqlLiteDb -> update(String) ]");
             else
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
@@ -85,19 +85,8 @@ public class SqlLiteDb {
             ArrayList column = new ArrayList();
             // Work with the result
             while (result.next()) {
-                /*
-                int i = 0;
-                while (i<4){
-                    String value = result.getString(i++);
-                    System.out.println(value);
-                    if(value == null)
-                        break;
-                    else
-                        column.add(value);
-                }*/
-
-
                 // Depends on the database-structure !
+
                 try {
                     column.add(result.getInt("ID"));
                 } catch (Exception e) {
@@ -140,16 +129,6 @@ public class SqlLiteDb {
                     // HitRate not set, that is ok
                 }
 
-
-                /*
-                try
-                {
-                    column.add(result.getString("Text"));
-                } catch (Exception e)
-                {
-                    // Score not set, that is ok
-                }
-                */
                 if (column.size() > 0) { out.add(column); }
                 column = new ArrayList();
             }
@@ -158,7 +137,7 @@ public class SqlLiteDb {
         } catch (Exception e) {
             if(e.getMessage().equals("database is locked"))
                 //ToDO: What can we do?
-                System.out.println("Close all Games ! [ queryArrayList(String) ]");
+                System.err.println("Please close all Games to solve a database conflict [ database is locked ] ! [ SqlLiteDb -> queryArrayList(String) ]");
             else
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
