@@ -57,7 +57,11 @@ public class SqlLiteDb {
             stmt.executeUpdate(sql_in);
             stmt.close();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            if(e.getMessage().equals("database is locked"))
+                //ToDO: What can we do?
+                System.out.println("Close all Games ! [ update(String) ]");
+            else
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
         return true;
@@ -152,7 +156,12 @@ public class SqlLiteDb {
             stmt.close();
             result.close();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            if(e.getMessage().equals("database is locked"))
+                //ToDO: What can we do?
+                System.out.println("Close all Games ! [ queryArrayList(String) ]");
+            else
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+
             return null;
         }
         out.trimToSize();
