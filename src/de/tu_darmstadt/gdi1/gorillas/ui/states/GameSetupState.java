@@ -128,6 +128,8 @@ public class GameSetupState extends BasicTWLGameState {
      * @see de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState#checkValidPlayerNames(String, String)
      */
     public Boolean setPlayerNames(String n1, String n2) {
+        txtName1.setText(n1);
+        txtName2.setText(n2);
         if (checkValidPlayerNames(n1, n2)) {
             Game.getInstance().createPlayer(n1);
             Game.getInstance().createPlayer(n2);
@@ -146,8 +148,8 @@ public class GameSetupState extends BasicTWLGameState {
      * @return true when both names are valid
      */
     private Boolean checkValidPlayerNames(String n1, String n2) {
-        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : n1.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : "");
-        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : n2.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : "");
+        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : (n1.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : ""));
+        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : (n2.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : ""));
 
         // Only check for duplicates if we have valid inputs
         if (!n1.isEmpty() && n1.equals(n2)) {
@@ -163,9 +165,15 @@ public class GameSetupState extends BasicTWLGameState {
 
     public void setPlayer2Error(String error) {lPlayer2Error.setText(error);}
 
-    public String getPlayer1Error() { return lPlayer1Error.getText(); }
+    public String getPlayer1Error() {
+        if(lPlayer1Error.getText() == null) return "";
+        else return lPlayer1Error.getText();
+    }
 
-    public String getPlayer2Error() { return lPlayer2Error.getText(); }
+    public String getPlayer2Error() {
+        if(lPlayer2Error.getText() == null) return "";
+        else return lPlayer2Error.getText();
+    }
 
     public void startGame() {
         saveNamesAndStartGame(game);
