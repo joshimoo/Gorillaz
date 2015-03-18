@@ -23,6 +23,9 @@ public class GorillasTestAdapterMinimal {
 
     public GorillasTestAdapterMinimal() {
         super();
+
+        // Enable Testmode for the total Game
+        Game.getInstance().enableTestMode(true);
     }
 
     /* ***************************************************
