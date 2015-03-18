@@ -260,6 +260,34 @@ public class Database {
         setValue("DisplayHeight", encodeInt(Height));
     }
 
+    public int getCanvasWidth()
+    {
+        String get = getValue("CanvasWidth");
+        if(get.equals(""))
+            return 1024;
+        else
+            return decodeInt(get);
+    }
+
+    public void setCanvasWidth( int width)
+    {
+        setValue("CanvasWidth", encodeInt(width));
+    }
+
+    public int getCanvasHeight()
+    {
+        String get = getValue("CanvasHeight");
+        if(get.equals(""))
+            return 1024;
+        else
+            return decodeInt(get);
+    }
+
+    public void setCanvasHeight( int Height)
+    {
+        setValue("CanvasHeight", encodeInt(Height));
+    }
+
     /**
      Saves the settings:
      - Wind

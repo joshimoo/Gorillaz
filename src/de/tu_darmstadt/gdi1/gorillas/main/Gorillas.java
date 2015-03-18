@@ -18,6 +18,8 @@ public class Gorillas extends TWLStateBasedGame {
     /* Global Parameters */
     public static int FRAME_WIDTH = Database.getInstance().getDisplayWidth();
     public static int FRAME_HEIGHT = Database.getInstance().getDisplayHeight();
+    public static int CANVAS_WIDTH = Database.getInstance().getCanvasWidth();
+    public static int CANVAS_HEIGHT = Database.getInstance().getCanvasHeight();
     public static int TARGET_FPS = 120;
 
     public static final String THEME    = "/theme.xml";
