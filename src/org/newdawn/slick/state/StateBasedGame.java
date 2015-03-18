@@ -320,6 +320,10 @@ public abstract class StateBasedGame implements Game, InputListener {
      * @see org.newdawn.slick.Game#closeRequested()
      */
     public boolean closeRequested() {
+
+        // To run Cleanup at window close
+        de.tu_darmstadt.gdi1.gorillas.main.Game.cleanupOnExit();
+
         return true;
     }
 
