@@ -40,13 +40,16 @@ public class Skyscraper extends Entity implements ICollidable {
         int blue  = (int) (Math.random() * 255);
         Color color = new Color(red, green, blue);
 
-        // The image needs an Alpha-component so we can erase some parts of it.
-        img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = img.createGraphics();
+        Graphics2D g = null;
+        if (!Game.getInstance().isTestMode()) {
+            // The image needs an Alpha-component so we can erase some parts of it.
+            img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+             g = img.createGraphics();
 
-        /* Draw the Skyscraper Wall */
-        g.setColor(color);
-        g.fillRect(0, 0, getWidth(), getHeight());
+            /* Draw the Skyscraper Wall */
+            g.setColor(color);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
 
         /* Draw randomized Windows */
         int winSize    = 20;                              // Size of a window [px]
@@ -55,19 +58,22 @@ public class Skyscraper extends Entity implements ICollidable {
         int winPadding = (winSpacing - winSize) /2;       // Padding per Window
         int winRows    = getHeight() / winSpacing;        // Amount of Horizontal rows
 
-        g.setColor(color.darker());
-        for(int j = 0; j <= winRows; j++)
-            for(int i = 0; i < winColumns; i++)
-                g.fillRect( (i*winSpacing) + winPadding, (j*winSpacing) + winPadding, winSize, winSize);
+        if (!Game.getInstance().isTestMode() && g != null) {
+            g.setColor(color.darker());
+            for(int j = 0; j <= winRows; j++)
+                for(int i = 0; i < winColumns; i++)
+                    g.fillRect( (i*winSpacing) + winPadding, (j*winSpacing) + winPadding, winSize, winSize);
 
-        // Pointless, getTexture fails only if img == null
-        try {
-            slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
-        } catch (IOException e) { e.printStackTrace();}
+            // Pointless, getTexture fails only if img == null
+            try {
+                slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
+            } catch (IOException e) { e.printStackTrace();}
+        }
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sb, org.newdawn.slick.Graphics graph) {
+        if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         super.render(gc, sb, graph);
 
         // Stupid pointless incompatibility between atw.BuffImg & slick.Img
