@@ -282,7 +282,6 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer1Error() {
-        //if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
         GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
         return state.getPlayer1Error();
     }
@@ -295,7 +294,6 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer2Error() {
-        //if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
         GameSetupState state = (GameSetupState) gorillas.getState(Game.GAMESETUPSTATE);
         return state.getPlayer2Error();
     }
