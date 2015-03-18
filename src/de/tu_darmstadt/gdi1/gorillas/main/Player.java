@@ -58,6 +58,9 @@ public class Player {
 
     /** Returns the current Playerscore */
     public int getScore(){
+        //TODO: Score = numberOfWins
+        score = numberOfWins;
+        
         return this.score;
     }
 
