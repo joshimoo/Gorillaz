@@ -13,7 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Banana extends Entity {
 
     private float gravity   = 9.80665f;
-    public static final float SPEED_MOD = 0.8f;
     private float rotationSpeed, t;
     private float vx, vy, speed;
     private int windAcceleration, angle;
@@ -62,19 +61,19 @@ public class Banana extends Entity {
         Vector2f pos = getPosition();
         /* Move the Banana */
         t = t + delta * Game.getInstance().getTimeScale();
+        //Dozen
         if((pos.y + getSize().y / 2 >= Gorillas.FRAME_HEIGHT)& (vx > 5 | vx < -5)){
             if(vx > 5) angle = -angle;
             if(vx < 5) angle = 180 - angle;
-
             pos0 = new Vector2f(pos.x, gc.getHeight() - (getSize().y + 10) / 2);
             speed = vx;
             t = delta * Game.getInstance().getTimeScale();
         }
 
-        vx = (float) Math.cos(Math.toRadians(angle)) * speed * SPEED_MOD;
-        vy = (float) Math.sin(Math.toRadians(angle)) * speed * SPEED_MOD;
-        pos.x = (float) (pos0.x + (vx * t) + ( windAcceleration /2 * Game.getInstance().getWindScale() * t * t));
-        pos.y = (float) (pos0.y - (vy * t) + ( gravity /2 * t * t));
+        vx = (float) Math.cos(Math.toRadians(angle)) * speed;
+        vy = (float) Math.sin(Math.toRadians(angle)) * speed;
+        pos.x = (pos0.x + (vx * t) + ( windAcceleration /2f * Game.getInstance().getWindScale() * t * t));
+        pos.y = (pos0.y - (vy * t) + ( gravity /2f * t * t));
         setPosition(pos);
     }
 }
