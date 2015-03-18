@@ -2,6 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
@@ -36,8 +37,8 @@ public class Cloud extends Entity {
         pos.x += (w / 2) * Game.getInstance().getWindScale();
 
         if(pos.x < -getSize().x) {
-            pos.x = gc.getWidth();
-        } else if(pos.x > gc.getWidth() + getSize().x / 2) {
+            pos.x = Gorillas.CANVAS_WIDTH;
+        } else if(pos.x > Gorillas.CANVAS_WIDTH + getSize().x / 2) {
             pos.x = -getSize().x;
         }
 
