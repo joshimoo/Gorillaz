@@ -1,5 +1,8 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import org.newdawn.slick.geom.Vector2f;
 
 public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
@@ -56,7 +59,7 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
      * @return the wind scaling factor for the parabolic flight calculation
      */
     public float getWindScalingFactor() {
-        return -1;
+        return Game.getInstance().getWindScale();
     }
 
     /**
@@ -66,7 +69,13 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
      * otherwise false
      */
     public boolean isSunAstonished() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+
+            // Our sun is only Astonished, while being in contact with the projectile
+            return state.getSun().isAstonished();
+        }
+
         return false;
     }
 

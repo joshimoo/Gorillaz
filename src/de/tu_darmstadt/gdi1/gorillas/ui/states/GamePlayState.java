@@ -416,6 +416,7 @@ public class GamePlayState extends BasicTWLGameState {
                 state = STATES.INPUT;
                 break;
             case ROUNDVICTORY:
+                getSun().resetAstonished(); // For tests, reset smiling on round end
                 getActivePlayer().setWin();
                 totalRoundCounter += 1;
 
