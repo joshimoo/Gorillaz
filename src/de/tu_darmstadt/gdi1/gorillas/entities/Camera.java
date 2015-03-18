@@ -19,7 +19,7 @@ public class Camera {
         float scaleFactor = (float) Gorillas.CANVAS_WIDTH / background.getWidth();
         Game.CANVAS_SCALE = scaleFactor;
 
-        if(Game.CANVAS_SCALE != 1) background = background.getScaledCopy(Game.CANVAS_SCALE);
+        if(Game.CANVAS_SCALE != 1) this.background = background.getScaledCopy(Game.CANVAS_SCALE);
 
         try {
             buffer = new Image(Gorillas.CANVAS_WIDTH, Gorillas.CANVAS_HEIGHT);
