@@ -174,11 +174,11 @@ public class GamePlayState extends BasicTWLGameState {
         drawTextWithDropShadow(g, sun.getPosition().copy().add(new Vector2f(0, sun.getSize().y / 2)), comment, Color.yellow);
         drawTextWithDropShadow(g, sun.getPosition().copy().sub(new Vector2f(0, sun.getSize().y)), score, Color.yellow);
         entityManager.renderEntities(gc, game, g);
-        sun.render(gc, game, g);
         skyline.render(gc, game, g);
         gorilla.render(gc, game, g);
         gorillb.render(gc, game, g);
         cloud.render(gc, game, g);
+        sun.render(gc, game, g);
         if (Game.getInstance().getDebug()) { renderDebugShapes(gc, game, g); }
 
         if(banana != null) {
