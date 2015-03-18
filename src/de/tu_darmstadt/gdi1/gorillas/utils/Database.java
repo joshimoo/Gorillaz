@@ -235,7 +235,7 @@ public class Database {
     public int getDisplayWidth()
     {
         String get = getValue("DisplayWidth");
-        if(get.equals(""))
+        if(get.isEmpty())
             return 800;
         else
             return decodeInt(get);
@@ -249,7 +249,7 @@ public class Database {
     public int getDisplayHeight()
     {
         String get = getValue("DisplayHeight");
-        if(get.equals(""))
+        if(get.isEmpty())
             return 600;
         else
             return decodeInt(get);
@@ -263,7 +263,7 @@ public class Database {
     public int getCanvasWidth()
     {
         String get = getValue("CanvasWidth");
-        if(get.equals(""))
+        if(get.isEmpty())
             return 1024;
         else
             return decodeInt(get);
@@ -277,7 +277,7 @@ public class Database {
     public int getCanvasHeight()
     {
         String get = getValue("CanvasHeight");
-        if(get.equals(""))
+        if(get.isEmpty())
             return 1024;
         else
             return decodeInt(get);
