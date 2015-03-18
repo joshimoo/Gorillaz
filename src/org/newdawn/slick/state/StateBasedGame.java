@@ -17,6 +17,10 @@ import org.newdawn.slick.state.transition.Transition;
  * different states so they can be easily managed and maintained.
  *
  * @author kevin
+ *
+ *
+ * A class extendion was impossible so the class had to modificated
+ * because all variables are private.
  */
 public abstract class StateBasedGame implements Game, InputListener {
     /** The list of states making up this game */
