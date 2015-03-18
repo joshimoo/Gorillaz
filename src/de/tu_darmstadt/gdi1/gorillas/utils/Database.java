@@ -232,6 +232,34 @@ public class Database {
         return dbSQL.getValue(id);
     }
 
+    public int getDisplayWidth()
+    {
+        String get = getValue("DisplayWidth");
+        if(get.equals(""))
+            return 800;
+        else
+            return decodeInt(get);
+    }
+
+    public void setDisplayWidth( int width)
+    {
+        setValue("DisplayWidth", encodeInt(width));
+    }
+
+    public int getDisplayHeight()
+    {
+        String get = getValue("DisplayHeight");
+        if(get.equals(""))
+            return 600;
+        else
+            return decodeInt(get);
+    }
+
+    public void setDisplayHeight( int Height)
+    {
+        setValue("DisplayHeight", encodeInt(Height));
+    }
+
     /**
      Saves the settings:
      - Wind
@@ -251,7 +279,7 @@ public class Database {
         dbSQL.setValue("ConfigSaved", "1");
 
         // Boolean
-                dbSQL.setValue("Wind", encodeBoolean(gameInstance.getWind()));
+        dbSQL.setValue("Wind", encodeBoolean(gameInstance.getWind()));
         dbSQL.setValue("Mute", encodeBoolean(gameInstance.isMute()));
         dbSQL.setValue("InverseControlKeys", encodeBoolean(gameInstance.getInverseControlKeys()));
         dbSQL.setValue("StorePlayerNames", encodeBoolean(gameInstance.getStorePlayerNames()));
@@ -358,5 +386,26 @@ public class Database {
     private static String encodeDouble(double in)
     {
         return Double.toString(in);
+    }
+
+    /**
+     * Converts String to Double
+     * @param in    String
+     * @return      Double
+     */
+    private static int decodeInt(String in)
+    {
+        return Integer.parseInt(in);
+
+    }
+
+    /**
+     * Converts Double to String
+     * @param in    Double
+     * @return      String
+     */
+    private static String encodeInt(int in)
+    {
+        return Integer.toString(in);
     }
 }

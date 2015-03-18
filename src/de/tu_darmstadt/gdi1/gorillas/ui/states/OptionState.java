@@ -1,9 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.Label;
-import de.matthiasmann.twl.ValueAdjusterFloat;
-import de.matthiasmann.twl.ValueAdjusterInt;
+import de.matthiasmann.twl.*;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
@@ -12,6 +9,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.state.StateBasedGame;
 
 
@@ -28,6 +26,7 @@ public class OptionState extends BasicTWLGameState {
     private Button btnStorePlayerNames;
     private Button btnMute;
     private Button btnSaveToFile;
+    private EditField resolution;
 
     @Override
     public int getID() {
@@ -55,7 +54,10 @@ public class OptionState extends BasicTWLGameState {
         btnSaveToFile = new Button("Save Configuration to File");
         btnOK = new Button("OK");
         lError = new Label("");
+        resolution = new EditField();
+        resolution.setMaxTextLength(9);
 
+        resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
@@ -83,6 +85,7 @@ public class OptionState extends BasicTWLGameState {
         rp.add(valueSound);
         rp.add(btnMute);
         rp.add(btnSaveToFile);
+        rp.add(resolution);
         return rp;
     }
 
@@ -109,11 +112,14 @@ public class OptionState extends BasicTWLGameState {
         btnMute.setSize(168, 32);
         btnMute.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,220);
 
-        lError.setSize(128, 32);
-        lError.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 260);
+        resolution.setSize(100, 32);
+        resolution.setPosition(Gorillas.FRAME_WIDTH / 2 - 50,260);
 
         btnOK.setSize(128, 32);
         btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 300);
+
+        lError.setSize(128, 64);
+        lError.setPosition(Gorillas.FRAME_WIDTH / 2 - 250, 340);
 
         btnSaveToFile.setSize(256, 32);
         btnSaveToFile.setPosition((Gorillas.FRAME_WIDTH - btnSaveToFile.getWidth()) / 2, Gorillas.FRAME_HEIGHT - 100);
@@ -144,9 +150,39 @@ public class OptionState extends BasicTWLGameState {
     }
 
     private void returnToPrevScreen() {
+
+        String resolutionString = resolution.getText();
+        int splitter = resolutionString.indexOf("x");
+        int x = Integer.parseInt(resolutionString.substring(0, splitter));
+        int y = Integer.parseInt(resolutionString.substring(splitter+1, resolutionString.length()));
+
+        if (checkResolution(x, y))
+        {
+            Database.getInstance().setDisplayWidth(x);
+            Database.getInstance().setDisplayHeight(y);
+        }
+        else
+        {
+            lError.setText("No valid resolution.\n" +
+                           "Use 4/3 300x225 600x450 800x600 1024x768 1280x960 1600x1200 1920x1440\n" +
+                           "or 16/10        600x375 800x500 1024x640 1280x800 1600x1000 1920x1200\n" +
+                           "or 16/9                 800x450 1024x576 1280x720  1600x900 1920x1080\n");
+
+            return;
+        }
+
         Game.getInstance().setGravity(valueGravity.getValue());
         Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
         game.enterLastState();
+    }
+
+    private boolean checkResolution(int x ,int y)
+    {
+        boolean result = y > 100 &&
+                        ((x == 480) || (x == 480) || (x == 600) || (x == 800) || (x == 1024) || (x == 1280) || (x == 1600) || (x == 1920)) &&
+                        ((x / y == 4/3) || (x / y == 10/9) || (x / y == 16/9));
+        if (Game.getInstance().getDebug()) { System.out.println("Resolution valid: "+result + " x="+x + " y=" +y); }
+        return result;
     }
 
     // TODO: Map Text Strings to Constants
