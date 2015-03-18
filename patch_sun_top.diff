@@ -1,0 +1,1 @@
+﻿ sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
