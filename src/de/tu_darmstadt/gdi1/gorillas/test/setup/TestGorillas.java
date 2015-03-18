@@ -32,11 +32,6 @@ public class TestGorillas extends TWLTestStateBasedGame {
         super("Gorillas");
         setDebug(debug);
         Game.getInstance().enableTestMode(true);
-
-
-        Game g = Game.getInstance();
-        g.ANGLE_DEFAULT = 0;
-        g.SPEED_DEFAULT = 0;
     }
 
     public static void setDebug(boolean debuging) {
