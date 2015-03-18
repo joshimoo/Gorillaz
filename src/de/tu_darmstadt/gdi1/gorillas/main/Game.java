@@ -186,7 +186,6 @@ public class Game {
      * as well as save all unsaved data
      */
     public void exitGame() {
-
         cleanupOnExit();
         System.exit(0);
     }
@@ -195,13 +194,7 @@ public class Game {
      * Call this on exit to cleanup all loaded assets
      * as well as save all unsaved data
      */
-    public static void cleanupOnExit()
-    {
-        // TODO: Cleanup
-        // Cleanup all used assets
-        // Save SQL DB
-        // Close SQL DB
-
+    public static void cleanupOnExit() {
         // Store PlayerNames to the SQL-Database
         Database.getInstance().writeToFile();
     }
