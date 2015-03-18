@@ -112,8 +112,8 @@ public class OptionState extends BasicTWLGameState {
         btnStorePlayerNames.setSize(168, 32);
         btnStorePlayerNames.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,180);
 
-        btnMute.setSize(168, 32);
-        btnMute.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,220);
+        btnMute.setSize(80, 32);
+        btnMute.setPosition(Gorillas.FRAME_WIDTH / 2 - 40,220);
 
         resolution.setSize(100, 32);
         resolution.setPosition(Gorillas.FRAME_WIDTH / 2 - 50,260);
@@ -124,7 +124,7 @@ public class OptionState extends BasicTWLGameState {
         lError.setSize(128, 64);
         lError.setPosition(Gorillas.FRAME_WIDTH / 2 - 250, 340);
 
-        btnSaveToFile.setSize(256, 32);
+        btnSaveToFile.setSize(190, 32);
         btnSaveToFile.setPosition((Gorillas.FRAME_WIDTH - btnSaveToFile.getWidth()) / 2, Gorillas.FRAME_HEIGHT - 100);
     }
 
