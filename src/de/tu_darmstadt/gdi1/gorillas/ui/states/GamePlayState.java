@@ -106,10 +106,13 @@ public class GamePlayState extends BasicTWLGameState {
         // Lazy Load the UI, this is better for the TestGameContainer
         if (!Game.getInstance().isTestMode()) { // Don't load anything in TestMode
             background = Assets.loadImage(Assets.Images.GAMEPLAY_BACKGROUND);
-            if(Game.BACKGROUND_SCALE != 1) background = background.getScaledCopy(Game.BACKGROUND_SCALE);
+            float scaleFactor = (float) Gorillas.CANVAS_WIDTH / background.getWidth();
+            Game.CANVAS_SCALE = scaleFactor;
+            System.out.println(Game.CANVAS_SCALE);
+            if(Game.CANVAS_SCALE != 1) background = background.getScaledCopy(Game.CANVAS_SCALE);
             arrow = Assets.loadImage(Assets.Images.ARROW);
             explosionSound = Assets.loadSound(Assets.Sounds.EXPLOSION);
-            buffer = new Image(Gorillas.FRAME_WIDTH, Gorillas.FRAME_HEIGHT);
+            buffer = new Image(Gorillas.CANVAS_WIDTH, Gorillas.CANVAS_HEIGHT);
         }
         SCREEN = new Vector2f(gc.getWidth(), gc.getHeight());
     }

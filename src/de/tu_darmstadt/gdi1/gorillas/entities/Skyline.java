@@ -16,7 +16,7 @@ public class Skyline extends Entity {
     public Skyline(final int n){
         super("Skyline");
         BUILD_COUNT = n;
-        BUILD_WIDTH = Gorillas.FRAME_WIDTH / BUILD_COUNT;
+        BUILD_WIDTH = Gorillas.CANVAS_WIDTH / BUILD_COUNT;
         skyscrapers = new Skyscraper[BUILD_COUNT];
         for(int i = 0; i < BUILD_COUNT; i++)
             skyscrapers[i] = new Skyscraper(i, BUILD_WIDTH);
