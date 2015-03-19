@@ -11,7 +11,6 @@ import org.newdawn.slick.util.BufferedImageUtil;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
 public class Skyscraper extends Entity implements ICollidable {
@@ -107,7 +106,7 @@ public class Skyscraper extends Entity implements ICollidable {
 
         // return true, if a pixel is hit that is not fully transparent
         boolean collision = (buf.getRGB(relX, relY) & 0xFF000000) != 0;
-        if(Game.getInstance().getDebug() && collision) System.out.printf("Collision: %.0f, %.0f valid: %b %n", x, y, collision );
+        if(Game.getInstance().isDebugMode() && collision) System.out.printf("Collision: %.0f, %.0f valid: %b %n", x, y, collision );
         return collision;
     }
 

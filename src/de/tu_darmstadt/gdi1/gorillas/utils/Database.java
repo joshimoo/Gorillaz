@@ -39,7 +39,7 @@ public class Database {
      * Inserts the PlayerNames to the database
      */
     public void savePlayerNames() {
-        if (Game.getInstance().getStorePlayerNames() && (playerNames != null)) {
+        if (Game.getInstance().isStorePlayerNames() && (playerNames != null)) {
             int num = 0;
             for (String p : getPlayerNames()) { dbSQL.insertPlayerName(p, num++); }
             debug(0);
@@ -51,10 +51,10 @@ public class Database {
      * @return Array of player names
      */
     public String[] getPlayerNames() {
-        if (!Game.getInstance().getStorePlayerNames()) {
+        if (!Game.getInstance().isStorePlayerNames()) {
             this.playerNames = createPlayerNames();
         }
-        else if (Game.getInstance().getStorePlayerNames() && playerNames == null) {
+        else if (Game.getInstance().isStorePlayerNames() && playerNames == null) {
             this.playerNames = dbSQL.getPlayerName();
             if (this.playerNames.length == 0) {
                 this.playerNames = createPlayerNames();
@@ -128,7 +128,7 @@ public class Database {
      * @param id ID-Number
      */
     private void debug(int id) {
-        if (Game.getInstance().getDebug()) {
+        if (Game.getInstance().isDebugMode()) {
             String message;
             switch (id) {
                 case 0:
@@ -342,11 +342,11 @@ public class Database {
         dbSQL.setValue("ConfigSaved", "1");
 
         // Boolean
-        dbSQL.setValue("Wind", encodeBoolean(gameInstance.getWind()));
+        dbSQL.setValue("Wind", encodeBoolean(gameInstance.isWindActive()));
         dbSQL.setValue("Mute", encodeBoolean(gameInstance.isMute()));
         dbSQL.setValue("InverseControlKeys", encodeBoolean(gameInstance.getInverseControlKeys()));
-        dbSQL.setValue("StorePlayerNames", encodeBoolean(gameInstance.getStorePlayerNames()));
-        dbSQL.setValue("Debug", encodeBoolean(gameInstance.getDebug()));
+        dbSQL.setValue("StorePlayerNames", encodeBoolean(gameInstance.isStorePlayerNames()));
+        dbSQL.setValue("Debug", encodeBoolean(gameInstance.isDebugMode()));
         dbSQL.setValue("Developer", encodeBoolean(gameInstance.isDeveloperMode()));
 
         //Number
@@ -478,12 +478,12 @@ public class Database {
     {
         Game gameInstance = Game.getInstance();
 
-        String list = "Current settings stored by \"saveConfigToFile()\" and some more:\n\n" +
-            "Wind = " + encodeBoolean(gameInstance.getWind()) + "\n" +
+            String list = "Current settings stored by \"saveConfigToFile()\" and some more:\n\n" +
+            "Wind = " + encodeBoolean(gameInstance.isWindActive()) + "\n" +
             "Mute = " + encodeBoolean(gameInstance.isMute()) + "\n" +
             "InverseControlKeys = " + encodeBoolean(gameInstance.getInverseControlKeys()) + "\n" +
-            "StorePlayerNames = " + encodeBoolean(gameInstance.getStorePlayerNames()) + "\n" +
-            "Debug = " + encodeBoolean(gameInstance.getDebug()) + "\n" +
+            "StorePlayerNames = " + encodeBoolean(gameInstance.isStorePlayerNames()) + "\n" +
+            "Debug = " + encodeBoolean(gameInstance.isDebugMode()) + "\n" +
             "TestMode = " + encodeBoolean(gameInstance.isTestMode()) + "\n" +
             "Developer = " + encodeBoolean(gameInstance.isDeveloperMode()) + "\n" +
             "Gravity = " + encodeFloat(gameInstance.getGravity()) + "\n" +
