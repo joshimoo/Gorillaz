@@ -84,10 +84,10 @@ public class GamePlayTest {
             adapter.runGame(2);
         }
 
+        // TODO: Verify Banna start position / Score Handling
         assertEquals("The right gorilla was hit, so the score of player one should be 1.", 1, adapter.getPlayer1Score());
 
         adapter.runGame(2000);
-
         adapter.runGame(0);
 
         assertTrue("Player one hit player 2. 2000 ms afterwards it should be player two's turn.", adapter.isPlayer2Turn());

@@ -113,7 +113,7 @@ public class ParameterInputTest {
         adapter.fillVelocityInput('X'); // still invalid
         adapter.fillVelocityInput('2'); // valid
         adapter.fillVelocityInput('X'); // still valid
-        assertEquals(11, adapter.getVelocityInput());
+        assertEquals(2, adapter.getVelocityInput());
     }
 
     @Test
