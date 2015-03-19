@@ -140,7 +140,7 @@ public class GamePlayState extends BasicTWLGameState {
         gorilla = new Gorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)));
         gorillb = new Gorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)));
 
-        sun = new Sun(new Vector2f(512, 60));
+        sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
         windSpeed = Game.getInstance().getWind() ? calculateWind(0) : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
