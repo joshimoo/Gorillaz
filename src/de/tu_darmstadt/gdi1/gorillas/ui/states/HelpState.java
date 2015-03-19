@@ -44,6 +44,7 @@ public class HelpState extends BasicTWLGameState {
                 "angle and speed to control the flight.\n" +
                 "Moreover, you can influence the gravity and \n" +
                 "switch the wind on or off in the Option Menu.";
+
         String page1 = "Main menu:\n" +
                 " Return/N -> New Game\n" +
                 " Escape -> Exit Game\n" +
@@ -57,7 +58,12 @@ public class HelpState extends BasicTWLGameState {
                 " Escape -> Return to Main Menu\n" +
                 " Tap -> Switch between text fields\n" +
                 " \n" +
-                "In Game:\n" +
+                "Help:\n" +
+                " Enter/Escape/H -> Return to previous Screen\n" +
+                " RIGHT/D -> Next Page\n" +
+                " LEFT/A -> Last Page";
+
+        String page2 = "In Game:\n" +
                 " Up/W -> Increase Speed(Angle)\n" +
                 " Down/S -> Decrease Speed(Angle)\n" +
                 " Right/D -> Increase Angle(Speed)\n" +
@@ -65,22 +71,25 @@ public class HelpState extends BasicTWLGameState {
                 " \n" +
                 " Return/Space -> Throw Banana\n" +
                 " Escape/P -> Pause\n" +
-                " M -> Mute" +
-                " H -> Help" +
-                " O -> Options";
-        if(Game.getInstance().isDeveloperMode())
-        {
-            page1 +=  " Q -> New Background" +
-                      " V -> Instant win";
+                " M -> Mute\n" +
+                " H -> Help\n" +
+                " O -> Options\n";
+        if(Game.getInstance().isDeveloperMode()) {
+            page2 +=  "\n" +
+                "Only for Developer in Game:\n" +
+                " 1 -> Flatt World\n" +
+                " Q -> New Background\n" +
+                " V -> Instant win";
         }
-        String page2 = "Pause:\n" +
+
+        String page3 = "Pause:\n" +
                 " Escape/P/Return -> Return to Game\n" +
                 " N -> New Game\n" +
                 " E -> Exit Game\n" +
                 " S -> Return to Main Menu\n" +
                 " M -> Mute\n" +
-                " H -> Help" +
-                " O -> Options" +
+                " H -> Help\n" +
+                " O -> Options\n" +
                 " \n" +
                 "Victory:\n" +
                 " Escape -> Return to Main Menu\n" +
@@ -88,20 +97,17 @@ public class HelpState extends BasicTWLGameState {
                 " \n" +
                 "Highscore:\n" +
                 " Return/Escape/S -> Main Menu";
-        String page3 = "Options:\n" +
+
+        String page4 = "Options:\n" +
                 " Escape/O/Enter -> Except Options and return to previous Screen\n" +
                 " UP -> Increase Gravity\n" +
                 " DOWN -> Decrease Gravity\n" +
                 " C -> Change Control for Angle/Speed\n" +
                 " W -> Turn Wind on/off\n" +
                 " M -> Mute\n" +
-                " P -> Switch Random Player Names/Store Player Names\n" +
-                " \n" +
-                "Help:\n" +
-                " Enter/Escape/H -> Return to previous Screen\n" +
-                " RIGHT/D -> Next Page\n" +
-                " LEFT/A -> Last Page";
-        pages = new String[]{page0, page1, page2, page3};
+                " P -> Switch Random Player Names/Store Player Names";
+
+        pages = new String[]{page0, page1, page2, page3, page4};
         page = 0;
     }
 
@@ -143,15 +149,14 @@ public class HelpState extends BasicTWLGameState {
 
     @Override
     protected void layoutRootPane() {
-        int paneHeight = this.getRootPane().getHeight();
         int paneWidth = this.getRootPane().getWidth();
 
-        // Layout subject to change
+        /* Layout subject to change */
         btnNext.setSize(128, 32);
         btnBack.setSize(128, 32);
         btnMainMenu.setSize(128, 32);
 
-        // Center the Textfields on the screen.
+        /* Center the Textfields on the screen. */
         int x = (paneWidth - btnNext.getWidth()) / 2;
 
         btnNext.setPosition(x, 500);
