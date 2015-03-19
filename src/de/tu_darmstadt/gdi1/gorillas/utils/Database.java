@@ -312,7 +312,6 @@ public class Database {
         dbSQL.setValue("InverseControlKeys", encodeBoolean(gameInstance.getInverseControlKeys()));
         dbSQL.setValue("StorePlayerNames", encodeBoolean(gameInstance.getStorePlayerNames()));
         dbSQL.setValue("Debug", encodeBoolean(gameInstance.getDebug()));
-        dbSQL.setValue("TestMode", encodeBoolean(gameInstance.isTestMode()));
         dbSQL.setValue("Developer", encodeBoolean(gameInstance.isDeveloperMode()));
 
         //Number
@@ -342,7 +341,6 @@ public class Database {
             gameInstance.setInverseControlKeys(decodeBoolean(dbSQL.getValue("InverseControlKeys")));
             gameInstance.setStorePlayerNames(decodeBoolean(dbSQL.getValue("StorePlayerNames")));
             gameInstance.setDebug(decodeBoolean(dbSQL.getValue("Debug")));
-            gameInstance.enableTestMode(decodeBoolean(dbSQL.getValue("TestMode")));
             gameInstance.setDeveloperMode(decodeBoolean(dbSQL.getValue("Developer")));
 
             //Number
