@@ -425,27 +425,27 @@ public class GamePlayState extends BasicTWLGameState {
                     debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getInstance().getExplosionRadius()));
                    if(getActivePlayer() == Game.getInstance().getPlayer(1)){
                        if(banana.getPosition().getX() > gorilla.getPosition().getX() + 64)
-                           comment = "Viel zu kurz!";
+                           comment = "Da wirft meine Oma ja weiter!";
                        else if(banana.getPosition().getX() < gorilla.getPosition().getX() - 64)
-                           comment = "Viel zu weit!";
+                           comment = "Da hinten steht doch niemand!";
                        if(banana.getPosition().getY() > gorilla.getPosition().getY() + 64)
-                           comment += " Viel zu tief!";
+                           comment += " Mehr Höhe!";
                        else if(banana.getPosition().getY() < gorilla.getPosition().getY() - 64)
-                           comment += " Viel zu hoch!";
+                           comment += " Hochmut kommt vor dem Fall!";
 
-                       if(comment.isEmpty()) comment = "Fast getroffen!";
+                       if(comment.isEmpty()) comment = "Knapp daneben ist leider auch vorbei!";
                    }
                     else{
                        if(banana.getPosition().getX() > gorillb.getPosition().getX() + 64)
-                           comment = "Viel zu weit!";
+                           comment = "Da hinten steht doch niemand!";
                        else if(banana.getPosition().getX() < gorillb.getPosition().getX() - 64)
-                           comment = "Viel zu kurz!";
+                           comment = "Da wirft meine Oma ja weiter!";
                        if(banana.getPosition().getY() > gorillb.getPosition().getY() + 64)
-                           comment += " Viel zu tief!";
+                           comment += " Mehr Höhe!";
                        else if(banana.getPosition().getY() < gorillb.getPosition().getY() - 64)
-                           comment += " Viel zu hoch!";
+                           comment += " Hochmut kommt vor dem Fall!";
 
-                       if(comment.isEmpty()) comment = "Fast getroffen!";
+                       if(comment.isEmpty()) comment = "Knapp daneben ist leider auch vorbei!";
                    }
                     Game.getInstance().toggleNextPlayerActive();
                 }
