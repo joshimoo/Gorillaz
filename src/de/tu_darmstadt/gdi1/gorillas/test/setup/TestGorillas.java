@@ -29,9 +29,20 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public static final int OPTIONSTATE = 4;
     public static final int INSTRUCTIONSSTATE = 5;
 
-    public TestGorillas(boolean testmode) {
+    public static boolean debug = false;
+
+    public TestGorillas(boolean debug) {
         super("Gorillas");
-        Game.getInstance().enableTestMode(testmode);
+        setDebug(debug);
+    }
+
+    public void setDebug(boolean debug){
+        this.debug = debug;
+        Game.getInstance().enableTestMode(debug);
+    }
+
+    public boolean getDebug(boolean debug){
+        return this.debug;
     }
 
     @Override
