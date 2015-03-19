@@ -24,9 +24,8 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static final String THEME    = "/theme.xml";
 
-    public Gorillas(boolean debug) {
+    public Gorillas() {
         super("Gorillas");
-        Game.getInstance().setDebug(debug);
         Game.getInstance().enableTestMode(false);
         Database.getInstance().readFromFile();
         Database.getInstance().restoreConfigFromFile();
@@ -34,7 +33,7 @@ public class Gorillas extends TWLStateBasedGame {
 
     public static void main(String[] args) throws SlickException {
         Utils.setNativePath();
-        AppGameContainer app = new AppGameContainer(new Gorillas(Game.getInstance().getDebug()));
+        AppGameContainer app = new AppGameContainer(new Gorillas());
         app.setShowFPS(false);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
         app.setTargetFrameRate(TARGET_FPS);
