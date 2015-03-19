@@ -42,7 +42,7 @@ public class Game {
 
     // Switches
     private boolean testmode = true;   // Disables graphically output for test cases
-    private boolean debug = true;       // Debug outputs
+    private boolean debug = false;       // Debug outputs
     private boolean developer = true;   // Cheating options
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
     private boolean storePlayerNames = true; // Possible candidate for an internal Option Class
