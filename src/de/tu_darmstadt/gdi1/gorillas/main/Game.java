@@ -107,8 +107,8 @@ public class Game {
             // Set Test-Defaults
             if(isTestMode())
             {
-                Game.ANGLE_DEFAULT = 0;
-                Game.SPEED_DEFAULT = 0;
+                ANGLE_DEFAULT = 0;
+                SPEED_DEFAULT = 0;
                 gravity = 10;
                 SUN_FROM_TOP = 5;
             }
