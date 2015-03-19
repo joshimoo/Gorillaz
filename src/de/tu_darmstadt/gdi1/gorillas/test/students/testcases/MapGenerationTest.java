@@ -103,8 +103,8 @@ public class MapGenerationTest {
 
         float expectedRightGorillaX = buildingCoordinates.get(rightGorillaBuilding).x + rightGorillaBuildingWidth / 2;
 
+        // TODO: Half pixel offset, fix tomorrow.
         assertTrue("The left gorilla should stand exactly in the middle of its building.", leftGorillaCoordinate.x == expectedLeftGorillaX);
-
         assertTrue("The right gorilla should stand exactly in the middle of its building.", rightGorillaCoordinate.x == expectedRightGorillaX);
     }
 }
