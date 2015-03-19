@@ -27,6 +27,7 @@ public class Gorillas extends TWLStateBasedGame {
     public Gorillas(boolean debug) {
         super("Gorillas");
         Game.getInstance().setDebug(debug);
+        Game.getInstance().enableTestMode(false);
         Database.getInstance().readFromFile();
         Database.getInstance().restoreConfigFromFile();
     }
