@@ -103,6 +103,7 @@ public class MapGenerationTest {
 
         float expectedRightGorillaX = buildingCoordinates.get(rightGorillaBuilding).x + rightGorillaBuildingWidth / 2;
 
+        // TODO: Their still is a bug, on the right player, a rounding error in this test
         assertTrue("The left gorilla should stand exactly in the middle of its building.", leftGorillaCoordinate.x == expectedLeftGorillaX);
         assertTrue("The right gorilla should stand exactly in the middle of its building.", rightGorillaCoordinate.x == expectedRightGorillaX);
     }
