@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Map;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 
 public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 
+    // Caches our Map, till we are ready to start it.
+    private Map map;
     Database db = Database.getInstance();
     public GorillasTestAdapterExtended1() {
         super();
@@ -17,17 +20,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 
     @Override
     public void rememberGameData() {
-
-        // TODO: Implement
-
         super.rememberGameData();
     }
 
     @Override
     public void restoreGameData() {
-
-        // TODO: Implement
-
         super.restoreGameData();
     }
 
@@ -59,8 +56,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @param frameHeight the height of the frame/screen of the gorillas game
      */
     public void createRandomMap(int frameWidth, int frameHeight, int gorillaWidth, int gorillaHeight) {
-
-        // TODO: Implement
+        map = Map.createRandomMap(frameWidth, frameHeight, gorillaWidth, gorillaHeight);
+        Game.getInstance().setWind(false);
     }
 
     /**
@@ -74,8 +71,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @param rightGorillaCoordinate the coordinate of the right gorilla
      */
     public void createCustomMap(int paneWidth, int paneHeight, int yOffsetCity, ArrayList<Vector2f> buildingCoordinates, Vector2f leftGorillaCoordinate, Vector2f rightGorillaCoordinate) {
-
-        // TODO: Implement
+        // We assume all of these values are set correctly no null values
+        map = Map.createMap(paneWidth, paneHeight, yOffsetCity, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate);
     }
 
     /**
@@ -84,7 +81,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * should be set as current map in the game, if the game is in GamePlayState
      */
     public void startCurrrentMap() {
-        // TODO: Implement
+        // If we are in GamePlayState and we want to load a new map
+        // We need to recreate the city
+        if(getStateBasedGame().getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) getStateBasedGame().getCurrentState();
+            state.loadMap(map);
+        }
     }
 
     /**
@@ -94,8 +96,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * current map, ordered from left to right
      */
     public ArrayList<Vector2f> getBuildingCoordinates() {
-        // TODO: Implement
-        return null;
+        // Requires that a map was created in one of the testcases,
+        // otherwise map will be null, during gameplay we are guaranteed to have a map created
+        return map.getBuildings();
     }
 
     /**
@@ -104,8 +107,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the center coordinate of the left gorilla
      */
     public Vector2f getLeftGorillaCoordinate() {
-        // TODO: Implement
-        return null;
+        return map.getLeftGorillaCoordinate();
     }
 
     /**
@@ -114,8 +116,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the center coordinate of the right gorilla
      */
     public Vector2f getRightGorillaCoordinate() {
-        // TODO: Implement
-        return null;
+        return map.getRightGorillaCoordinate();
     }
 
     /**
@@ -124,8 +125,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the frameWidth which was used to create the current map
      */
     public float getMapFrameWidth() {
-        // TODO: Implement
-        return -1;
+        return map.getMapFrameWidth();
     }
 
     /**
@@ -134,8 +134,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the frameHeight which was used to create the current map
      */
     public float getMapFrameHeight() {
-        // TODO: Implement
-        return -1;
+        return map.getMapFrameHeight();
     }
 
     /**
@@ -145,8 +144,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the gorillaHeight which was used to create the current map
      */
     public float getGorillaHeight() {
-        // TODO: Implement
-        return -1;
+        return map.getGorillaHeight();
     }
 
     /**
@@ -155,8 +153,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the gorillaWidth which was used to create the current map
      */
     public float getGorillaWidth() {
-        // TODO: Implement
-        return -1;
+        return map.getGorillaWidth();
     }
 
     /**

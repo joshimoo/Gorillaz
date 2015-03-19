@@ -8,6 +8,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Map;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
@@ -127,26 +128,55 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     public void startGame() {
+        // Create a random Map;
+        loadMap(Map.createRandomMap(Gorillas.CANVAS_WIDTH, Gorillas.FRAME_HEIGHT, Map.defaultGorillaWidth, Map.defaultGorillaHeight));
+    }
+
+    private void createDebugFlatMap() {
+
+        // create a map, with a flat city.
+        // just one building -> flat city
+        ArrayList<Vector2f> buildingCoordinates = new ArrayList<Vector2f>();
+        buildingCoordinates.add(new Vector2f(0, 570));
+
+        // Gorillas should have a width of 37 and a height of 42 in testing
+        // mode. (This is the size of the given gorilla image.)
+        // That is why the gorilla y coordinate in this case has to be 549.
+        Vector2f leftGorillaCoordinate = new Vector2f(50, 549);
+        Vector2f rightGorillaCoordinate = new Vector2f(950, 549);
+
+        loadMap(Map.createMap(1000, 600, 0, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate));
+    }
+
+    public void loadMap(Map map) {
+        // Make sure to clean up all entities in here, otherwise gc will not be able to cleanup
+        // Normally, I would refactor this, but no time.
         entityManager.clearEntitiesFromState(getID());
         debugCollisions.clear();
-        skyline = new Skyline(8);
 
-        int x1 = (int)(Math.random() * 3 + 0);
-        int x2 = (int)(Math.random() * 3 + 5);
+        int mapWidth = map.getMapFrameWidth();
+        int mapHeight = map.getMapFrameHeight();
 
-        int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
-        int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
+        skyline = new Skyline(map.getBuildings(), mapWidth, mapHeight);
 
-        gorilla = new Gorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)));
-        gorillb = new Gorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)));
+        // TODO: If we wanted to support different heights
+        // We could translate back into feet position, since we could be using a different sized Gorilla.
+        // So the Gorilla Class, can calculate the center position based on it's size.
+        float x = map.getLeftGorillaCoordinate().x;
+        float y = map.getLeftGorillaCoordinate().y;
+        gorilla = new Gorilla(new Vector2f(x, y));
+
+        x = map.getRightGorillaCoordinate().x;
+        y = map.getRightGorillaCoordinate().y;
+        gorillb = new Gorilla(new Vector2f(x, y));
 
         sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
         windSpeed = Game.getInstance().getWind() ? calculateWind(0) : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
+        // Clear the previous state, particular for debug loading
         destroyBanana();
-
         setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
     }
@@ -154,6 +184,8 @@ public class GamePlayState extends BasicTWLGameState {
     void renderDebugShapes(GameContainer gc, StateBasedGame game, Graphics g) {
         // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
         //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
+        Color old = g.getColor();
+        g.setColor(Color.yellow);
         g.draw(sun.getShape());
         g.draw(skyline.getShape());
         g.draw(gorilla.getShape());
@@ -161,8 +193,17 @@ public class GamePlayState extends BasicTWLGameState {
         g.draw(cloud.getShape());
         if (banana != null) g.draw(banana.getShape());
 
+        for (Skyscraper s : skyline.skyscrapers) {
+            g.draw(s.getShape());
+            Vector2f textPos = new Vector2f(s.getPosition().x, s.getPosition().y - s.getSize().y / 2);
+            drawTextWithDropShadow(g, textPos, String.format("(%d , %d)", (int)textPos.x, (int)textPos.y), Color.pink);
+        }
+
         // Draw historical collisions
         debugCollisions.forEach(g::draw);
+
+        // Reset Color back to the old when done
+        g.setColor(old);
     }
 
     @Override
@@ -251,6 +292,9 @@ public class GamePlayState extends BasicTWLGameState {
      * @param pos center position of the text
      */
     private void drawTextWithDropShadow(Graphics g, Vector2f pos, String text, Color color) {
+        // Reset Color back to the old when done
+        Color old = g.getColor();
+
         // Center Text
         float x = pos.x - g.getFont().getWidth(text) / 2;
 
@@ -262,6 +306,7 @@ public class GamePlayState extends BasicTWLGameState {
         // Draw Text
         g.setColor(color);
         g.drawString(text, x, pos.y);
+        g.setColor(old);
     }
 
     /** @return the distance off the banana to the given gorilla */
@@ -309,6 +354,7 @@ public class GamePlayState extends BasicTWLGameState {
         if(Game.getInstance().isDeveloperMode()) {
             // Reroll the LevelGeneration
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
+            if (input.isKeyPressed(Input.KEY_1)) { createDebugFlatMap(); }
 
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
@@ -348,7 +394,7 @@ public class GamePlayState extends BasicTWLGameState {
                 comment = "";
 
                 banana.update(gc, game, delta);
-                sun.isCollidding(banana);
+                sun.collides(banana);
 
                 // Bounds Check
                 if(outsidePlayingField(banana, gc.getWidth(), gc.getHeight())) {
@@ -370,7 +416,7 @@ public class GamePlayState extends BasicTWLGameState {
                     comment = "Treffer!";
                 }
 
-                if(skyline.isCollidding(banana)) {
+                if(skyline.collides(banana)) {
                     state = STATES.DAMAGE;
                     debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getInstance().getExplosionRadius()));
                    if(getActivePlayer() == Game.getInstance().getPlayer(1)){
