@@ -1,7 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entities;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -16,6 +15,7 @@ public class Skyline extends Entity {
     public final int BUILD_WIDTH;
     public final Skyscraper[] skyscrapers;
 
+    /** Build a Skyline with the given coords and the mapSize */
     public Skyline(ArrayList<Vector2f> buildingCoords, int mapWidth, int mapHeight) {
         super("Skyline");
         BUILD_COUNT = buildingCoords.size();
@@ -26,11 +26,15 @@ public class Skyline extends Entity {
         }
     }
 
-    public void destroy(final int x, final int y, final int pow){
-        int hi = x + pow;   /* Boundscheck so explosions carry over buildings */
-        int lo = x - pow;
+    /** Procedurally destroy parts of the skyline
+     * @param x, y - center of the destruction circle
+     * @param radius - radius of the destruction circle
+     */
+    public void destroy(final int x, final int y, final int radius){
+        int hi = x + radius;   /* Boundscheck so explosions carry over buildings */
+        int lo = x - radius;
         for(int i = (lo / BUILD_WIDTH ) ; i <= (hi / BUILD_WIDTH); ++i)
-            if(i >= 0 && i < BUILD_COUNT) skyscrapers[i].destroy(x, y, pow);
+            if(i >= 0 && i < BUILD_COUNT) skyscrapers[i].destroy(x, y, radius);
     }
 
     @Override
@@ -46,4 +50,5 @@ public class Skyline extends Entity {
         for(Skyscraper s: skyscrapers) { if(s.collides(otherEntity)) { return true; } }
         return false;
     }
+
 }

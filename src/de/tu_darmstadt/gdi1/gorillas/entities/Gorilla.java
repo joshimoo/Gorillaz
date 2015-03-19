@@ -15,17 +15,16 @@ public class Gorilla extends Entity {
     private static final float ANIMATION_SPEED = 1.0f;
     /** How long a single frame should be displayed [ms] */
     private static final int   FRAME_LENGTH    = 1000;
+
     private Component component;
 
-    /**
-     * Create a new Gorilla
+    /** Create a new Gorilla
      * @param pos the gorillas center position
      */
     public Gorilla(Vector2f pos) {
         super("Gorilla");
 
         if (!Game.getInstance().isTestMode()) {
-            // Rendering
             Image[] frames = new Image[] {
                     Assets.loadImage(Assets.Images.GORRILA_LEFT),
                     Assets.loadImage(Assets.Images.GORRILA),
@@ -41,6 +40,7 @@ public class Gorilla extends Entity {
         setPosition(pos);
     }
 
+    /** Turns the Gorilla into a tombstone */
     public void setGrave(){
         removeComponent(component);
         component = new ImageRenderComponent(Assets.loadImage(Assets.Images.GRAVE));

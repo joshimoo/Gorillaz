@@ -6,19 +6,17 @@ import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
-import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Map;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -185,7 +183,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
-        windSpeed = Game.getInstance().getWind() ? calculateWind() : 0;
+        windSpeed = Game.getInstance().isWindActive() ? calculateWind() : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
         // Clear the previous state, particular for debug loading
@@ -239,7 +237,7 @@ public class GamePlayState extends BasicTWLGameState {
         sun.render(gc, game, g);
         drawPlayerNames(g);
 
-        if (Game.getInstance().getDebug()) { renderDebugShapes(gc, game, g); }
+        if (Game.getInstance().isDebugMode()) { renderDebugShapes(gc, game, g); }
 
         if(banana != null) {
             banana.render(gc, game, g);
@@ -293,13 +291,9 @@ public class GamePlayState extends BasicTWLGameState {
     private Vector2f getOffsetToCenter(Vector2f screen, Vector2f center, float scale){
         float a = screen.x / scale;
         float b = screen.y / scale;
-        float x = clamp(0, center.x - (a / 2), 1024 - a);
-        float y = clamp(0, center.y - (b / 2),screen.y - b);
+        float x = Utils.clamp(0, center.x - (a / 2), 1024 - a);
+        float y = Utils.clamp(0, center.y - (b / 2), screen.y - b);
         return new Vector2f(x * scale, y * scale);
-    }
-
-    private float clamp (float a, float x, float b){
-        return Math.max(a, Math.min(x, b));
     }
 
     /**
@@ -416,20 +410,20 @@ public class GamePlayState extends BasicTWLGameState {
                 // Bounds Check
                 if(outsidePlayingField(banana, gc.getWidth(), gc.getHeight())) {
                     state = STATES.DAMAGE;
-                    if(Game.getInstance().getDebug()) System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",  banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight() );
+                    if(Game.getInstance().isDebugMode()) System.out.printf("OutOfBounds: pos(%.0f, %.0f), world(%d, %d)",  banana.getPosition().x, banana.getPosition().y, gc.getWidth(), gc.getHeight() );
                     comment = "...";
                     Game.getInstance().toggleNextPlayerActive();
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(1) && getGorilla(0).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
-                    if(Game.getInstance().getDebug()) System.out.println("Hit Player 1");
+                    if(Game.getInstance().isDebugMode()) System.out.println("Hit Player 1");
                     comment = "Treffer!";
                 }
 
                 if(getActivePlayer() == Game.getInstance().getPlayer(0) && getGorilla(1).collides(banana)) {
                     state = STATES.ROUNDVICTORY;
-                    if(Game.getInstance().getDebug()) System.out.println("Hit Player 2");
+                    if(Game.getInstance().isDebugMode()) System.out.println("Hit Player 2");
                     comment = "Treffer!";
                 }
 
@@ -495,8 +489,8 @@ public class GamePlayState extends BasicTWLGameState {
                     count = 0;
                 }
                 else {
-                    if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
-                    if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
+                    if(Game.getInstance().isDebugMode()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
+                    if(Game.getInstance().isDebugMode()) System.out.println("Win Nr" + getActivePlayer().getWin());
 
                     roundWinMessage = "Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !\n" +
                                         "Sieg Nummer " + getActivePlayer().getWin() + ".\n"+
@@ -522,8 +516,8 @@ public class GamePlayState extends BasicTWLGameState {
             case VICTORY:
                 destroyBanana();
                     // TODO: VICTORY
-                    if (Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
-                    if (Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
+                    if (Game.getInstance().isDebugMode()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
+                    if (Game.getInstance().isDebugMode()) System.out.println("Win Nr" + getActivePlayer().getWin());
 
                     for (Player p : Game.getInstance().getPlayers()) {
                         Database.getInstance().setHighScore(p.getName(), totalRoundCounter, p.getWin(), p.getTotalThrows());
@@ -618,7 +612,7 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     private void destroyBanana() {
-        if (Game.getInstance().getDebug()) System.err.println("Flight Time: " + flightTime);
+        if (Game.getInstance().isDebugMode()) System.err.println("Flight Time: " + flightTime);
         if (banana != null) { entityManager.removeEntity(getID(), banana); }
         banana = null;
     }
@@ -640,7 +634,7 @@ public class GamePlayState extends BasicTWLGameState {
         int speed = if_speed.getValue();
         int angle = if_angle.getValue();
 
-        if(Game.getInstance().getDebug()) System.out.println("Throw Banana " + speed + " " + angle);
+        if(Game.getInstance().isDebugMode()) System.out.println("Throw Banana " + speed + " " + angle);
 
         getActivePlayer().setLastSpeed(speed);
         getActivePlayer().setLastAngle(angle);
@@ -717,7 +711,7 @@ public class GamePlayState extends BasicTWLGameState {
         /* wind direction */
         wind = Math.random() > 0.5f ? -wind : wind;
 
-        if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
+        if (Game.getInstance().isDebugMode()) { System.out.println("Wind-Speed : " + wind); }
         return wind;
     }
 
