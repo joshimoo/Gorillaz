@@ -8,6 +8,7 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.entities.*;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Map;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
@@ -68,6 +69,7 @@ public class GamePlayState extends BasicTWLGameState {
     private static int totalRoundCounter = 0;
 
     private Image buffer;
+    private int count;
 
     public Player getActivePlayer() { return Game.getInstance().getActivePlayer(); }
     public void setActivePlayer(Player activePlayer) {
@@ -128,33 +130,70 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     public void startGame() {
+        // Create a random Map;
+        loadMap(Map.createRandomMap(Gorillas.CANVAS_WIDTH, Gorillas.FRAME_HEIGHT, Map.defaultGorillaWidth, Map.defaultGorillaHeight));
+    }
+
+    private void createDebugFlatMap() {
+
+        // create a map, with a flat city.
+        // just one building -> flat city
+        ArrayList<Vector2f> buildingCoordinates = new ArrayList<Vector2f>();
+        buildingCoordinates.add(new Vector2f(0, 570));
+
+        // Gorillas should have a width of 37 and a height of 42 in testing
+        // mode. (This is the size of the given gorilla image.)
+        // That is why the gorilla y coordinate in this case has to be 549.
+        Vector2f leftGorillaCoordinate = new Vector2f(50, 549);
+        Vector2f rightGorillaCoordinate = new Vector2f(950, 549);
+
+        loadMap(Map.createMap(1000, 600, 0, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate));
+    }
+
+    public void loadMap(Map map) {
+        // Make sure to clean up all entities in here, otherwise gc will not be able to cleanup
+        // Normally, I would refactor this, but no time.
         entityManager.clearEntitiesFromState(getID());
         debugCollisions.clear();
-        skyline = new Skyline(8);
 
-        int x1 = (int)(Math.random() * 3 + 0);
-        int x2 = (int)(Math.random() * 3 + 5);
+        int mapWidth = map.getMapFrameWidth();
+        int mapHeight = map.getMapFrameHeight();
 
-        int xx = x1 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
-        int yy = x2 * (skyline.BUILD_WIDTH) + (skyline.BUILD_WIDTH / 2);
+        skyline = new Skyline(map.getBuildings(), mapWidth, mapHeight);
 
-        gorilla = new Gorilla(new Vector2f(xx, Gorillas.FRAME_HEIGHT - skyline.getHeight(x1)));
-        gorillb = new Gorilla(new Vector2f(yy, Gorillas.FRAME_HEIGHT - skyline.getHeight(x2)));
+        // TODO: If we wanted to support different heights
+        // We could translate back into feet position, since we could be using a different sized Gorilla.
+        // So the Gorilla Class, can calculate the center position based on it's size.
+        float x = map.getLeftGorillaCoordinate().x;
+        float y = map.getLeftGorillaCoordinate().y;
+        gorilla = new Gorilla(new Vector2f(x, y));
+        gorilla.setVisible(true);
+
+        x = map.getRightGorillaCoordinate().x;
+        y = map.getRightGorillaCoordinate().y;
+        gorillb = new Gorilla(new Vector2f(x, y));
+        gorillb.setVisible(true);
 
         sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
         windSpeed = Game.getInstance().getWind() ? calculateWind(0) : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
+        // Clear the previous state, particular for debug loading
         destroyBanana();
-
         setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
+
+        // Reset the ugly input stuff for tests
+        validAngle = false;
+        validVelocity = false;
     }
 
     void renderDebugShapes(GameContainer gc, StateBasedGame game, Graphics g) {
         // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
         //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
+        Color old = g.getColor();
+        g.setColor(Color.yellow);
         g.draw(sun.getShape());
         g.draw(skyline.getShape());
         g.draw(gorilla.getShape());
@@ -162,8 +201,17 @@ public class GamePlayState extends BasicTWLGameState {
         g.draw(cloud.getShape());
         if (banana != null) g.draw(banana.getShape());
 
+        for (Skyscraper s : skyline.skyscrapers) {
+            g.draw(s.getShape());
+            Vector2f textPos = new Vector2f(s.getPosition().x, s.getPosition().y - s.getSize().y / 2);
+            drawTextWithDropShadow(g, textPos, String.format("(%d , %d)", (int)textPos.x, (int)textPos.y), Color.pink);
+        }
+
         // Draw historical collisions
         debugCollisions.forEach(g::draw);
+
+        // Reset Color back to the old when done
+        g.setColor(old);
     }
 
     @Override
@@ -181,6 +229,8 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.render(gc, game, g);
         cloud.render(gc, game, g);
         sun.render(gc, game, g);
+        drawPlayerNames(g);
+
         if (Game.getInstance().getDebug()) { renderDebugShapes(gc, game, g); }
 
         if(banana != null) {
@@ -189,8 +239,6 @@ public class GamePlayState extends BasicTWLGameState {
                 g.drawImage(arrow, banana.getPosition().x - 8, 0);
             }
         }
-
-        drawPlayerNames(g);
 
         if(throwNumber != null)
         {
@@ -237,6 +285,9 @@ public class GamePlayState extends BasicTWLGameState {
      * @param pos center position of the text
      */
     private void drawTextWithDropShadow(Graphics g, Vector2f pos, String text, Color color) {
+        // Reset Color back to the old when done
+        Color old = g.getColor();
+
         // Center Text
         float x = pos.x - g.getFont().getWidth(text) / 2;
 
@@ -248,6 +299,7 @@ public class GamePlayState extends BasicTWLGameState {
         // Draw Text
         g.setColor(color);
         g.drawString(text, x, pos.y);
+        g.setColor(old);
     }
 
     /** @return the distance off the banana to the given gorilla */
@@ -295,6 +347,7 @@ public class GamePlayState extends BasicTWLGameState {
         if(Game.getInstance().isDeveloperMode()) {
             // Reroll the LevelGeneration
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
+            if (input.isKeyPressed(Input.KEY_1)) { createDebugFlatMap(); }
 
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
@@ -334,7 +387,7 @@ public class GamePlayState extends BasicTWLGameState {
                 comment = "";
 
                 banana.update(gc, game, delta);
-                sun.isCollidding(banana);
+                sun.collides(banana);
 
                 // Bounds Check
                 if(outsidePlayingField(banana, gc.getWidth(), gc.getHeight())) {
@@ -356,32 +409,32 @@ public class GamePlayState extends BasicTWLGameState {
                     comment = "Treffer!";
                 }
 
-                if(skyline.isCollidding(banana)) {
+                if(skyline.collides(banana)) {
                     state = STATES.DAMAGE;
                     debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getInstance().getExplosionRadius()));
                    if(getActivePlayer() == Game.getInstance().getPlayer(1)){
                        if(banana.getPosition().getX() > gorilla.getPosition().getX() + 64)
-                           comment = "Viel zu kurz!";
+                           comment = "Da wirft meine Oma ja weiter!";
                        else if(banana.getPosition().getX() < gorilla.getPosition().getX() - 64)
-                           comment = "Viel zu weit!";
+                           comment = "Da hinten steht doch niemand!";
                        if(banana.getPosition().getY() > gorilla.getPosition().getY() + 64)
-                           comment += " Viel zu tief!";
+                           comment += " Mehr Höhe!";
                        else if(banana.getPosition().getY() < gorilla.getPosition().getY() - 64)
-                           comment += " Viel zu hoch!";
+                           comment += " Hochmut kommt vor dem Fall!";
 
-                       if(comment.isEmpty()) comment = "Fast getroffen!";
+                       if(comment.isEmpty()) comment = "Knapp daneben ist leider auch vorbei!";
                    }
                     else{
                        if(banana.getPosition().getX() > gorillb.getPosition().getX() + 64)
-                           comment = "Viel zu weit!";
+                           comment = "Da hinten steht doch niemand!";
                        else if(banana.getPosition().getX() < gorillb.getPosition().getX() - 64)
-                           comment = "Viel zu kurz!";
+                           comment = "Da wirft meine Oma ja weiter!";
                        if(banana.getPosition().getY() > gorillb.getPosition().getY() + 64)
-                           comment += " Viel zu tief!";
+                           comment += " Mehr Höhe!";
                        else if(banana.getPosition().getY() < gorillb.getPosition().getY() - 64)
-                           comment += " Viel zu hoch!";
+                           comment += " Hochmut kommt vor dem Fall!";
 
-                       if(comment.isEmpty()) comment = "Fast getroffen!";
+                       if(comment.isEmpty()) comment = "Knapp daneben ist leider auch vorbei!";
                    }
                     Game.getInstance().toggleNextPlayerActive();
                 }
@@ -414,8 +467,10 @@ public class GamePlayState extends BasicTWLGameState {
                 getActivePlayer().setWin();
                 totalRoundCounter += 1;
 
-                if(getActivePlayer().getWin() > 2)
+                if(getActivePlayer().getWin() > 2){
                     state = STATES.VICTORY;
+                    count = 0;
+                }
                 else {
                     if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
                     if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
@@ -439,18 +494,21 @@ public class GamePlayState extends BasicTWLGameState {
                 }
                 break;
             case VICTORY:
-                // TODO: VICTORY
-                if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
-                if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
-                game.enterState(Game.GAMEVICTORY);
+                destroyBanana();
+                if(VictoryAnimation(delta)) {
+                    // TODO: VICTORY
+                    if (Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
+                    if (Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
 
-                for(Player p : Game.getInstance().getPlayers())
-                {
-                    Database.getInstance().setHighScore(p.getName(), totalRoundCounter, p.getWin(), p.getTotalThrows());
+                    for (Player p : Game.getInstance().getPlayers()) {
+                        Database.getInstance().setHighScore(p.getName(), totalRoundCounter, p.getWin(), p.getTotalThrows());
+                    }
+
+                    // Reset Values
+                    totalRoundCounter = 0;
+
+                    game.enterState(Game.GAMEVICTORY);
                 }
-
-                // Reset Values
-                totalRoundCounter = 0;
                 break;
         }
     }
@@ -479,11 +537,15 @@ public class GamePlayState extends BasicTWLGameState {
 
         if_speed.setMinMaxValue(Game.SPEED_MIN, Game.SPEED_MAX);
         if_speed.setValue(Game.SPEED_DEFAULT);
-        validVelocity = true;
+        // validVelocity = true;
+        // NOTE: Don't set these here, since they are an ugly hack for testcases.
 
         if_angle.setMinMaxValue(Game.ANGLE_MIN, Game.ANGLE_MAX);
         if_angle.setValue(Game.ANGLE_DEFAULT);
-        validAngle = true;
+        // validAngle = true;
+        // NOTE: Don't set these here, since they are an ugly hack for testcases.
+        // We do backend verification in our model instead of frontend verification.
+        // Therefore we can only have valid inputs.
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
@@ -570,8 +632,11 @@ public class GamePlayState extends BasicTWLGameState {
         state = STATES.THROW;
     }
 
-    // TESTS
+    /** TESTS */
     // HACK: This is dirty !_!
+    // We do backend verification in our model instead of frontend verification.
+    // Therefore we can only have valid inputs, but tests require a -1 value for not set inputs.
+    // while we set sensible defaults for our game, so this is the result of that testcase >/<
     private boolean validVelocity = false;
     private boolean validAngle = false;
     public void resetPlayerWidget() {
@@ -582,32 +647,30 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     public int getVelocity() { return validVelocity ? if_speed.getValue() : -1; }
+
     public void fillVelocityInput(char c) {
-        if (Character.isDigit(c)){
+        if (verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
+            if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
             validVelocity = true;
-            if(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
-                if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
-            }
         }
-        else validVelocity = false;
     }
 
     public int getAngle() { return validAngle ? if_angle.getValue() : -1; }
+
     public void fillAngleInput(char c) {
-        if (Character.isDigit(c)) {
+        if (verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
+            if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
             validAngle = true;
-            if(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
-                if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
-            }
         }
-        else validAngle = false;
     }
 
     /** This only works for positive numbers */
     public boolean verifyInput(int oldValue, int min, int max, char c) {
-        int newValue = oldValue * 10 + Character.getNumericValue(c);
-        if (newValue <= max && newValue >= min) {
-            return true;
+        if (Character.isDigit(c)) {
+            int newValue = oldValue * 10 + Character.getNumericValue(c);
+            if (newValue <= max && newValue >= min) {
+                return true;
+            }
         }
 
         return false;
@@ -628,5 +691,16 @@ public class GamePlayState extends BasicTWLGameState {
         wind = Math.random() > 0.5f ? -wind : wind;
         if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
         return wind;
+    }
+
+    public boolean VictoryAnimation(int delta){
+        if(count == 0){
+            Player winningPlayer = getActivePlayer();
+            if(winningPlayer == Game.getInstance().getPlayer(0)) gorillb.setVisible(false);
+            else gorilla.setVisible(false);
+            Game.getInstance().toggleNextPlayerActive();
+        }
+        count += delta;
+        return (count > 2000);
     }
 }

@@ -1,7 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
-// Maybe Player should be an entity?
-// Or Take care of gorrilla?
 public class Player {
 
     public static final int MAX_HEALTH = 100;
@@ -23,7 +21,7 @@ public class Player {
         this.lastAngle = 60;
     }
 
-    /** Return the Players name */
+    /** Returns the Players name */
     public String getName(){
         return this.name;
     }
@@ -50,28 +48,15 @@ public class Player {
         return this.health;
     }
 
-    /** Add n amount to the current Player score. */
-    public void addScore(final int n){
-        if(n > 0)
-            this.score += n;
-    }
 
-    /** Returns the current Playerscore */
-    public int getScore(){
-        //TODO: Score = numberOfWins
-        score = numberOfWins;
-        
-        return this.score;
-    }
-
-    /** Sets the last speed value of the players throw */
+    /** Set the last speed value of the players throw */
     public void setLastSpeed(int speed) {
         if (speed > 200) lastSpeed = 200;
         else if (speed < 0) lastSpeed = 0;
         else lastSpeed = speed;
     }
 
-    /** Sets the last angle value of the players throw */
+    /** Set the last angle value of the players throw */
     public void setLastAngle(int angle)
     {
         if (angle > 360) lastAngle = 360;
@@ -79,12 +64,12 @@ public class Player {
         else lastAngle =angle;
     }
 
-    /** Gets the last speed value of the players throw */
+    /** Returns the last speed value of the players throw */
     public int getLastSpeed() {
         return lastSpeed;
     }
 
-    /** Gets the last angle value of the players throw */
+    /** Returns the last angle value of the players throw */
     public int getLastAngle()
     {
         return lastAngle;
@@ -93,10 +78,10 @@ public class Player {
     /** Increase number of throws */
     public void setThrow() { numberOfThrows += 1; }
 
-    /** Get number of throws */
+    /** Returns the number of throws */
     public int getThrow() { return numberOfThrows;}
 
-    /** Get total number of throws and resets current number*/
+    /** Returns the total number of throws */
     public int getTotalThrows() { return totalNumberOfThrows + numberOfThrows;}
 
     /** Reset the number of throws  to 0 */
@@ -108,6 +93,6 @@ public class Player {
     /** Increase number of wins about the value of number */
     public void setWin() { numberOfWins += 1; }
 
-    /** Get number of throws */
+    /** Returns the number of throws  */
     public int getWin() { return numberOfWins;}
 }

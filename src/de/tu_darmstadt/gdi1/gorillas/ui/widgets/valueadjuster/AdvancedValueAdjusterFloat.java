@@ -29,7 +29,6 @@
  */
 package de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster;
 
-import com.sun.org.apache.regexp.internal.CharacterArrayCharacterIterator;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.model.FloatModel;
@@ -241,18 +240,20 @@ public class AdvancedValueAdjusterFloat extends AdvancedValueAdjuster {
                 }
 
                 char inputChar = inputText.charAt(inputText.length() - 1);
-                if ( (!Character.isDigit(inputChar) && Character.compare(inputChar ,'.') != 0) || Float.parseFloat(inputText) > maxValue || Float.parseFloat(inputText) < minValue) {
+                boolean numberOrPoint = Character.isDigit(inputChar) || (Character.compare(inputChar ,'.') == 0);
+
+                if ( !numberOrPoint || Float.parseFloat(inputText) > maxValue || Float.parseFloat(inputText) < minValue) {
                     // a call of setText on an EditField triggers the callback, so
                     // remove callback before and add it again after the call
                     // editField.removeCallback(callback);
 
                     // Set to max if the entered number is to big
-                    if(Float.parseFloat(inputText) > maxValue)
+                    if(numberOrPoint && Float.parseFloat(inputText) > maxValue)
                     {
                         editField.setText(Float.toString(getMaxValue()));
                     }
                     // Set to min if the entered number is to small
-                    else if(Float.parseFloat(inputText) < minValue)
+                    else if(numberOrPoint && Float.parseFloat(inputText) < minValue)
                     {
                         editField.setText(Float.toString(getMinValue()));
                     }

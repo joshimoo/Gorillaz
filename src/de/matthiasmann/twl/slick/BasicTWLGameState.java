@@ -31,8 +31,8 @@ package de.matthiasmann.twl.slick;
 
 import de.matthiasmann.twl.ActionMap;
 import de.matthiasmann.twl.Widget;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
-import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -82,7 +82,7 @@ public abstract class BasicTWLGameState extends BasicGameState {
 
         // change by Peter Kl�ckner:
         // if the game is in test mode, use TWLTestStateBasedGame
-        if (!TestGorillas.debug) {
+        if (!Game.getInstance().isTestMode()) {
             ((TWLStateBasedGame) game).setRootPane(getRootPane());
         }
         else {

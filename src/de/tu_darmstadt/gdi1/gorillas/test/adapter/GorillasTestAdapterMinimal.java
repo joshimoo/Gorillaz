@@ -25,9 +25,16 @@ public class GorillasTestAdapterMinimal {
     public GorillasTestAdapterMinimal() {
         super();
 
-        // Enable Testmode for the total Game
-        Game.getInstance().enableTestMode(true);
-        Game.getInstance().setStorePlayerNames(false);
+        Game game = Game.getInstance();
+
+        // Setzen der Debug-Ausgaben
+        game.setDebug(false);
+
+        // Einschalten  des Testmode fuer das ganze Spiel (ohne UI-Ausgabe)
+        game.enableTestMode(true);
+
+        // Ausschalten des Spielernamens in der SQL-Datenbank
+        game.setStorePlayerNames(false);
     }
 
     /* ***************************************************
@@ -49,7 +56,7 @@ public class GorillasTestAdapterMinimal {
         // Set the native library path (depending on the operating system)
         Utils.setNativePath();
 
-        // Initialisiere das Spiel im Debug-Modus (ohne UI-Ausgabe)
+        // Initialisiere das Spiel im Test-Modus (ohne UI-Ausgabe)
         gorillas = new TestGorillas(true);
 
         // Initialisiere die statische Klasse Map

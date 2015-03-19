@@ -2,9 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Georg Schmidt on 17.02.2015.
- */
 public class SqlGorillas {
     private SqlLiteDb db;
     private String tableHighScore;
@@ -42,7 +39,7 @@ public class SqlGorillas {
         ArrayList former = getHighScore(PlayerName);
 
         String ID = "NULL";
-        if(former.size()>0) {
+        if(former.size() > 0) {
             ID = former.get(0).toString();
             NumberRounds += (int) former.get(2);
             NumberWinRounds += (int) former.get(3);
@@ -139,6 +136,25 @@ public class SqlGorillas {
         String sql = "DROP TABLE " + tableHighScore + ";";
         db.update(sql);
         db.checkExist(tableHighScore);
+    }
+
+    /**
+     * Clear the whole database
+     */
+    public void clearDatabase()
+    {
+        String sql = "DROP TABLE " + tableHighScore + ";";
+        db.update(sql);
+
+        sql = "DROP TABLE " + tablePlayer + ";";
+        db.update(sql);
+
+        sql = "DROP TABLE " + tableConfig + ";";
+        db.update(sql);
+
+        db.checkExist(tableHighScore);
+        db.checkExist(tablePlayer);
+        db.checkExist(tableConfig);
     }
 
     /**

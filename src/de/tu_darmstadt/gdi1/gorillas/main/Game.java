@@ -45,8 +45,8 @@ public class Game {
     public static       int   SPEED_DEFAULT = 80;
 
     // Switches
-    private boolean testmode = false;   // Graphically debug
-    private boolean debug = true;       // Debug outputs
+    private boolean testmode = true;   // Disables graphically output for test cases
+    private boolean debug = false;       // Debug outputs
     private boolean developer = true;   // Cheating options
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
     private boolean storePlayerNames = true; // Possible candidate for an internal Option Class
@@ -111,8 +111,8 @@ public class Game {
             // Set Test-Defaults
             if(isTestMode())
             {
-                Game.ANGLE_DEFAULT = 0;
-                Game.SPEED_DEFAULT = 0;
+                ANGLE_DEFAULT = 0;
+                SPEED_DEFAULT = 0;
                 gravity = 10;
                 SUN_FROM_TOP = 5;
                 SUN_SIZE = 100;

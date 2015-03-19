@@ -4,11 +4,8 @@ import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import eea.engine.component.render.AnimationRenderComponent;
 import eea.engine.entity.Entity;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.StateBasedGame;
 
 public class Gorilla extends Entity {
 
@@ -19,7 +16,7 @@ public class Gorilla extends Entity {
 
     /**
      * Create a new Gorilla
-     * @param pos the gorillas feet position
+     * @param pos the gorillas center position
      */
     public Gorilla(Vector2f pos) {
         super("Gorilla");
@@ -31,19 +28,13 @@ public class Gorilla extends Entity {
                     Assets.loadImage(Assets.Images.GORRILA),
                     Assets.loadImage(Assets.Images.GORRILA_RIGHT)
             };
-            //addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
-            addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, Game.GORILLA_WIDTH, Game.GORILLA_HEIGHT, true));
-
-            // Change our Center position so that our feet touch the top of the building
-            setPosition(new Vector2f(pos.x - frames[0].getWidth() / 2, pos.y - frames[0].getHeight() / 2));
-
+            addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
         } else {
             // In Test Mode set the size explicitly since we don't have a renderer
-            setSize(new Vector2f(37, 42));
-
-            // Change our Center position so that our feet touch the top of the building
-            setPosition(new Vector2f(pos.x - getSize().x / 2, pos.y - getSize().y / 2));
+            setSize(new Vector2f(25, 42));
         }
+
+        setPosition(pos);
     }
 
 }

@@ -2,12 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-
-/**
- * Created by Georg Schmidt on 16.03.2015.
- */
 public class Database {
     protected String fileName;
     protected String tableHighScore;
@@ -177,9 +171,22 @@ public class Database {
         this.dbSQL.clearHighScore();
     }
 
-    /*
-        For Tests only
+    /**
+     * Clear the whole database
      */
+    public void clearDatabase()
+    {
+        this.dbSQL.clearDatabase();
+    }
+
+    /**
+     * Clear the whole database and reset the PlayerNames in Database
+     */
+    public void clearDatabaseAndResetPlayerNames()
+    {
+        playerNames = null;
+        this.dbSQL.clearDatabase();
+    }
 
     /**
      * Return the HighScore on position pos
@@ -312,7 +319,6 @@ public class Database {
         dbSQL.setValue("InverseControlKeys", encodeBoolean(gameInstance.getInverseControlKeys()));
         dbSQL.setValue("StorePlayerNames", encodeBoolean(gameInstance.getStorePlayerNames()));
         dbSQL.setValue("Debug", encodeBoolean(gameInstance.getDebug()));
-        dbSQL.setValue("TestMode", encodeBoolean(gameInstance.isTestMode()));
         dbSQL.setValue("Developer", encodeBoolean(gameInstance.isDeveloperMode()));
 
         //Number
@@ -342,7 +348,6 @@ public class Database {
             gameInstance.setInverseControlKeys(decodeBoolean(dbSQL.getValue("InverseControlKeys")));
             gameInstance.setStorePlayerNames(decodeBoolean(dbSQL.getValue("StorePlayerNames")));
             gameInstance.setDebug(decodeBoolean(dbSQL.getValue("Debug")));
-            gameInstance.enableTestMode(decodeBoolean(dbSQL.getValue("TestMode")));
             gameInstance.setDeveloperMode(decodeBoolean(dbSQL.getValue("Developer")));
 
             //Number
@@ -435,5 +440,32 @@ public class Database {
     private static String encodeInt(int in)
     {
         return Integer.toString(in);
+    }
+
+    /**
+     * Outputs all current settings of the game that will stored to the database
+     * by the function "saveConfigToFile()" and some more.
+     */
+    public static void debugOutputAllSettings()
+    {
+            Game gameInstance = Game.getInstance();
+
+            String list = "Current settings stored by \"saveConfigToFile()\" and some more:\n\n" +
+            "Wind = " + encodeBoolean(gameInstance.getWind()) + "\n" +
+            "Mute = " + encodeBoolean(gameInstance.isMute()) + "\n" +
+            "InverseControlKeys = " + encodeBoolean(gameInstance.getInverseControlKeys()) + "\n" +
+            "StorePlayerNames = " + encodeBoolean(gameInstance.getStorePlayerNames()) + "\n" +
+            "Debug = " + encodeBoolean(gameInstance.getDebug()) + "\n" +
+            "TestMode = " + encodeBoolean(gameInstance.isTestMode()) + "\n" +
+            "Developer = " + encodeBoolean(gameInstance.isDeveloperMode()) + "\n" +
+            "Gravity = " + encodeFloat(gameInstance.getGravity()) + "\n" +
+            "SoundVolume = " + encodeFloat(gameInstance.getSoundVolume()) + "\n" +
+
+            // MORE
+            "ANGLE_DEFAULT = " + gameInstance.ANGLE_DEFAULT + "\n" +
+            "SPEED_DEFAULT = " + gameInstance.SPEED_DEFAULT + "\n" +
+            "SUN_FROM_TOP = " + gameInstance.SUN_FROM_TOP + "\n";
+
+            System.out.println(list);
     }
 }

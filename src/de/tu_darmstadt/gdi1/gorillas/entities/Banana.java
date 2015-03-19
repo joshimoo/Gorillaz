@@ -27,8 +27,8 @@ public class Banana extends Entity {
             Image img;
             if(Math.random() < 0.2f){
                if(Math.random() < 0.25f)  img = Assets.loadImage(Assets.Images.SNICKERS);
-                else if(Math.random() < 1 / 2f) img = Assets.loadImage(Assets.Images.PINEAPPLE);
-                else img = Assets.loadImage(Assets.Images.COCONUT);
+               else if(Math.random() < 0.5f) img = Assets.loadImage(Assets.Images.PINEAPPLE);
+               else img = Assets.loadImage(Assets.Images.COCONUT);
             }
             else img = Assets.loadImage(Assets.Images.BANANA);
 
@@ -52,6 +52,14 @@ public class Banana extends Entity {
         this.angle = angle;
 
         if(angle > 90) rotationSpeed = -rotationSpeed;
+    }
+
+    @Override
+    public Shape getShape() {
+        if(Game.getInstance().isTestMode())
+            return super.getShape();
+        else
+            return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
     }
 
     @Override
