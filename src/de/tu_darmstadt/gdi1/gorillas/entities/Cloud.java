@@ -10,16 +10,16 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Cloud extends Entity {
+
     private int windSpeed;
 
+    /** Create a Cloud at the initial position affected by wind */
     public Cloud(Vector2f pos, int windSpeed) {
         super("Cloud");
         setPosition(pos);
         this.windSpeed = windSpeed;
 
-
         if (!Game.getInstance().isTestMode()) {
-            // Rendering
             addComponent(new ImageRenderComponent(Assets.loadImage(Assets.Images.CLOUD)));
         } else {
             // In Test Mode set the size explicitly
@@ -31,7 +31,6 @@ public class Cloud extends Entity {
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
         super.update(gc, sb, delta);
 
-        // TODO: Add random delay before cloud comes back into screen
         Vector2f pos = getPosition();
         pos.x += (windSpeed / 2) * Game.getInstance().getWindScale();
 
@@ -43,4 +42,6 @@ public class Cloud extends Entity {
 
         setPosition(pos);
     }
+
 }
+

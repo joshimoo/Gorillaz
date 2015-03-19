@@ -18,6 +18,12 @@ public class Skyscraper extends Entity implements ICollidable {
     private BufferedImage buf;
     private org.newdawn.slick.Image slickImg;
 
+    /** Construct a skyscraper
+     * @param topLeftPos
+     * @param buildingWidth
+     * @param mapWidth
+     * @param mapHeight
+     */
     public Skyscraper(Vector2f topLeftPos, int buildingWidth, int mapWidth, int mapHeight) {
         super("Skyscaper");
         int height = mapHeight - (int) topLeftPos.y;
@@ -32,11 +38,11 @@ public class Skyscraper extends Entity implements ICollidable {
         Color color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
 
         // Windows
-        int winSize    = 20;                            // Size of a window [px]
-        int winColumns = r.nextInt(2) + 3;              // Amount of vertical columns [3-4]
-        int winSpacing = width / winColumns;       // Spacing per Column
-        int winPadding = (winSpacing - winSize) /2;     // Padding per Window
-        int winRows    = height / winSpacing;      // Amount of Horizontal rows
+        int winSize    = 20;                        // Size of a window [px]
+        int winColumns = r.nextInt(2) + 3;          // Amount of vertical columns [3-4]
+        int winSpacing = width / winColumns;        // Spacing per Column
+        int winPadding = (winSpacing - winSize) /2; // Padding per Window
+        int winRows    = height / winSpacing;       // Amount of Horizontal rows
 
         // The image needs an Alpha-component so we can erase some parts of it.
         buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -75,13 +81,14 @@ public class Skyscraper extends Entity implements ICollidable {
         return new Vector2f(getPosition().x - getSize().x / 2, getPosition().y - getSize().y / 2);
     }
 
-    public void destroy(final int x, final int y, final int pow){
+    /** Destroy parts of the Building */
+    public void destroy(final int x, final int y, final int radius){
         Graphics2D graphic = buf.createGraphics();
         graphic.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 
         // We don't need a destruction map. This way we could even use different weapons
         // or randomized damage.
-        graphic.fillOval( (int) (x - getRenderPosition().x) - pow, (int) (y - getRenderPosition().y) - pow, pow*2, pow*2);
+        graphic.fillOval( (int) (x - getRenderPosition().x) - radius, (int) (y - getRenderPosition().y) - radius, radius*2, radius*2);
 
         // NOTE: We are allowed to use an AWT Buffered image, we can even use a graphics draw ontop of the BufferedImage
         // But no Texture Generation, since that will require an OpenGL Context.

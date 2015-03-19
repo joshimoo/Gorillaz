@@ -8,9 +8,11 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Sun extends Entity {
-    private FrameRenderComponent animation;
 
-    // TODO: we currently use topleft positions everywhere, change them all to be center positions
+    private FrameRenderComponent animation;
+    private boolean astonished;
+
+    /** Creates a sun at position pos */
     public Sun(Vector2f pos) {
         super("Sun");
         setPosition(pos);
@@ -41,11 +43,10 @@ public class Sun extends Entity {
         return collides;
     }
 
-    private boolean astonished;
-    public boolean isAstonished() {
-        return astonished;
-    }
+    public boolean isAstonished() { return astonished; }
+
     public void resetAstonished() { triggerAstonished(true); }
+
     private void triggerAstonished(boolean reset) {
         // Tests are stupid, require the sun to be astonished for XXX Amount (whole round)
         astonished = !reset;
@@ -53,4 +54,5 @@ public class Sun extends Entity {
             animation.switchToFrame(astonished ? 1 : 0);
         }
     }
+
 }
