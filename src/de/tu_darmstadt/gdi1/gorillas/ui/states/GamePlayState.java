@@ -179,6 +179,10 @@ public class GamePlayState extends BasicTWLGameState {
         destroyBanana();
         setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
+
+        // Reset the ugly input stuff for tests
+        validAngle = false;
+        validVelocity = false;
     }
 
     void renderDebugShapes(GameContainer gc, StateBasedGame game, Graphics g) {
@@ -539,11 +543,15 @@ public class GamePlayState extends BasicTWLGameState {
 
         if_speed.setMinMaxValue(Game.SPEED_MIN, Game.SPEED_MAX);
         if_speed.setValue(Game.SPEED_DEFAULT);
-        validVelocity = true;
+        // validVelocity = true;
+        // NOTE: Don't set these here, since they are an ugly hack for testcases.
 
         if_angle.setMinMaxValue(Game.ANGLE_MIN, Game.ANGLE_MAX);
         if_angle.setValue(Game.ANGLE_DEFAULT);
-        validAngle = true;
+        // validAngle = true;
+        // NOTE: Don't set these here, since they are an ugly hack for testcases.
+        // We do backend verification in our model instead of frontend verification.
+        // Therefore we can only have valid inputs.
 
         // Wirkungslos
         btnThrow.setAlignment(Alignment.CENTER);
@@ -630,8 +638,11 @@ public class GamePlayState extends BasicTWLGameState {
         state = STATES.THROW;
     }
 
-    // TESTS
+    /** TESTS */
     // HACK: This is dirty !_!
+    // We do backend verification in our model instead of frontend verification.
+    // Therefore we can only have valid inputs, but tests require a -1 value for not set inputs.
+    // while we set sensible defaults for our game, so this is the result of that testcase >/<
     private boolean validVelocity = false;
     private boolean validAngle = false;
     public void resetPlayerWidget() {
@@ -642,32 +653,30 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     public int getVelocity() { return validVelocity ? if_speed.getValue() : -1; }
+
     public void fillVelocityInput(char c) {
-        if (Character.isDigit(c)){
+        if (verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
+            if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
             validVelocity = true;
-            if(verifyInput(if_speed.getValue(), if_speed.getMinValue(), if_speed.getMaxValue(), c)) {
-                if_speed.setValue(if_speed.getValue() * 10 + Character.getNumericValue(c));
-            }
         }
-        else validVelocity = false;
     }
 
     public int getAngle() { return validAngle ? if_angle.getValue() : -1; }
+
     public void fillAngleInput(char c) {
-        if (Character.isDigit(c)) {
+        if (verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
+            if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
             validAngle = true;
-            if(verifyInput(if_angle.getValue(), if_angle.getMinValue(), if_angle.getMaxValue(), c)) {
-                if_angle.setValue(if_angle.getValue() * 10 + Character.getNumericValue(c));
-            }
         }
-        else validAngle = false;
     }
 
     /** This only works for positive numbers */
     public boolean verifyInput(int oldValue, int min, int max, char c) {
-        int newValue = oldValue * 10 + Character.getNumericValue(c);
-        if (newValue <= max && newValue >= min) {
-            return true;
+        if (Character.isDigit(c)) {
+            int newValue = oldValue * 10 + Character.getNumericValue(c);
+            if (newValue <= max && newValue >= min) {
+                return true;
+            }
         }
 
         return false;
