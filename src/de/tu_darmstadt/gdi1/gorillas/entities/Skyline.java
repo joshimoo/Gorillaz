@@ -5,7 +5,10 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
+import java.util.ArrayList;
 
 public class Skyline extends Entity {
 
@@ -13,13 +16,14 @@ public class Skyline extends Entity {
     public final int BUILD_WIDTH;
     public final Skyscraper[] skyscrapers;
 
-    public Skyline(final int n){
+    public Skyline(ArrayList<Vector2f> buildingCoords, int mapWidth, int mapHeight) {
         super("Skyline");
-        BUILD_COUNT = n;
-        BUILD_WIDTH = Gorillas.CANVAS_WIDTH / BUILD_COUNT;
-        skyscrapers = new Skyscraper[BUILD_COUNT];
-        for(int i = 0; i < BUILD_COUNT; i++)
-            skyscrapers[i] = new Skyscraper(i, BUILD_WIDTH);
+        BUILD_COUNT = buildingCoords.size();
+        BUILD_WIDTH = mapWidth / BUILD_COUNT;
+        skyscrapers = new Skyscraper[buildingCoords.size()];
+        for (int i = 0; i < buildingCoords.size(); i++) {
+            skyscrapers[i] = new Skyscraper(buildingCoords.get(i), BUILD_WIDTH, mapWidth, mapHeight);
+        }
     }
 
     public void destroy(final int x, final int y, final int pow){
@@ -27,10 +31,6 @@ public class Skyline extends Entity {
         int lo = x - pow;
         for(int i = (lo / BUILD_WIDTH ) ; i <= (hi / BUILD_WIDTH); ++i)
             if(i >= 0 && i < BUILD_COUNT) skyscrapers[i].destroy(x, y, pow);
-    }
-
-    public int getHeight(final int n){
-        return skyscrapers[n].getHeight();
     }
 
     @Override
