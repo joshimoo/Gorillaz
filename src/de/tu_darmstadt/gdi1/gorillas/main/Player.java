@@ -2,7 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 /** Represents a Player in the Game */
 public class Player {
-    
+
     private final String name;
     private int lastSpeed, lastAngle;
     private int numberOfWins;
