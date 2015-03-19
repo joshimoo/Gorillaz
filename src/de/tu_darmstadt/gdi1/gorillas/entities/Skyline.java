@@ -43,14 +43,8 @@ public class Skyline extends Entity {
 
     @Override
     public boolean collides(Entity otherEntity) {
-        boolean a = false;
-        for(Skyscraper s: skyscrapers)
-            a |= s.collides(otherEntity);
-        return a;
-    }
-
-    @Deprecated
-    public boolean isCollidding(Banana b) {
-        return collides(b);
+        // Exit early if we have a collision
+        for(Skyscraper s: skyscrapers) { if(s.collides(otherEntity)) { return true; } }
+        return false;
     }
 }

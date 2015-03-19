@@ -41,11 +41,6 @@ public class Sun extends Entity {
         return collides;
     }
 
-    @Deprecated
-    public boolean isCollidding(Banana b) {
-        return collides(b);
-    }
-
     private boolean astonished;
     public boolean isAstonished() {
         return astonished;
