@@ -394,7 +394,7 @@ public class GamePlayState extends BasicTWLGameState {
                 comment = "";
 
                 banana.update(gc, game, delta);
-                sun.isCollidding(banana);
+                sun.collides(banana);
 
                 // Bounds Check
                 if(outsidePlayingField(banana, gc.getWidth(), gc.getHeight())) {
@@ -416,7 +416,7 @@ public class GamePlayState extends BasicTWLGameState {
                     comment = "Treffer!";
                 }
 
-                if(skyline.isCollidding(banana)) {
+                if(skyline.collides(banana)) {
                     state = STATES.DAMAGE;
                     debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getInstance().getExplosionRadius()));
                    if(getActivePlayer() == Game.getInstance().getPlayer(1)){
