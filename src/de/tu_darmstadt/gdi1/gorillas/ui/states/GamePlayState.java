@@ -226,7 +226,7 @@ public class GamePlayState extends BasicTWLGameState {
         cloud.render(gc, game, g);
         sun.render(gc, game, g);
         drawPlayerNames(g);
-        
+
         if (Game.getInstance().getDebug()) { renderDebugShapes(gc, game, g); }
 
         if(banana != null) {
