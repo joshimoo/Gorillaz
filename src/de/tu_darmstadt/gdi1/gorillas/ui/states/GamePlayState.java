@@ -185,7 +185,7 @@ public class GamePlayState extends BasicTWLGameState {
 
         sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
-        windSpeed = Game.getInstance().getWind() ? calculateWind(0) : 0;
+        windSpeed = Game.getInstance().getWind() ? calculateWind() : 0;
         cloud = new Cloud(new Vector2f(0, 60), windSpeed);
 
         // Clear the previous state, particular for debug loading
@@ -706,17 +706,15 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     /**
-     * Generates wind speed if "set" is "0"
-     * @param set allows you to set your own wind speed
+     * Generates wind speed
      * @return wind speed not 0
      */
-    public int calculateWind(int set)
+    public int calculateWind()
     {
-        int wind = set;
-        while(wind < 2)
-            wind = (int) ((Math.random() * 30) - 15);
+        /* wind speed 2 to 17 */
+        int wind = (int) ((Math.random() * 15) + 2);
 
-        // wind direction
+        /* wind direction */
         wind = Math.random() > 0.5f ? -wind : wind;
 
         if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
