@@ -13,13 +13,13 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Banana extends Entity {
 
     private float gravity   = 9.80665f;
-    private float rotationSpeed, t;
+    private float rotationSpeed, time;
     private float vx, vy, speed;
     private int windAcceleration, angle;
 
     private Vector2f pos0;
 
-    public Banana(Vector2f pos, final int angle, final int speed, float g, int w) {
+    public Banana(Vector2f pos, final int angle, final int speed, float gravity, int wind) {
         super("Banana");
 
         if (!Game.getInstance().isTestMode()) {
@@ -32,7 +32,7 @@ public class Banana extends Entity {
             }
             else img = Assets.loadImage(Assets.Images.BANANA);
 
-            float scale = Game.BANANA_SIZE/img.getWidth();
+            float scale = Game.BANANA_SIZE / img.getWidth();
             if(scale != 1f) img.getScaledCopy(scale);
             addComponent(new ImageRenderComponent(img));
         } else {
@@ -45,9 +45,9 @@ public class Banana extends Entity {
         // Flight Params
         setPosition(pos);
         pos0 = new Vector2f(pos.x, pos.y);
-        t  = 0;
-        gravity = g;
-        windAcceleration = w;
+        time = 0;
+        this.gravity = gravity;
+        windAcceleration = wind;
         this.speed = speed;
         this.angle = angle;
 
@@ -63,20 +63,20 @@ public class Banana extends Entity {
 
         Vector2f pos = getPosition();
         /* Move the Banana */
-        t = t + delta * Game.getInstance().getTimeScale();
+        time = time + delta * Game.getInstance().getTimeScale();
         //Dozen
         if((pos.y + getSize().y / 2 >= Gorillas.FRAME_HEIGHT)& (vx > 5 | vx < -5)){
             if(vx > 5) angle = -angle;
             if(vx < 5) angle = 180 - angle;
             pos0 = new Vector2f(pos.x, gc.getHeight() - (getSize().y + 10) / 2);
             speed = vx;
-            t = delta * Game.getInstance().getTimeScale();
+            time = delta * Game.getInstance().getTimeScale();
         }
 
         vx = (float) Math.cos(Math.toRadians(angle)) * speed;
         vy = (float) Math.sin(Math.toRadians(angle)) * speed;
-        pos.x = (pos0.x + (vx * t) + ( windAcceleration /2f * Game.getInstance().getWindScale() * t * t));
-        pos.y = (pos0.y - (vy * t) + ( gravity /2f * t * t));
+        pos.x = (pos0.x + (vx * time) + ( windAcceleration /2f * Game.getInstance().getWindScale() * time * time));
+        pos.y = (pos0.y - (vy * time) + ( gravity /2f * time * time));
         setPosition(pos);
     }
 }
