@@ -637,6 +637,10 @@ public class GamePlayState extends BasicTWLGameState {
         int wind = set;
         while(wind < 2)
             wind = (int) ((Math.random() * 30) - 15);
+
+        // wind direction
+        wind = Math.random() > 0.5f ? -wind : wind;
+
         if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
         return wind;
     }

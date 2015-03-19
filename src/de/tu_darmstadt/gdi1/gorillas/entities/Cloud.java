@@ -10,14 +10,13 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Cloud extends Entity {
-    private int w;
-    private float t;
+    private int windSpeed;
 
     public Cloud(Vector2f pos, int windSpeed) {
         super("Cloud");
         setPosition(pos);
-        w = windSpeed;
-        t = 0;
+        this.windSpeed = windSpeed;
+
 
         if (!Game.getInstance().isTestMode()) {
             // Rendering
@@ -34,7 +33,7 @@ public class Cloud extends Entity {
 
         // TODO: Add random delay before cloud comes back into screen
         Vector2f pos = getPosition();
-        pos.x += (w / 2) * Game.getInstance().getWindScale();
+        pos.x += (windSpeed / 2) * Game.getInstance().getWindScale();
 
         if(pos.x < -getSize().x) {
             pos.x = Gorillas.CANVAS_WIDTH;
