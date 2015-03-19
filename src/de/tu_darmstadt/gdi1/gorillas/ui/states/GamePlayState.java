@@ -134,6 +134,15 @@ public class GamePlayState extends BasicTWLGameState {
         loadMap(Map.createRandomMap(Gorillas.CANVAS_WIDTH, Gorillas.FRAME_HEIGHT, Map.defaultGorillaWidth, Map.defaultGorillaHeight));
     }
 
+    private void debugGorillaHit() {
+        if_angle.setValue(45);
+        if_speed.setValue(95);
+        throwBanana();
+        banana.setSize(new Vector2f(10,10f));
+        gorilla.setSize(new Vector2f(37, 42));
+        gorillb.setSize(new Vector2f(37, 42));
+    }
+
     private void createDebugFlatMap() {
 
         // create a map, with a flat city.
@@ -362,6 +371,7 @@ public class GamePlayState extends BasicTWLGameState {
             // Reroll the LevelGeneration
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
             if (input.isKeyPressed(Input.KEY_1)) { createDebugFlatMap(); }
+            if (input.isKeyPressed(Input.KEY_2)) { debugGorillaHit(); }
 
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
@@ -395,6 +405,7 @@ public class GamePlayState extends BasicTWLGameState {
                 updateThrowParameters(input, delta);
                 break;
             case THROW:
+                flightTime += delta;
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow();
                 // During the flight disable inputs
                 toggleUI(false);
@@ -601,9 +612,8 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     private void destroyBanana() {
-        if (banana != null) {
-            entityManager.removeEntity(getID(), banana);
-        }
+        if (Game.getInstance().getDebug()) System.err.println("Flight Time: " + flightTime);
+        if (banana != null) { entityManager.removeEntity(getID(), banana); }
         banana = null;
     }
 
@@ -615,6 +625,7 @@ public class GamePlayState extends BasicTWLGameState {
         entityManager.addEntity(getID(), banana);
     }
 
+    int flightTime = 0;
     /** Generates a Banana at the current Player */
     public void throwBanana() {
         // Save new throw
@@ -641,6 +652,7 @@ public class GamePlayState extends BasicTWLGameState {
         // Remove Win-Message
         roundWinMessage = null;
         state = STATES.THROW;
+        flightTime = 0;
     }
 
     /** TESTS */
