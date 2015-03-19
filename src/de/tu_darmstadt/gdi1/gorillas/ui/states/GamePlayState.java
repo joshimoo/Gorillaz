@@ -138,7 +138,7 @@ public class GamePlayState extends BasicTWLGameState {
         if_angle.setValue(45);
         if_speed.setValue(95);
         throwBanana();
-        banana.setSize(new Vector2f(10,10f));
+        banana.setSize(new Vector2f(10, 10));
         gorilla.setSize(new Vector2f(37, 42));
         gorillb.setSize(new Vector2f(37, 42));
     }
@@ -190,7 +190,6 @@ public class GamePlayState extends BasicTWLGameState {
 
         // Clear the previous state, particular for debug loading
         destroyBanana();
-        setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
 
         // Reset the ugly input stuff for tests
@@ -388,7 +387,7 @@ public class GamePlayState extends BasicTWLGameState {
         }
 
         /* ActionCam slowmo :D */
-        delta = (int) Math.max(1, delta * slowmoScale * slowmoScale);
+        if (!Game.getInstance().isTestMode()) { delta = (int) Math.max(1, delta * slowmoScale * slowmoScale); }
 
         // Let the entities update their inputs first
         // Then process all remaining inputs
@@ -472,6 +471,9 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
             case DAMAGE:
 
+                // Just Destroy the Skyline
+                // and instanciate an explosion that is independent of game state
+                // In Testmode, we return true, immediatly
                 if(explodeAt(delta)) {
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
@@ -482,6 +484,7 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case ROUNDVICTORY:
+                // In Testmode, we return true, immediatly
                 if(explodeAt(delta)){
                 getSun().resetAstonished(); // For tests, reset smiling on round end
                 getActivePlayer().setWin();
@@ -510,6 +513,9 @@ public class GamePlayState extends BasicTWLGameState {
 
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
+
+                    // Cycle activeplayer
+                    Game.getInstance().toggleNextPlayerActive();
                     startGame();}
                 }
                 break;
@@ -600,7 +606,7 @@ public class GamePlayState extends BasicTWLGameState {
         pos=2;
         // Button kleiner und verschoben
         btnThrow.setSize(60, 25);
-        btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
+        btnThrow.setPosition(basic_x + 60 + 20, basic_y + basic_x_c * pos);
     }
 
     private void toggleUI(Boolean enable) {
