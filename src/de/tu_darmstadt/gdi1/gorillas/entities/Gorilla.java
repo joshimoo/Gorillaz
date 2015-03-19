@@ -31,7 +31,7 @@ public class Gorilla extends Entity {
             addComponent(new AnimationRenderComponent(frames, ANIMATION_SPEED / FRAME_LENGTH, frames[0].getWidth(), frames[0].getHeight(), true));
         } else {
             // In Test Mode set the size explicitly since we don't have a renderer
-            setSize(new Vector2f(37, 42));
+            setSize(new Vector2f(25, 42));
         }
 
         setPosition(pos);
