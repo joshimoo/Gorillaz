@@ -174,9 +174,22 @@ public class Database {
         this.dbSQL.clearHighScore();
     }
 
-    /*
-        For Tests only
+    /**
+     * Clear the whole database
      */
+    public void clearDatabase()
+    {
+        this.dbSQL.clearDatabase();
+    }
+
+    /**
+     * Clear the whole database and reset the PlayerNames in Database
+     */
+    public void clearDatabaseAndResetPlayerNames()
+    {
+        playerNames = null;
+        this.dbSQL.clearDatabase();
+    }
 
     /**
      * Return the HighScore on position pos
