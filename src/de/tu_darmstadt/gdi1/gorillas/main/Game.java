@@ -50,8 +50,8 @@ public class Game {
     private boolean wind = false;
 
     // Scaling Factors
-    private float WIND_SCALE = 1/5f;     //0.6f;
-    private float TIME_SCALE = 1/100f;   //1 / 500f;
+    private float WIND_SCALE = 0.6f;
+    private float TIME_SCALE = 1/300f;
     private float ROTATION_DRAG = 0.02f;
     private int EXPLOSION_RADIUS = 32;
     public static float BACKGROUND_SCALE = 1f;
@@ -123,8 +123,8 @@ public class Game {
     public void setDeveloperMode(boolean enable){ developer = enable; }
 
     /** Time Constants */
-    public float getTimeScale() { return !isTestMode() ? TIME_SCALE : (1/100f); }
-    public float getWindScale() { return !isTestMode() ? WIND_SCALE : (1/5f); }
+    public float getTimeScale() { return !isTestMode() ? TIME_SCALE : 1f/100f; }
+    public float getWindScale() { return !isTestMode() ? WIND_SCALE : 1f/5f; }
     public float getRotationFactor() { return ROTATION_DRAG; }
     public int getExplosionRadius() {return EXPLOSION_RADIUS; }
 
