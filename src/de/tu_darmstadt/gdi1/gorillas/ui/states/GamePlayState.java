@@ -67,6 +67,7 @@ public class GamePlayState extends BasicTWLGameState {
     // Counter
     private static int totalRoundCounter = 0;
     private Image buffer;
+    private int count;
 
     public Player getActivePlayer() { return Game.getInstance().getActivePlayer(); }
     public void setActivePlayer(Player activePlayer) {
@@ -165,10 +166,12 @@ public class GamePlayState extends BasicTWLGameState {
         float x = map.getLeftGorillaCoordinate().x;
         float y = map.getLeftGorillaCoordinate().y;
         gorilla = new Gorilla(new Vector2f(x, y));
+        gorilla.setVisible(true);
 
         x = map.getRightGorillaCoordinate().x;
         y = map.getRightGorillaCoordinate().y;
         gorillb = new Gorilla(new Vector2f(x, y));
+        gorillb.setVisible(true);
 
         sun = new Sun(new Vector2f(Gorillas.CANVAS_WIDTH / 2, Game.SUN_FROM_TOP));
 
@@ -478,8 +481,10 @@ public class GamePlayState extends BasicTWLGameState {
                 getActivePlayer().setWin();
                 totalRoundCounter += 1;
 
-                if(getActivePlayer().getWin() > 2)
+                if(getActivePlayer().getWin() > 2){
                     state = STATES.VICTORY;
+                    count = 0;
+                }
                 else {
                     if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben die Runde gewonnen !");
                     if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
@@ -503,18 +508,21 @@ public class GamePlayState extends BasicTWLGameState {
                 }
                 break;
             case VICTORY:
-                // TODO: VICTORY
-                if(Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
-                if(Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
-                game.enterState(Game.GAMEVICTORY);
+                destroyBanana();
+                if(VictoryAnimation(delta)) {
+                    // TODO: VICTORY
+                    if (Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
+                    if (Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
 
-                for(Player p : Game.getInstance().getPlayers())
-                {
-                    Database.getInstance().setHighScore(p.getName(), totalRoundCounter, p.getWin(), p.getTotalThrows());
+                    for (Player p : Game.getInstance().getPlayers()) {
+                        Database.getInstance().setHighScore(p.getName(), totalRoundCounter, p.getWin(), p.getTotalThrows());
+                    }
+
+                    // Reset Values
+                    totalRoundCounter = 0;
+
+                    game.enterState(Game.GAMEVICTORY);
                 }
-
-                // Reset Values
-                totalRoundCounter = 0;
                 break;
         }
     }
@@ -698,5 +706,16 @@ public class GamePlayState extends BasicTWLGameState {
 
         if (Game.getInstance().getDebug()) { System.out.println("Wind-Speed : " + wind); }
         return wind;
+    }
+
+    public boolean VictoryAnimation(int delta){
+        if(count == 0){
+            Player winningPlayer = getActivePlayer();
+            if(winningPlayer == Game.getInstance().getPlayer(0)) gorillb.setVisible(false);
+            else gorilla.setVisible(false);
+            Game.getInstance().toggleNextPlayerActive();
+        }
+        count += delta;
+        return (count > 2000);
     }
 }

@@ -2,9 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-
 public class Database {
     protected String fileName;
     protected String tableHighScore;
