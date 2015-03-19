@@ -139,6 +139,25 @@ public class SqlGorillas {
     }
 
     /**
+     * Clear the whole database
+     */
+    public void clearDatabase()
+    {
+        String sql = "DROP TABLE " + tableHighScore + ";";
+        db.update(sql);
+
+        sql = "DROP TABLE " + tablePlayer + ";";
+        db.update(sql);
+
+        sql = "DROP TABLE " + tableConfig + ";";
+        db.update(sql);
+
+        db.checkExist(tableHighScore);
+        db.checkExist(tablePlayer);
+        db.checkExist(tableConfig);
+    }
+
+    /**
      * Store a String-Value
      * @param id    String-ID
      * @param value Value to store
