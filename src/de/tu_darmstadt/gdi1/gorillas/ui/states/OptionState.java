@@ -28,7 +28,7 @@ public class OptionState extends BasicTWLGameState {
     private Button btnStorePlayerNames;
     private Button btnMute;
     private Button btnSaveToFile;
-    private EditField resolution;
+    private Button resolution;
 
     @Override
     public int getID() {
@@ -56,20 +56,21 @@ public class OptionState extends BasicTWLGameState {
         btnSaveToFile = new Button("Save Configuration to File");
         btnOK = new Button("OK");
         lError = new Label("");
-        resolution = new EditField();
-        resolution.setMaxTextLength(9);
+        resolution = new Button();
 
         resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().isWindActive() ? "Wind" : "No wind");
         btnStorePlayerNames.setText(Game.getInstance().isStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
         btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound off");
+
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
         btnWind.addCallback(this::toggleWind);
         btnStorePlayerNames.addCallback(this::toggleStorePlayerNames);
         btnMute.addCallback(this::toggleMute);
         btnSaveToFile.addCallback(this::saveConfigToFile);
+        resolution.addCallback(this::setResolution);
 
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
@@ -152,7 +153,15 @@ public class OptionState extends BasicTWLGameState {
     }
 
     private void returnToPrevScreen() {
-        String resolutionString = resolution.getText();
+        Game.getInstance().setGravity(valueGravity.getValue());
+        Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
+        game.enterLastState();
+    }
+
+    private void setResolution()
+    {
+        String resolutionString = Database.getInstance().getDisplayWidth() == 800 ? "1024x768" : "800x600";
+
         int splitter = resolutionString.indexOf("x");
         int x = 0;
         int y = 0;
@@ -165,6 +174,7 @@ public class OptionState extends BasicTWLGameState {
             db.setDisplayWidth(x);
             db.setDisplayHeight(y);
 
+            resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
             // TODO: Canvas vs Frame
             /*
             Static to 1024 maybe later insert
@@ -187,12 +197,7 @@ public class OptionState extends BasicTWLGameState {
                         "or 16/10        600x375 800x500 1024x640 1280x800 1600x1000 1920x1200\n" +
                         "or 16/9                 800x450 1024x576 1280x720  1600x900 1920x1080\n");
                 */
-            return;
         }
-
-        Game.getInstance().setGravity(valueGravity.getValue());
-        Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
-        game.enterLastState();
     }
 
     private boolean checkResolution(int x ,int y)
