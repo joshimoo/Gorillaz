@@ -145,7 +145,7 @@ public class GamePlayState extends BasicTWLGameState {
         Vector2f leftGorillaCoordinate = new Vector2f(50, 549);
         Vector2f rightGorillaCoordinate = new Vector2f(950, 549);
 
-        loadMap(Map.createMap(Gorillas.CANVAS_WIDTH, 600, 0, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate));
+        loadMap(Map.createMap(1000, 600, 0, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate));
     }
 
     public void loadMap(Map map) {
