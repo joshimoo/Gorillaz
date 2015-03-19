@@ -19,6 +19,9 @@ import java.net.URL;
 public class TestGorillas extends TWLTestStateBasedGame {
 
     // Each state is represented by an integer value
+    // Normally we could remove these and use Game.StateXXX
+    // But we don't know if the private tests use these.
+    // TODO: so make sure that these are the same as Game.StateXXX
     public static final int MAINMENUSTATE = 0;
     public static final int GAMESETUPSTATE = 1;
     public static final int GAMEPLAYSTATE = 2;
@@ -30,7 +33,9 @@ public class TestGorillas extends TWLTestStateBasedGame {
 
     public TestGorillas(boolean debug) {
         super("Gorillas");
+        // Always activate, testmode in TestGorillas
         setDebug(debug);
+        Game.getInstance().enableTestMode(true);
     }
 
     public static void setDebug(boolean debuging) {
