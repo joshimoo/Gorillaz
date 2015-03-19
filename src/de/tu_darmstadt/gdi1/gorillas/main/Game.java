@@ -24,7 +24,7 @@ public class Game {
     public static final int GAMEVICTORY     = 8;
 
     // Constants
-    public static final float SUN_SIZE = 100;
+    public static       float SUN_SIZE = 60;
     public static final float BANANA_SIZE = 10;
     public static final float GORILLA_WIDTH = 37;
     public static final float GORILLA_HEIGHT = 42;
@@ -115,6 +115,7 @@ public class Game {
                 Game.SPEED_DEFAULT = 0;
                 gravity = 10;
                 SUN_FROM_TOP = 5;
+                SUN_SIZE = 100;
             }
         }
     }
