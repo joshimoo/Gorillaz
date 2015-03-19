@@ -193,8 +193,7 @@ public class OptionState extends BasicTWLGameState {
         if (Game.getInstance().isDebugMode()) { System.out.println("Resolution valid: "+result + " x="+x + " y=" +y); }
         return result;
     }
-
-    // TODO: Map Text Strings to Constants
+    
     private void toggleWind() {
         Game.getInstance().toggleWind();
         btnWind.setText(Game.getInstance().isWindActive() ? "Wind" : "No wind");

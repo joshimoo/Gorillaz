@@ -12,7 +12,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 /**
- * TODO: rename to GameVictory
  * GameVictor, gets triggered when a player reaches a specific Score
  * It calls the Game.Save actions on exit, which will Save the Highscore and Config File
  */

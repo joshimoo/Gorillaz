@@ -48,7 +48,6 @@ public class GamePlayState extends BasicTWLGameState {
     private Image   background;
     private Image   arrow;
     private Sound   explosionSound;
-    private float   gravity = 9.80665f;
     private String  comment = "";
     private String  score = "Score: 0:0";
     private float   slowmoScale;
@@ -169,7 +168,6 @@ public class GamePlayState extends BasicTWLGameState {
 
         skyline = new Skyline(map.getBuildings(), mapWidth, mapHeight);
 
-        // TODO: If we wanted to support different heights
         // We could translate back into feet position, since we could be using a different sized Gorilla.
         // So the Gorilla Class, can calculate the center position based on it's size.
         float x = map.getLeftGorillaCoordinate().x;
@@ -197,8 +195,6 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     void renderDebugShapes(GameContainer gc, StateBasedGame game, Graphics g) {
-        // TODO: instead of explicitly drawing individual entities, draw all statemanager registered entity
-        //for (Entity e : entityManager.getEntitiesByState(getID())) {g.draw(e.getShape());}
         Color old = g.getColor();
         g.setColor(Color.yellow);
         g.draw(sun.getShape());
@@ -336,7 +332,6 @@ public class GamePlayState extends BasicTWLGameState {
         }
     }
 
-    // TODO: more refactoring
     private final float MS_TO_S = 1.0f / 1000;
     private void updateThrowParameters(Input input, int delta) {
         if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_SPACE)) { throwBanana(); }
@@ -516,7 +511,6 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
             case VICTORY:
                 destroyBanana();
-                    // TODO: VICTORY
                     if (Game.getInstance().isDebugMode()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
                     if (Game.getInstance().isDebugMode()) System.out.println("Win Nr" + getActivePlayer().getWin());
 
