@@ -69,7 +69,8 @@ public class Map {
         // TODO: I like random building count, what do you guys think?
         int BUILD_COUNT = 6 + r.nextInt(6); // min 6, default was 8
         // int BUILD_COUNT = 8; // min 6, default was 8
-        int BUILD_WIDTH = frameWidth / BUILD_COUNT;
+        // int BUILD_COUNT = Game.getInstance().isTestMode() ? 6 : 6 + r.nextInt(6);
+        float BUILD_WIDTH = (float)frameWidth / BUILD_COUNT;
         ArrayList<Vector2f> buildingCoordinates = new ArrayList<Vector2f>(BUILD_COUNT);
 
         /** Generate Buildings */
