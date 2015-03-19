@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class Skyscraper extends Entity implements ICollidable {
 
-    private BufferedImage img;
+    private BufferedImage buf;
     private org.newdawn.slick.Image slickImg;
 
     public Skyscraper(Vector2f topLeftPos, int buildingWidth, int mapWidth, int mapHeight) {
@@ -28,36 +28,35 @@ public class Skyscraper extends Entity implements ICollidable {
         setPosition(new Vector2f(topLeftPos.x + width / 2, mapHeight - height / 2));
         setSize(new Vector2f(width, height)); // We set the size explicitly since we have no render component
 
-        // If we are not in Test Mode Draw our Building
+        // Building
+        Random r = new Random();
+        Color color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+
+        // Windows
+        int winSize    = 20;                            // Size of a window [px]
+        int winColumns = r.nextInt(2) + 3;              // Amount of vertical columns [3-4]
+        int winSpacing = width / winColumns;       // Spacing per Column
+        int winPadding = (winSpacing - winSize) /2;     // Padding per Window
+        int winRows    = height / winSpacing;      // Amount of Horizontal rows
+
+        // The image needs an Alpha-component so we can erase some parts of it.
+        buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = buf.createGraphics();
+
+        /* Draw the Skyscraper Wall */
+        g.setColor(color);
+        g.fillRect(0, 0, width, height);
+        g.setColor(color.darker());
+        for(int j = 0; j <= winRows; j++)
+            for(int i = 0; i < winColumns; i++)
+                g.fillRect( (i*winSpacing) + winPadding, (j*winSpacing) + winPadding, winSize, winSize);
+
+
+        // NOTE: We are allowed to use an AWT Buffered image, we can even use a graphics draw ontop of the BufferedImage
+        // But no Texture Generation, since that will require an OpenGL Context.
         if (!Game.getInstance().isTestMode()) {
-
-            // Building
-            Random r = new Random();
-            Color color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-
-            // Windows
-            int winSize    = 20;                            // Size of a window [px]
-            int winColumns = r.nextInt(2) + 3;              // Amount of vertical columns [3-4]
-            int winSpacing = width / winColumns;       // Spacing per Column
-            int winPadding = (winSpacing - winSize) /2;     // Padding per Window
-            int winRows    = height / winSpacing;      // Amount of Horizontal rows
-
-            // The image needs an Alpha-component so we can erase some parts of it.
-            img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = img.createGraphics();
-
-            /* Draw the Skyscraper Wall */
-            g.setColor(color);
-            g.fillRect(0, 0, width, height);
-            g.setColor(color.darker());
-            for(int j = 0; j <= winRows; j++)
-                for(int i = 0; i < winColumns; i++)
-                    g.fillRect( (i*winSpacing) + winPadding, (j*winSpacing) + winPadding, winSize, winSize);
-
-            // Pointless, getTexture fails only if img == null
-            try {
-                slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
-            } catch (IOException e) { e.printStackTrace();}
+            try { slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, buf)); }
+            catch (Exception e) { e.printStackTrace();}
         }
     }
 
@@ -78,18 +77,19 @@ public class Skyscraper extends Entity implements ICollidable {
     }
 
     public void destroy(final int x, final int y, final int pow){
-        Graphics2D graphic = img.createGraphics();
+        Graphics2D graphic = buf.createGraphics();
         graphic.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 
         // We don't need a destruction map. This way we could even use different weapons
         // or randomized damage.
         graphic.fillOval( (int) (x - getRenderPosition().x) - pow, (int) (y - getRenderPosition().y) - pow, pow*2, pow*2);
 
-        // still need to update this :/
-        // TODO: Switch to OGL Textruedrawing for improved Performance
-        try {
-            slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, img));
-        } catch (IOException e) { e.printStackTrace();}
+        // NOTE: We are allowed to use an AWT Buffered image, we can even use a graphics draw ontop of the BufferedImage
+        // But no Texture Generation, since that will require an OpenGL Context.
+        if (!Game.getInstance().isTestMode()) {
+            try { slickImg = new org.newdawn.slick.Image(BufferedImageUtil.getTexture(null, buf)); }
+            catch (Exception e) { e.printStackTrace();}
+        }
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Skyscraper extends Entity implements ICollidable {
         }
 
         // return true, if a pixel is hit that is not fully transparent
-        boolean collision = (img.getRGB(relX, relY) & 0xFF000000) != 0;
+        boolean collision = (buf.getRGB(relX, relY) & 0xFF000000) != 0;
         if(Game.getInstance().getDebug() && collision) System.out.printf("Collision: %.0f, %.0f valid: %b %n", x, y, collision );
         return collision;
     }

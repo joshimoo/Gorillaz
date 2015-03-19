@@ -37,8 +37,7 @@ public class Skyline extends Entity {
     public void render(GameContainer gc, StateBasedGame sb, Graphics graph) {
         if (Game.getInstance().isTestMode()) { return; } // Don't draw anything in testmode
         super.render(gc, sb, graph);
-        for(Skyscraper s : skyscrapers)
-            s.render(gc, sb, graph);
+        for(Skyscraper s : skyscrapers) { s.render(gc, sb, graph); }
     }
 
     @Override
