@@ -289,7 +289,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      */
     public int getPlayer1Score() {
         if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
-            return  Game.getInstance().getPlayer(0).getScore();
+            return  Game.getInstance().getPlayer(0).getWin();
         }
 
         return -1;
@@ -304,7 +304,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      */
     public int getPlayer2Score() {
         if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
-            return  Game.getInstance().getPlayer(1).getScore();
+            return  Game.getInstance().getPlayer(1).getWin();
         }
 
         return -1;
