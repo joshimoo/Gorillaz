@@ -51,7 +51,7 @@ public class Game {
 
     // Scaling Factors
     private float WIND_SCALE = 0.6f;
-    private float TIME_SCALE = 1 / 500f;
+    private float TIME_SCALE = 1 / 300f;
     private float ROTATION_DRAG = 0.02f;
     private int EXPLOSION_RADIUS = 32;
     public static float BACKGROUND_SCALE = 1f;

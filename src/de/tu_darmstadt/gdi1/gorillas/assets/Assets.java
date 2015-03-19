@@ -150,6 +150,9 @@ public final class Assets {
         GORRILA_RIGHT("gorillas/gorilla_right_up.png"),
         GORRILA_HIT("gorillaHit.png"),
 
+        EXPLOSIONS_SHEET("explosions/exp.png"),
+        GRAVE("explosions/grave.png"),
+
         BANANA("projectiles/banana.png"),
         SNICKERS("projectiles/snickers.png"),
         COCONUT("projectiles/coconut.png"),

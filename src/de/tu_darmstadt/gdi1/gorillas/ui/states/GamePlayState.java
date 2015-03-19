@@ -68,6 +68,7 @@ public class GamePlayState extends BasicTWLGameState {
     private static int totalRoundCounter = 0;
     private Image buffer;
     private int count;
+    private Animation aniExplode;
 
     public Player getActivePlayer() { return Game.getInstance().getActivePlayer(); }
     public void setActivePlayer(Player activePlayer) {
@@ -237,6 +238,8 @@ public class GamePlayState extends BasicTWLGameState {
             if(banana.getShape().getMaxY() < 0) {
                 g.drawImage(arrow, banana.getPosition().x - 8, 0);
             }
+            if(aniExplode != null)
+                g.drawAnimation(aniExplode, banana.getPosition().x - 32, banana.getPosition().y - 32);
         }
 
         if(throwNumber != null)
@@ -254,23 +257,20 @@ public class GamePlayState extends BasicTWLGameState {
         gr.resetTransform();
 
         Vector2f target;
-        switch (state){
-            case THROW:  // OSB
-                if(banana != null) {
-                    float zoom = 1f / (float) Math.sqrt(slowmoScale);
 
-                    target = getOffsetToCenter(SCREEN, banana.getPosition(), zoom);
-                    gr.drawImage(buffer.getScaledCopy(zoom), -target.x, -target.y);
-                }
-                break;
-            default:
-                Gorilla gor = (Game.getInstance().getActivePlayer() == Game.getInstance().getPlayer(0)) ? gorilla:gorillb;
-                target = getOffsetToCenter(SCREEN, gor.getPosition());
-                gr.drawImage(buffer, -target.x, -target.y);
-                break;
+        if (banana != null) {
+            float zoom = 1f / (float) Math.sqrt(slowmoScale);
+
+            target = getOffsetToCenter(SCREEN, banana.getPosition(), zoom);
+            gr.drawImage(buffer.getScaledCopy(zoom), -target.x, -target.y);
+        }
+        else {
+            Gorilla gor = (Game.getInstance().getActivePlayer() == Game.getInstance().getPlayer(0)) ? gorilla : gorillb;
+            target = getOffsetToCenter(SCREEN, gor.getPosition());
+            gr.drawImage(buffer, -target.x, -target.y);
         }
 
-        if(state != STATES.THROW) {
+        if(state == STATES.INPUT) {
             gr.setColor(Color.blue);
             // Description for the buttons
             gr.drawString("Speed", 20, 10);
@@ -378,11 +378,11 @@ public class GamePlayState extends BasicTWLGameState {
         }
 
         /* ActionCam slowmo :D */
-        delta *= slowmoScale * slowmoScale;
+        delta = (int) Math.max(1, delta * slowmoScale * slowmoScale);
 
         // Let the entities update their inputs first
         // Then process all remaining inputs
-        entityManager.updateEntities(gc, game, delta);
+       // entityManager.updateEntities(gc, game, delta);
         gorilla.update(gc, game, delta);
         gorillb.update(gc, game, delta);
         cloud.update(gc, game, delta);
@@ -460,23 +460,18 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case DAMAGE:
-                if(Game.getInstance().getDebug()) System.out.println("Throw " + getActivePlayer().getName() + " Nr" + getActivePlayer().getThrow());
-                throwNumber = "Throw Nr " + getActivePlayer().getThrow(); // Ueberfluessig
 
-                if_speed.setValue(getActivePlayer().getLastSpeed());
-                if_angle.setValue(getActivePlayer().getLastAngle());
+                if(explodeAt(delta)) {
+                    if_speed.setValue(getActivePlayer().getLastSpeed());
+                    if_angle.setValue(getActivePlayer().getLastAngle());
+                    skyline.destroy((int) banana.getPosition().x, (int) banana.getPosition().y, Game.getInstance().getExplosionRadius());
+                    destroyBanana();
+                    state = STATES.INPUT;
+                }
 
-                skyline.destroy((int)banana.getPosition().x, (int)banana.getPosition().y, Game.getInstance().getExplosionRadius());
-                playSound(explosionSound);
-                destroyBanana();
-
-                // TODO: Claculate PlayerDamage
-                // player1.damage(calcPlayerDamage(banana.getCenterX(), banana.getCenterY(), gorilla));
-                // player2.damage(calcPlayerDamage(banana.getCenterX(), banana.getCenterY(), gorillb));
-
-                state = STATES.INPUT;
                 break;
             case ROUNDVICTORY:
+                if(explodeAt(delta)){
                 getSun().resetAstonished(); // For tests, reset smiling on round end
                 getActivePlayer().setWin();
                 totalRoundCounter += 1;
@@ -504,12 +499,11 @@ public class GamePlayState extends BasicTWLGameState {
 
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
-                    startGame();
+                    startGame();}
                 }
                 break;
             case VICTORY:
                 destroyBanana();
-                if(VictoryAnimation(delta)) {
                     // TODO: VICTORY
                     if (Game.getInstance().getDebug()) System.out.println("Herzlichen Glückwunsch " + getActivePlayer().getName() + "\nSie haben das Spiel gewonnen !");
                     if (Game.getInstance().getDebug()) System.out.println("Win Nr" + getActivePlayer().getWin());
@@ -520,9 +514,12 @@ public class GamePlayState extends BasicTWLGameState {
 
                     // Reset Values
                     totalRoundCounter = 0;
+                     Player winningPlayer = getActivePlayer();
+                     if(winningPlayer == Game.getInstance().getPlayer(0)) gorillb.setGrave();
+                     else gorilla.setGrave();
+                     Game.getInstance().toggleNextPlayerActive();
 
                     game.enterState(Game.GAMEVICTORY);
-                }
                 break;
         }
     }
@@ -708,14 +705,29 @@ public class GamePlayState extends BasicTWLGameState {
         return wind;
     }
 
-    public boolean VictoryAnimation(int delta){
-        if(count == 0){
-            Player winningPlayer = getActivePlayer();
-            if(winningPlayer == Game.getInstance().getPlayer(0)) gorillb.setVisible(false);
-            else gorilla.setVisible(false);
-            Game.getInstance().toggleNextPlayerActive();
+
+    private boolean explodeAt(int delta){
+        if(Game.getInstance().isTestMode()) return true;
+        if(aniExplode == null) {
+            aniExplode = new Animation();
+            aniExplode.setLooping(false);
+            aniExplode.addFrame(Assets.loadImage(Assets.Images.EXPLOSIONS_SHEET).getSubImage(0, 0 * 64, 64, 64), 200);
+            aniExplode.addFrame(Assets.loadImage(Assets.Images.EXPLOSIONS_SHEET).getSubImage(0, 1 * 64, 64, 64), 200);
+            aniExplode.addFrame(Assets.loadImage(Assets.Images.EXPLOSIONS_SHEET).getSubImage(0, 3 * 64, 64, 64), 200);
+            aniExplode.addFrame(Assets.loadImage(Assets.Images.EXPLOSIONS_SHEET).getSubImage(0, 4 * 64, 64, 64), 200);
+            aniExplode.addFrame(Assets.loadImage(Assets.Images.EXPLOSIONS_SHEET).getSubImage(0, 5 * 64, 64, 64), 200);
+            aniExplode.start();
+            playSound(explosionSound);
+            if(banana != null)  banana.setVisible(false);
+
         }
-        count += delta;
-        return (count > 2000);
+        if(aniExplode.isStopped()) {
+            aniExplode = null;
+            return true;
+        } else {
+            aniExplode.update(delta);
+            return false;
+        }
     }
+
 }
