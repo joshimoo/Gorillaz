@@ -28,7 +28,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     // Key Handling
     private float keyPressDelay = 0;
-    private final float keyPressWaitTime = 0.1f; // wait 100 ms TODO: experiment with these
+    private final float keyPressWaitTime = 0.1f; // wait 100 ms
 
     // DEBUG
     private String throwNumber = null;
@@ -43,6 +43,7 @@ public class GamePlayState extends BasicTWLGameState {
 
     // GameState
     private STATES  state;
+
     private int     windSpeed;
     private Image   background;
     private Image   arrow;
