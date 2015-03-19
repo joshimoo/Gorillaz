@@ -83,16 +83,16 @@ public class Map {
         // second or third building from the left.
         int buildingIndex = r.nextInt(3);
         Vector2f leftGorillaCoordinate = new Vector2f(
-            buildingCoordinates.get(buildingIndex).x + BUILD_WIDTH / 2,
-            buildingCoordinates.get(buildingIndex).y - gorillaHeight / 2
+            buildingCoordinates.get(buildingIndex).x + BUILD_WIDTH * 0.5f,
+            buildingCoordinates.get(buildingIndex).y - gorillaHeight * 0.5f
         );
 
         // The right gorilla has to be placed on the first,
         // second or third building from the right.
         buildingIndex = (BUILD_COUNT - 1) - r.nextInt(3);
         Vector2f rightGorillaCoordinate = new Vector2f(
-            buildingCoordinates.get(buildingIndex).x + BUILD_WIDTH / 2,
-            buildingCoordinates.get(buildingIndex).y - gorillaHeight / 2
+            buildingCoordinates.get(buildingIndex).x + BUILD_WIDTH * 0.5f,
+            buildingCoordinates.get(buildingIndex).y - gorillaHeight * 0.5f
         );
 
         return new Map(frameWidth, frameHeight, 0, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate, gorillaWidth, gorillaHeight);

@@ -134,6 +134,15 @@ public class GamePlayState extends BasicTWLGameState {
         loadMap(Map.createRandomMap(Gorillas.CANVAS_WIDTH, Gorillas.FRAME_HEIGHT, Map.defaultGorillaWidth, Map.defaultGorillaHeight));
     }
 
+    private void debugGorillaHit() {
+        if_angle.setValue(45);
+        if_speed.setValue(95);
+        throwBanana();
+        banana.setSize(new Vector2f(10, 10));
+        gorilla.setSize(new Vector2f(37, 42));
+        gorillb.setSize(new Vector2f(37, 42));
+    }
+
     private void createDebugFlatMap() {
 
         // create a map, with a flat city.
@@ -181,7 +190,6 @@ public class GamePlayState extends BasicTWLGameState {
 
         // Clear the previous state, particular for debug loading
         destroyBanana();
-        setActivePlayer(Game.getInstance().getPlayer(0));
         state = STATES.INPUT;
 
         // Reset the ugly input stuff for tests
@@ -362,6 +370,7 @@ public class GamePlayState extends BasicTWLGameState {
             // Reroll the LevelGeneration
             if (input.isKeyPressed(Input.KEY_Q)) { startGame(); }
             if (input.isKeyPressed(Input.KEY_1)) { createDebugFlatMap(); }
+            if (input.isKeyPressed(Input.KEY_2)) { debugGorillaHit(); }
 
             // Win the Game
             if (input.isKeyPressed(Input.KEY_V) ) {
@@ -378,7 +387,7 @@ public class GamePlayState extends BasicTWLGameState {
         }
 
         /* ActionCam slowmo :D */
-        delta = (int) Math.max(1, delta * slowmoScale * slowmoScale);
+        if (!Game.getInstance().isTestMode()) { delta = (int) Math.max(1, delta * slowmoScale * slowmoScale); }
 
         // Let the entities update their inputs first
         // Then process all remaining inputs
@@ -395,6 +404,7 @@ public class GamePlayState extends BasicTWLGameState {
                 updateThrowParameters(input, delta);
                 break;
             case THROW:
+                flightTime += delta;
                 throwNumber = "Throw Nr " + getActivePlayer().getThrow();
                 // During the flight disable inputs
                 toggleUI(false);
@@ -461,6 +471,9 @@ public class GamePlayState extends BasicTWLGameState {
                 break;
             case DAMAGE:
 
+                // Just Destroy the Skyline
+                // and instanciate an explosion that is independent of game state
+                // In Testmode, we return true, immediatly
                 if(explodeAt(delta)) {
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
@@ -471,6 +484,7 @@ public class GamePlayState extends BasicTWLGameState {
 
                 break;
             case ROUNDVICTORY:
+                // In Testmode, we return true, immediatly
                 if(explodeAt(delta)){
                 getSun().resetAstonished(); // For tests, reset smiling on round end
                 getActivePlayer().setWin();
@@ -499,6 +513,9 @@ public class GamePlayState extends BasicTWLGameState {
 
                     if_speed.setValue(getActivePlayer().getLastSpeed());
                     if_angle.setValue(getActivePlayer().getLastAngle());
+
+                    // Cycle activeplayer
+                    Game.getInstance().toggleNextPlayerActive();
                     startGame();}
                 }
                 break;
@@ -589,7 +606,7 @@ public class GamePlayState extends BasicTWLGameState {
         pos=2;
         // Button kleiner und verschoben
         btnThrow.setSize(60, 25);
-        btnThrow.setPosition(basic_x+60+20, basic_y+basic_x_c*pos);
+        btnThrow.setPosition(basic_x + 60 + 20, basic_y + basic_x_c * pos);
     }
 
     private void toggleUI(Boolean enable) {
@@ -601,9 +618,8 @@ public class GamePlayState extends BasicTWLGameState {
     }
 
     private void destroyBanana() {
-        if (banana != null) {
-            entityManager.removeEntity(getID(), banana);
-        }
+        if (Game.getInstance().getDebug()) System.err.println("Flight Time: " + flightTime);
+        if (banana != null) { entityManager.removeEntity(getID(), banana); }
         banana = null;
     }
 
@@ -615,6 +631,7 @@ public class GamePlayState extends BasicTWLGameState {
         entityManager.addEntity(getID(), banana);
     }
 
+    int flightTime = 0;
     /** Generates a Banana at the current Player */
     public void throwBanana() {
         // Save new throw
@@ -641,6 +658,7 @@ public class GamePlayState extends BasicTWLGameState {
         // Remove Win-Message
         roundWinMessage = null;
         state = STATES.THROW;
+        flightTime = 0;
     }
 
     /** TESTS */

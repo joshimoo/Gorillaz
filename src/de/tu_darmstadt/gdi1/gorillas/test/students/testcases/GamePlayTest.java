@@ -80,11 +80,10 @@ public class GamePlayTest {
 
         // let the shot fly, it should definitely hit the right gorilla
         for (int i = 0; i < 500; i += 1) {
-            // NOTE: adapter.runGame(i); should be:
+            // NOTE: we can have a maximum of 1000ms of flight time
             adapter.runGame(2);
         }
 
-        // TODO: Verify Banna start position / Score Handling
         assertEquals("The right gorilla was hit, so the score of player one should be 1.", 1, adapter.getPlayer1Score());
 
         adapter.runGame(2000);
