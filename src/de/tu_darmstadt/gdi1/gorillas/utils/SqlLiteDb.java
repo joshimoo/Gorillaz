@@ -16,6 +16,7 @@ public class SqlLiteDb {
     public SqlLiteDb(String File) {
         this.databaseFile = File;
         this.c = ConnectingToDatabase();
+        // String to create a default table
         this.createTableCommand = "CREATE TABLE IF NOT EXISTS Config " +
                 "(" +
                 "ID TEXT PRIMARY KEY NOT NULL," +
@@ -55,7 +56,6 @@ public class SqlLiteDb {
             stmt.close();
         } catch (Exception e) {
             if(e.getMessage().equals("database is locked"))
-                //ToDO: What can we do?
                 System.err.println("Please close all Games to solve a database conflict [ database is locked ] ! [ SqlLiteDb -> update(String) ]");
             else
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -133,7 +133,6 @@ public class SqlLiteDb {
             result.close();
         } catch (Exception e) {
             if(e.getMessage().equals("database is locked"))
-                //ToDO: What can we do?
                 System.err.println("Please close all Games to solve a database conflict [ database is locked ] ! [ SqlLiteDb -> queryArrayList(String) ]");
             else
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
