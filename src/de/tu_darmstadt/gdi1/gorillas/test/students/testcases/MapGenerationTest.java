@@ -98,12 +98,13 @@ public class MapGenerationTest {
             rightGorillaBuildingWidth = buildingCoordinates.get(rightGorillaBuilding + 1).x - buildingCoordinates.get(rightGorillaBuilding).x;
         }
         else {
+            // This calculates the building width wrong, for the last index building.
+            // This will lead to rounding errors.
             rightGorillaBuildingWidth = adapter.getMapFrameWidth() - buildingCoordinates.get(rightGorillaBuilding).x;
         }
 
         float expectedRightGorillaX = buildingCoordinates.get(rightGorillaBuilding).x + rightGorillaBuildingWidth / 2;
 
-        // TODO: Their still is a bug, on the right player, a rounding error in this test
         assertTrue("The left gorilla should stand exactly in the middle of its building.", leftGorillaCoordinate.x == expectedLeftGorillaX);
         assertTrue("The right gorilla should stand exactly in the middle of its building.", rightGorillaCoordinate.x == expectedRightGorillaX);
     }
