@@ -41,7 +41,7 @@ public class Game {
     public static       int   SPEED_DEFAULT = 80;
 
     // Switches
-    private boolean testmode = true;   // Graphically debug
+    private boolean testmode = false;   // Graphically debug
     private boolean debug = true;       // Debug outputs
     private boolean developer = true;   // Cheating options
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
