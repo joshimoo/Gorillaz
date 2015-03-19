@@ -2,6 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.test.setup;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -36,6 +37,7 @@ public class TestGorillas extends TWLTestStateBasedGame {
         // Always activate, testmode in TestGorillas
         setDebug(debug);
         Game.getInstance().enableTestMode(true);
+        Database.getInstance().clearDatabase();
     }
 
     public static void setDebug(boolean debuging) {
