@@ -39,7 +39,7 @@ public class SqlGorillas {
         ArrayList former = getHighScore(PlayerName);
 
         String ID = "NULL";
-        if(former.size()>0) {
+        if(former.size() > 0) {
             ID = former.get(0).toString();
             NumberRounds += (int) former.get(2);
             NumberWinRounds += (int) former.get(3);
