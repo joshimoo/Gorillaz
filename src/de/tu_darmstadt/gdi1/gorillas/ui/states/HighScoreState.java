@@ -102,7 +102,7 @@ public class HighScoreState extends BasicTWLGameState {
             if(i == 0) {
                 line =
                         String.format("%-6s","Place") + "  " +
-                        String.format("%-" + Game.MAX_NAMESIZE + "s", "Name") + "  " +
+                        String.format("%-" + Game.MAX_NAMELENGTH + "s", "Name") + "  " +
                         String.format("%8s","Rounds") + "  " +
                         String.format("%8s","Wins") + "  " +
                         String.format("%8s","WinRate") + "  " +
@@ -111,7 +111,7 @@ public class HighScoreState extends BasicTWLGameState {
                 line += String.format("%-6s", (i+1)) + "  ";
             for (int j = 0; j < 5; j++) {
                 if(j==0)
-                    line += String.format("%-" + Game.MAX_NAMESIZE + "s", highScore_list[i][j]) + "  ";
+                    line += String.format("%-" + Game.MAX_NAMELENGTH + "s", highScore_list[i][j]) + "  ";
                 else
                     line += String.format("%8s",highScore_list[i][j]) + "  ";
             }

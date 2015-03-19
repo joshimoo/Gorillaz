@@ -1,35 +1,34 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Singleton Class, that contains all globals.
+/** Singleton Class, that contains all globals.
  * The reason for using a Singleton instead of a static class, are possible serialization
- * The reason for using this vs, Gorrillas is the different GameContainers
+ * The reason for using this vs, Gorillas is the different GameContainers
  * (special TestGameContainer)
  */
 public class Game {
-    /** State Definitions */
+
+    /* State Definitions */
     public static final int MAINMENUSTATE   = 0;
     public static final int GAMESETUPSTATE  = 1;
     public static final int GAMEPLAYSTATE   = 2;
     public static final int HIGHSCORESTATE  = 3;
     public static final int OPTIONSTATE     = 4;
-    public static final int TUTORIALSTATE   = 5;
-    public static final int INGAMEPAUSE     = 6;
-    public static final int HELPSTATE       = 7;
-    public static final int GAMEVICTORY     = 8;
+    public static final int INGAMEPAUSE     = 5;
+    public static final int HELPSTATE       = 6;
+    public static final int GAMEVICTORY     = 7;
 
-    // Constants
+    /* Constants */
     public static       float SUN_FROM_TOP = 60;
-
     public static final float GRAVITY_MIN = 0;
     public static final float GRAVITY_MAX = 24.79f;
     public static final float GRAVITY_DEFAULT = 9.80665f;
-    public static final int   MAX_NAMESIZE = 12;
+    public static final int   MAX_NAMELENGTH = 12;
     public static final float SOUND_VOLUME_MIN = 0;
     public static final float SOUND_VOLUME_MAX = 1f;
     public static final float SOUND_VOLUME_DEFAULT = 0.2f;
@@ -40,8 +39,9 @@ public class Game {
     public static final int   SPEED_MAX = 200;
     public static       int   SPEED_DEFAULT = 80;
 
-    // Switches
-    private boolean testmode = true;   // Disables graphically output for test cases
+    /* Switches */
+    /** Disables graphically output for test cases */
+    private boolean testmode = true;
     private boolean debug = false;       // Debug outputs
     private boolean developer = true;   // Cheating options
     private boolean inverseControlKeys = false; // Possible, candidate for an internal Option Class
@@ -49,83 +49,115 @@ public class Game {
     private boolean mute = false;
     private boolean wind = false;
 
-    // Scaling Factors
+    /* Scaling Factors */
     private float WIND_SCALE = 0.6f;
     private float TIME_SCALE = 1/300f;
     private float ROTATION_DRAG = 0.02f;
-    private int EXPLOSION_RADIUS = 32;
+    private int   EXPLOSION_RADIUS = 32;
     public static float BACKGROUND_SCALE = 1f;
     public static float CANVAS_SCALE = 2f;
 
-    // Gameplay Variables
+    /* Gameplay Variables */
     private float gravity = GRAVITY_DEFAULT;
     private float soundVolume = SOUND_VOLUME_DEFAULT;
 
-    // Settings
-    private String databaseFile = "data_gorillas.hsc";
+    /* Settings */
+    private final String databaseFile = "data_gorillas.hsc";
 
-
+    /** @return the current gravity */
     public float getGravity() { return gravity; }
+
+    /** @return path to the sqlite database */
     public String getDatabaseFile() { return databaseFile; }
+
+    /** @return the current volume */
     public float getSoundVolume() { return soundVolume; }
 
-    public void setGravity(float value) { this.gravity = value > GRAVITY_MAX ? GRAVITY_MAX : value < GRAVITY_MIN ? GRAVITY_MIN : value; }
-    public void setDatabaseFile(String value) { this.databaseFile = value; }
-    public void setSoundVolume(float value) { this.soundVolume = value > SOUND_VOLUME_MAX ? SOUND_VOLUME_MAX : value < SOUND_VOLUME_MIN ? SOUND_VOLUME_MIN : value; }
+    /** Sets the current gravity to 'value' in respect to GRAVITY_MIN and GRAVITY_MAX*/
+    public void setGravity(final float value) {
+        this.gravity = Utils.clamp(GRAVITY_MIN, value, GRAVITY_MAX);
+    }
+
+    /** Sets the current sound volume to 'value' in respect to GRAVITY_MIN and GRAVITY_MAX*/
+    public void setSoundVolume(final float value) {
+        this.soundVolume = Utils.clamp(SOUND_VOLUME_MIN, value, SOUND_VOLUME_MAX);
+    }
 
     /** Singleton Pattern */
-    private Game() { players = new ArrayList<Player>(MAX_PLAYER_COUNT); }
-    private static Game game;
     public static Game getInstance() {
         if (game == null) { game = new Game(); }
         return game;
     }
+    private Game() { players = new ArrayList<Player>(MAX_PLAYER_COUNT); }
+    private static Game game;
 
+    /** @return true if the sound is muted */
     public boolean isMute() { return mute; }
+
+    /** Set mute to the given value */
     public void setMute(boolean value) { mute = value; }
+
+    /** Toggles the mute value */
     public void toggleMute() {
         mute = !mute;
-        if( getDebug() ) System.out.println("Mute: " + mute);
     }
 
+    // TODO: x
     public boolean getInverseControlKeys() { return inverseControlKeys; }
     public void setInverseControlKeys(boolean enable) { inverseControlKeys = enable; }
     public void toggleInverseControlKeys() { inverseControlKeys = !inverseControlKeys; }
 
-    public boolean getWind(){ return wind; }
+    /** @return true if wind is active */
+    public boolean isWindActive(){ return wind; }
+
+    /** Enable/diable the wind */
     public void setWind(boolean enable) { wind = enable; }
+
+    /** Toggle the wind  */
     public void toggleWind() { wind = !wind; }
 
-    public boolean getDebug() { return debug; }
+    /** @return true if we are in debug mode */
+    public boolean isDebugMode() { return debug; }
+
+    /** Activate/Deactivate debug mode */
     public void setDebug(boolean enable) { debug = enable; }
 
+    /** @return true, if we are in test mode */
     public boolean isTestMode() { return testmode; }
+
+    /** Enables/disables test mode */
     public void enableTestMode(boolean enable) {
         testmode = enable;
-        if(testmode)
-        {
-            // Set Test-Defaults
-            if(isTestMode())
-            {
-                ANGLE_DEFAULT = 0;
-                SPEED_DEFAULT = 0;
-                gravity = 10;
-                SUN_FROM_TOP = 5;
-            }
+        if (enable) { /* These values are needed in Unit-testing */
+            ANGLE_DEFAULT = 0;
+            SPEED_DEFAULT = 0;
+            SUN_FROM_TOP  = 5;
+            setGravity(10f);
         }
     }
 
-    public boolean getStorePlayerNames() { return storePlayerNames; }
+    /** @return true if player names are stored */
+    public boolean isStorePlayerNames() { return storePlayerNames; }
+
+    /** Enables/disables Storing of player names */
     public void setStorePlayerNames(boolean enable){ storePlayerNames = enable; }
+
+    /** Toggles Storing of player names */
     public void toggleStorePlayerNames() { storePlayerNames = !storePlayerNames; }
 
+    /** @return true if wa are in developer mode */
     public boolean isDeveloperMode() { return developer; }
+
+    /** Enables/Disables developer mode */
     public void setDeveloperMode(boolean enable){ developer = enable; }
 
-    /** Time Constants */
-    public float getTimeScale() { return !isTestMode() ? TIME_SCALE : 1f/100f; }
-    public float getWindScale() { return !isTestMode() ? WIND_SCALE : 1f/5f; }
-    public float getRotationFactor() { return ROTATION_DRAG; }
+    /** @return Time Constant if we are not in test mode */
+    public float getTimeScale() { return isTestMode() ?  1/100f : TIME_SCALE ;}
+
+    /** @return Wind Constant if we are not in test mode */
+    public float getWindScale() { return isTestMode() ?   1/5f : WIND_SCALE; }
+
+    //TODO: x
     public int getExplosionRadius() {return EXPLOSION_RADIUS; }
 
     /** We are using a RingBuffer for Player handling
@@ -135,22 +167,30 @@ public class Game {
     public final int MAX_PLAYER_COUNT = 2;
     private List<Player> players = new ArrayList<>(MAX_PLAYER_COUNT);
 
-    private int activePlayer = 0;
-    public Player getActivePlayer() { return players.get(activePlayer); }
-    public void setActivePlayer(Player activePlayer) { this.activePlayer = players.indexOf(activePlayer); }
+    private int activePlayerIndex = 0;
+
+    /** @return currently active player*/
+    public Player getActivePlayer() { return players.get(activePlayerIndex); }
+
+    /** Sets the currently active player */
+    public void setActivePlayer(Player activePlayer) { this.activePlayerIndex = players.indexOf(activePlayer); }
+
+    /** Toggles currently active player */
     public Player toggleNextPlayerActive() {
-        activePlayer = ++activePlayer % MAX_PLAYER_COUNT;
-        return players.get(activePlayer);
+        activePlayerIndex = ++activePlayerIndex % MAX_PLAYER_COUNT;
+        return players.get(activePlayerIndex);
     }
 
+    /** @return List of all players */
     public List<Player> getPlayers() {return players; }
-    //public  ListIterator<Player> getPlayers() { return players.listIterator(); } // Iterator is the safe way, but it's just to much boilerplate even for me !_!
 
+    /** @return player at given index */
     public Player getPlayer(int num){
         if (players != null && num < players.size()) { return players.get(num); }
         else { throw new IllegalArgumentException(String.format("There is no Player at Index: %d currently there are %d players", num, players.size())); }
     }
 
+    /** Sets player at given index */
     private void setPlayer(int num, Player player) {
         if (players != null && num < MAX_PLAYER_COUNT) {
             // size is zero for no players, player one has num zero.
@@ -163,13 +203,13 @@ public class Game {
     }
 
     private int lastAddedPlayer = -1;
+
+    /** Creates Player with given name */
     public void createPlayer(String name) {
         setPlayer(++lastAddedPlayer % MAX_PLAYER_COUNT, new Player(name));
     }
 
-    /**
-     * Call exit game, to close the game
-     * This will cleanup all loaded assets
+    /** Call exit game, to close the game. This will cleanup all loaded assets
      * as well as save all unsaved data
      */
     public void exitGame() {
@@ -177,12 +217,10 @@ public class Game {
         System.exit(0);
     }
 
-    /**
-     * Call this on exit to cleanup all loaded assets
-     * as well as save all unsaved data
-     */
+    /** Call this on exit to cleanup all loaded assets as well as save all unsaved data */
     public static void cleanupOnExit() {
         // Store PlayerNames to the SQL-Database
         Database.getInstance().writeToFile();
     }
+
 }
