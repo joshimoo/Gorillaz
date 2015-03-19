@@ -60,6 +60,7 @@ public class KeyMap {
                  *
                  * IF DEVELOPER-MODE
                  * KEY_Q                                    -> startGame()
+                 * KEY_1                                    -> createDebugFlatMap() + setLastAngle(45) + setLastSpeed(95)
                  * KEY_V                                    -> VICTORY
                  */
                 if (input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_P))    game.enterState(Game.INGAMEPAUSE);
