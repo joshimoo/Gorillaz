@@ -5,9 +5,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 
-/**
- * Created by Georg Schmidt on 16.03.2015.
- */
 public class Database {
     protected String fileName;
     protected String tableHighScore;

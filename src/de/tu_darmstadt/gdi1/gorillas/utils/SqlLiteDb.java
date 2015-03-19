@@ -3,9 +3,6 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * Created by Georg Schmidt on 17.02.2015.
- */
 public class SqlLiteDb {
     private String databaseFile;
     private String createTableCommand;

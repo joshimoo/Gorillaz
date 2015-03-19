@@ -2,9 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Georg Schmidt on 17.02.2015.
- */
 public class SqlGorillas {
     private SqlLiteDb db;
     private String tableHighScore;
