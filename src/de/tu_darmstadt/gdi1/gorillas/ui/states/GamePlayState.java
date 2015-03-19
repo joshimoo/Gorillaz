@@ -225,6 +225,8 @@ public class GamePlayState extends BasicTWLGameState {
         gorillb.render(gc, game, g);
         cloud.render(gc, game, g);
         sun.render(gc, game, g);
+        drawPlayerNames(g);
+        
         if (Game.getInstance().getDebug()) { renderDebugShapes(gc, game, g); }
 
         if(banana != null) {
@@ -233,8 +235,6 @@ public class GamePlayState extends BasicTWLGameState {
                 g.drawImage(arrow, banana.getPosition().x - 8, 0);
             }
         }
-
-        drawPlayerNames(g);
 
         if(throwNumber != null)
         {
