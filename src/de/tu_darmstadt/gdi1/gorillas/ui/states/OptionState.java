@@ -167,7 +167,6 @@ public class OptionState extends BasicTWLGameState {
                 db.setDisplayWidth(x);
                 db.setDisplayHeight(y);
 
-            // TODO: Canvas vs Frame
             float scale = 1024 / 800;
             db.setCanvasWidth(db.getDisplayWidth() * (int) scale);
             db.setCanvasHeight(db.getDisplayWidth() * (int) scale);

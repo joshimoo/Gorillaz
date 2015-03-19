@@ -15,13 +15,16 @@ public class MainMenuState extends BasicTWLGameState {
 
     private StateBasedEntityManager entityManager;
     private Image background;
+    private StateBasedGame game;
+
+    //Buttons
     private Button btnNewGame;
     private Button btnHighScore;
     private Button btnHelp;
     private Button btnOptions;
     private Button btnExit;
     private Button btnMute;
-    private StateBasedGame game;
+
 
     public MainMenuState() {
         entityManager = StateBasedEntityManager.getInstance();
