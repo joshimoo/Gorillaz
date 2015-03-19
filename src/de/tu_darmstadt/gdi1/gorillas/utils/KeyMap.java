@@ -38,6 +38,9 @@ public class KeyMap {
     /** Controlling actions a player may take */
     public enum Actions { ANGLE_INC, ANGLE_DEC, SPEED_INC, SPEED_DEC, THROW_NOW }
 
+    // Switch for developer cheat activation
+    private static int cheatCodeDeveloper = 0;
+
     /**
      * Global KeyPressAction Switch mostly State-Transitions
      */
@@ -67,9 +70,11 @@ public class KeyMap {
                 if (input.isKeyPressed(Input.KEY_H))                                            game.enterState(Game.HELPSTATE);
                 if (input.isKeyPressed(Input.KEY_O))                                            game.enterState(Game.OPTIONSTATE);
                 if (input.isKeyPressed(Input.KEY_M))                                            Game.getInstance().toggleMute();
+                // activate Debug mode if developer with "U"
+                if (input.isKeyPressed(Input.KEY_U))             Game.getInstance().setDebug(Game.getInstance().isDeveloperMode());
                 break;
             case Game.GAMESETUPSTATE:
-                /**
+                /*
                  * KEY_RETURN   -> startGame();
                  * KEY_TAB      -> requestKeyboardFocus()
                  */
@@ -89,6 +94,10 @@ public class KeyMap {
                  * KEY_LEFT / KEY_A     ->  prevPage()
                  */
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_H))    game.enterLastState();
+                // Developer Cheat - Key 1
+                if((input.isKeyPressed(Input.KEY_4)) || (input.isKeyPressed(Input.KEY_NUMPAD4))) cheatCodeDeveloper = 1;
+                // Developer Cheat - Key 2
+                if(input.isKeyPressed(Input.KEY_2) || (input.isKeyPressed(Input.KEY_NUMPAD2))) Game.getInstance().setDeveloperMode(cheatCodeDeveloper == 1);
                 break;
             case Game.HIGHSCORESTATE:
                 if (input.isKeyPressed(Input.KEY_RETURN) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_S))    game.enterLastState();
