@@ -28,7 +28,7 @@ public class Game {
     public static final float BANANA_SIZE = 10;
     public static final float GORILLA_WIDTH = 37;
     public static final float GORILLA_HEIGHT = 42;
-    public static final float SUN_FROM_TOP = 5;
+    public static final float SUN_FROM_TOP = 60;
 	
     public static final float GRAVITY_MIN = 0;
     public static final float GRAVITY_MAX = 24.79f;
@@ -114,6 +114,7 @@ public class Game {
                 Game.ANGLE_DEFAULT = 0;
                 Game.SPEED_DEFAULT = 0;
                 gravity = 10;
+                SUN_FROM_TOP = 5;
             }
         }
     }
