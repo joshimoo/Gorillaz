@@ -29,8 +29,9 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public static final int OPTIONSTATE = 4;
     public static final int INSTRUCTIONSSTATE = 5;
 
-    public TestGorillas() {
+    public TestGorillas(boolean testmode) {
         super("Gorillas");
+        Game.getInstance().enableTestMode(testmode);
     }
 
     @Override
