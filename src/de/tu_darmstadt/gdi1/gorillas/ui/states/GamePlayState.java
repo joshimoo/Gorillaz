@@ -114,6 +114,7 @@ public class GamePlayState extends BasicTWLGameState {
 
             camera = new Camera(background);
             buffer = camera.getBuffer();
+            background = camera.getBackground();
         }
         SCREENSIZE = new Vector2f(gc.getWidth(), gc.getHeight());
     }
@@ -211,14 +212,14 @@ public class GamePlayState extends BasicTWLGameState {
                 if(banana != null) {
                     float zoom = 1f / (float) Math.sqrt(slowmoScale);
 
-                    target = getOffsetToCenter(SCREENSIZE, banana.getPosition(), zoom);
-                    gr.drawImage(buffer.getScaledCopy(zoom), -target.x, -target.y);
+                    target = camera.getOffsetToCenter(SCREENSIZE, banana.getPosition(), zoom);
+                    gr.drawImage(buffer.getScaledCopy(zoom), target.x, target.y);
                 }
                 break;
             default:
                 Gorilla gor = (Game.getInstance().getActivePlayer() == Game.getInstance().getPlayer(0)) ? gorilla:gorillb;
-                target = getOffsetToCenter(SCREENSIZE, gor.getPosition());
-                gr.drawImage(buffer, -target.x, -target.y);
+                target = camera.getOffsetToCenter(SCREENSIZE, gor.getPosition());
+                gr.drawImage(buffer, target.x, target.y);
                 break;
         }
 
@@ -230,21 +231,6 @@ public class GamePlayState extends BasicTWLGameState {
         }
     }
 
-    private Vector2f getOffsetToCenter(Vector2f screen, Vector2f center){
-        return getOffsetToCenter(screen, center, 1f);
-    }
-
-    private Vector2f getOffsetToCenter(Vector2f screen, Vector2f center, float scale){
-        float a = screen.x / scale;
-        float b = screen.y / scale;
-        float x = clamp(0, center.x - (a / 2), 1024 - a);
-        float y = clamp(0, center.y - (b / 2),screen.y - b);
-        return new Vector2f(x * scale, y * scale);
-    }
-
-    private float clamp (float a, float x, float b){
-        return Math.max(a, Math.min(x, b));
-    }
 
     /**
      * Draws text with a dropshadow
