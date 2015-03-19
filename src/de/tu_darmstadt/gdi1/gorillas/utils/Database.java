@@ -436,4 +436,31 @@ public class Database {
     {
         return Integer.toString(in);
     }
+
+    /**
+     * Outputs all current settings of the game that will stored to the database
+     * by the function "saveConfigToFile()" and some more.
+     */
+    public static void debugOutputAllSettings()
+    {
+            Game gameInstance = Game.getInstance();
+
+            String list = "Current settings stored by \"saveConfigToFile()\" and some more:\n\n" +
+            "Wind = " + encodeBoolean(gameInstance.getWind()) + "\n" +
+            "Mute = " + encodeBoolean(gameInstance.isMute()) + "\n" +
+            "InverseControlKeys = " + encodeBoolean(gameInstance.getInverseControlKeys()) + "\n" +
+            "StorePlayerNames = " + encodeBoolean(gameInstance.getStorePlayerNames()) + "\n" +
+            "Debug = " + encodeBoolean(gameInstance.getDebug()) + "\n" +
+            "TestMode = " + encodeBoolean(gameInstance.isTestMode()) + "\n" +
+            "Developer = " + encodeBoolean(gameInstance.isDeveloperMode()) + "\n" +
+            "Gravity = " + encodeFloat(gameInstance.getGravity()) + "\n" +
+            "SoundVolume = " + encodeFloat(gameInstance.getSoundVolume()) + "\n" +
+
+            // MORE
+            "ANGLE_DEFAULT = " + gameInstance.ANGLE_DEFAULT + "\n" +
+            "SPEED_DEFAULT = " + gameInstance.SPEED_DEFAULT + "\n" +
+            "SUN_FROM_TOP = " + gameInstance.SUN_FROM_TOP + "\n";
+
+            System.out.println(list);
+    }
 }
