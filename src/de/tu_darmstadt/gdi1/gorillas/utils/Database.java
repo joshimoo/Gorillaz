@@ -3,14 +3,19 @@ package de.tu_darmstadt.gdi1.gorillas.utils;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 
 public class Database {
+    /** SQL Lite file name */
     protected String fileName;
+
+    /** name of the HighScore table */
     protected String tableHighScore;
+
+    /** name of the Player table */
     protected String tablePlayers;
+
+    /** local SQL - database instance */
     protected SqlGorillas dbSQL;
 
-    /**
-        Cache-Storage to reduce access to the harddrive
-     */
+    /** Cache-Storage to reduce access to the filesystem */
     protected String[] playerNames = null;
 
     public Database() {
@@ -43,7 +48,7 @@ public class Database {
 
     /**
      * Returns a String-Array of PlayerNames from the Cache, SQL or RandomGenerator
-     * @return
+     * @return Array of player names
      */
     public String[] getPlayerNames() {
         if (!Game.getInstance().getStorePlayerNames()) {
@@ -61,7 +66,7 @@ public class Database {
 
     /**
      * Stores a String-Array of Playernames in the Cache
-     * @param playerNames String-Array of Playernames
+     * @param playerNames String-Array of player names
      */
     public void setPlayerNames(String[] playerNames) {
         this.playerNames = playerNames;
@@ -94,7 +99,7 @@ public class Database {
     }
 
     /**
-     * Saves the PlayerNames to the SQL-Database
+     * Saves the PlayerNames to the SQL-Database and close connection
      */
     public void writeToFile() {
         savePlayerNames();
@@ -105,21 +110,13 @@ public class Database {
      * Loads the PlayerNames from SQL
      */
     public void readFromFile() {
-        /*
-        String[][] temp = dbSQL.getHighScore();
-        for (int i = 0; i < temp.length; i++) {
-            setHighScore(temp[i][0], Integer.parseInt(temp[i][1]), Integer.parseInt(temp[i][2]), Integer.parseInt(temp[i][3]));
-        }
         debug(4);
-        */
-
-        // Also read PlayerNames
+        // Load player names to cache
         getPlayerNames();
     }
 
     /**
      * Gets the 10 best Players ever
-     *
      * @return a String-Array [NR-Player][0 = Name | 1 = NumberRounds | 2 = NumberWinRounds| 3 = WinRate| 4 = HitRate]
      */
     public String[][] getHighScore() {
@@ -158,8 +155,8 @@ public class Database {
                 default:
                     message = "";
             }
-            System.out.println((char) 27 + "[30;43m" + message + (char) 27 + "[0m");
             /* Color-Codes: https://en.wikipedia.org/wiki/ANSI_escape_code#Colors */
+            System.out.println((char) 27 + "[30;43m" + message + (char) 27 + "[0m");
         }
     }
 
@@ -227,18 +224,22 @@ public class Database {
      * @param value Value to store
      */
     public void setValue(String id, String value) {
-        dbSQL.setValue(id,value);
+        dbSQL.setValue(id, value);
     }
 
     /**
      * Get a String-Value
-     * @param id    String-ID
+     * @param id String-ID
      * @return String-Value
      */
     public String getValue(String id) {
         return dbSQL.getValue(id);
     }
 
+    /**
+     * Returns the DisplayWidth default 800
+     * @return the width
+     */
     public int getDisplayWidth()
     {
         String get = getValue("DisplayWidth");
@@ -248,11 +249,19 @@ public class Database {
             return decodeInt(get);
     }
 
+    /**
+     * Set the DisplayWidth
+     * @param width new width
+     */
     public void setDisplayWidth( int width)
     {
         setValue("DisplayWidth", encodeInt(width));
     }
 
+    /**
+     * Returns the DisplayHeight default 600
+     * @return the height
+     */
     public int getDisplayHeight()
     {
         String get = getValue("DisplayHeight");
@@ -262,11 +271,19 @@ public class Database {
             return decodeInt(get);
     }
 
+    /**
+     * Set the DisplayHeight
+     * @param Height new height
+     */
     public void setDisplayHeight( int Height)
     {
         setValue("DisplayHeight", encodeInt(Height));
     }
 
+    /**
+     * Returns the CanvasWidth default 1024
+     * @return the width
+     */
     public int getCanvasWidth()
     {
         String get = getValue("CanvasWidth");
@@ -276,11 +293,19 @@ public class Database {
             return decodeInt(get);
     }
 
+    /**
+     * Set the CanvasWidth
+     * @param width new height
+     */
     public void setCanvasWidth( int width)
     {
         setValue("CanvasWidth", encodeInt(width));
     }
 
+    /**
+     * Returns the CanvasHeight default 1024
+     * @return the width
+     */
     public int getCanvasHeight()
     {
         String get = getValue("CanvasHeight");
@@ -290,6 +315,10 @@ public class Database {
             return decodeInt(get);
     }
 
+    /**
+     * Set the CanvasHeight
+     * @param Height new height
+     */
     public void setCanvasHeight( int Height)
     {
         setValue("CanvasHeight", encodeInt(Height));
@@ -310,7 +339,6 @@ public class Database {
     public void saveConfigToFile()
     {
         Game gameInstance = Game.getInstance();
-
         dbSQL.setValue("ConfigSaved", "1");
 
         // Boolean
@@ -448,9 +476,9 @@ public class Database {
      */
     public static void debugOutputAllSettings()
     {
-            Game gameInstance = Game.getInstance();
+        Game gameInstance = Game.getInstance();
 
-            String list = "Current settings stored by \"saveConfigToFile()\" and some more:\n\n" +
+        String list = "Current settings stored by \"saveConfigToFile()\" and some more:\n\n" +
             "Wind = " + encodeBoolean(gameInstance.getWind()) + "\n" +
             "Mute = " + encodeBoolean(gameInstance.isMute()) + "\n" +
             "InverseControlKeys = " + encodeBoolean(gameInstance.getInverseControlKeys()) + "\n" +
@@ -466,6 +494,6 @@ public class Database {
             "SPEED_DEFAULT = " + gameInstance.SPEED_DEFAULT + "\n" +
             "SUN_FROM_TOP = " + gameInstance.SUN_FROM_TOP + "\n";
 
-            System.out.println(list);
+        System.out.println(list);
     }
 }
