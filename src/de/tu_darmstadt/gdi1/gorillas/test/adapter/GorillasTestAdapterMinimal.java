@@ -104,7 +104,7 @@ public class GorillasTestAdapterMinimal {
      * player names).
      */
     public void rememberGameData() {
-        // TODO: Implement
+        // we do not need them
     }
 
     /**
@@ -112,7 +112,7 @@ public class GorillasTestAdapterMinimal {
      * should make sure that
      */
     public void restoreGameData() {
-        // TODO: Implement
+        // we do not need them
     }
 
     /**

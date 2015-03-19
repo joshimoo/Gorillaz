@@ -102,7 +102,6 @@ public class Game {
         mute = !mute;
     }
 
-    // TODO: x
     public boolean getInverseControlKeys() { return inverseControlKeys; }
     public void setInverseControlKeys(boolean enable) { inverseControlKeys = enable; }
     public void toggleInverseControlKeys() { inverseControlKeys = !inverseControlKeys; }
@@ -157,7 +156,6 @@ public class Game {
     /** @return Wind Constant if we are not in test mode */
     public float getWindScale() { return isTestMode() ?   1/5f : WIND_SCALE; }
 
-    //TODO: x
     public int getExplosionRadius() {return EXPLOSION_RADIUS; }
 
     /** We are using a RingBuffer for Player handling

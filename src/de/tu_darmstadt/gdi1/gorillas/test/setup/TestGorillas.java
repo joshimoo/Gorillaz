@@ -28,7 +28,7 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public static final int HIGHSCORESTATE = 3;
     public static final int OPTIONSTATE = 4;
     public static final int INSTRUCTIONSSTATE = 5;
-    // TODO: your new
+    // non default
     public static final int INGAMEPAUSE     = 6;
     public static final int HELPSTATE       = 7;
     public static final int GAMEVICTORY     = 8;
@@ -57,7 +57,6 @@ public class TestGorillas extends TWLTestStateBasedGame {
         this.addState(new HelpState());
         this.addState(new GameVictory());
         this.addState(new OptionState());
-        // TODO: Add the other states...
 
         // Add states to the StateBasedEntityManager
         StateBasedEntityManager.getInstance().addState(Game.MAINMENUSTATE);
@@ -68,7 +67,6 @@ public class TestGorillas extends TWLTestStateBasedGame {
         StateBasedEntityManager.getInstance().addState(Game.HELPSTATE);
         StateBasedEntityManager.getInstance().addState(Game.GAMEVICTORY);
         StateBasedEntityManager.getInstance().addState(Game.OPTIONSTATE);
-        // TODO: Add the other states...
     }
 
     @Override
