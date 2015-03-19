@@ -47,8 +47,8 @@ public class GameSetupState extends BasicTWLGameState {
         lPlayer2Error = new Label("");
 
         btnStart.addCallback(this::startGame);
-        txtName1.setMaxTextLength(Game.MAX_NAMESIZE);
-        txtName2.setMaxTextLength(Game.MAX_NAMESIZE);
+        txtName1.setMaxTextLength(Game.MAX_NAMELENGTH);
+        txtName2.setMaxTextLength(Game.MAX_NAMELENGTH);
 
         getPlayerNames();
 
@@ -150,8 +150,8 @@ public class GameSetupState extends BasicTWLGameState {
      * @return true when both names are valid
      */
     private Boolean checkValidPlayerNames(String n1, String n2) {
-        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : (n1.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : ""));
-        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : (n2.length() > Game.MAX_NAMESIZE ? ERROR_TO_LONG : ""));
+        setPlayer1Error(n1.isEmpty() ? ERROR_IS_EMPTY : (n1.length() > Game.MAX_NAMELENGTH ? ERROR_TO_LONG : ""));
+        setPlayer2Error(n2.isEmpty() ? ERROR_IS_EMPTY : (n2.length() > Game.MAX_NAMELENGTH ? ERROR_TO_LONG : ""));
 
         // Only check for duplicates if we have valid inputs
         if (!n1.isEmpty() && n1.equals(n2)) {

@@ -16,11 +16,11 @@ public class Gorillas extends TWLStateBasedGame {
     public static Gorillas game;
 
     /* Global Parameters */
-    public static int FRAME_WIDTH = Database.getInstance().getDisplayWidth();
-    public static int FRAME_HEIGHT = Database.getInstance().getDisplayHeight();
-    public static int CANVAS_WIDTH = Database.getInstance().getCanvasWidth();
+    public static int FRAME_WIDTH   = Database.getInstance().getDisplayWidth();
+    public static int FRAME_HEIGHT  = Database.getInstance().getDisplayHeight();
+    public static int CANVAS_WIDTH  = Database.getInstance().getCanvasWidth();
     public static int CANVAS_HEIGHT = Database.getInstance().getCanvasHeight();
-    public static int TARGET_FPS = 120;
+    public static int TARGET_FPS    = 120;
 
     public static final String THEME    = "/theme.xml";
 
@@ -34,7 +34,6 @@ public class Gorillas extends TWLStateBasedGame {
     public static void main(String[] args) throws SlickException {
         Utils.setNativePath();
         AppGameContainer app = new AppGameContainer(new Gorillas());
-        app.setShowFPS(false);
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
         app.setTargetFrameRate(TARGET_FPS);
         app.start();
@@ -42,7 +41,6 @@ public class Gorillas extends TWLStateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-        // Add states to the StateBasedGame
         this.addState(new MainMenuState());
         this.addState(new GameSetupState());
         this.addState(new GamePlayState());
@@ -51,9 +49,7 @@ public class Gorillas extends TWLStateBasedGame {
         this.addState(new HelpState());
         this.addState(new GameVictory());
         this.addState(new OptionState());
-        // TODO: Add the other states...
 
-        // Add states to the StateBasedEntityManager
         StateBasedEntityManager.getInstance().addState(Game.MAINMENUSTATE);
         StateBasedEntityManager.getInstance().addState(Game.GAMESETUPSTATE);
         StateBasedEntityManager.getInstance().addState(Game.GAMEPLAYSTATE);
@@ -62,11 +58,11 @@ public class Gorillas extends TWLStateBasedGame {
         StateBasedEntityManager.getInstance().addState(Game.HELPSTATE);
         StateBasedEntityManager.getInstance().addState(Game.GAMEVICTORY);
         StateBasedEntityManager.getInstance().addState(Game.OPTIONSTATE);
-        // TODO: Add the other states...
     }
 
     @Override
     protected URL getThemeURL() {
         return getClass().getResource(THEME);
     }
+
 }

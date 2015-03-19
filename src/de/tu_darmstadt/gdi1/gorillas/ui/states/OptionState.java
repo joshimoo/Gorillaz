@@ -64,8 +64,8 @@ public class OptionState extends BasicTWLGameState {
 
         resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
-        btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
-        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
+        btnWind.setText(Game.getInstance().isWindActive() ? "Wind" : "No wind");
+        btnStorePlayerNames.setText(Game.getInstance().isStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
         btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound off");
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
@@ -191,14 +191,14 @@ public class OptionState extends BasicTWLGameState {
         boolean result = y > 100 &&
                         ((x == 480) || (x == 480) || (x == 600) || (x == 800) || (x == 1024) || (x == 1280) || (x == 1600) || (x == 1920)) &&
                         ((x / y == 4/3) || (x / y == 10/9) || (x / y == 16/9));
-        if (Game.getInstance().getDebug()) { System.out.println("Resolution valid: "+result + " x="+x + " y=" +y); }
+        if (Game.getInstance().isDebugMode()) { System.out.println("Resolution valid: "+result + " x="+x + " y=" +y); }
         return result;
     }
 
     // TODO: Map Text Strings to Constants
     private void toggleWind() {
         Game.getInstance().toggleWind();
-        btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
+        btnWind.setText(Game.getInstance().isWindActive() ? "Wind" : "No wind");
     }
 
     private void toggleInverseControlKeys() {
@@ -208,7 +208,7 @@ public class OptionState extends BasicTWLGameState {
 
      private void toggleStorePlayerNames() {
          Game.getInstance().toggleStorePlayerNames();
-         btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
+         btnStorePlayerNames.setText(Game.getInstance().isStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
     }
 
     private void toggleMute() {
@@ -222,8 +222,8 @@ public class OptionState extends BasicTWLGameState {
             Reset GUI
          */
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
-        btnWind.setText(Game.getInstance().getWind() ? "Wind" : "No wind");
-        btnStorePlayerNames.setText(Game.getInstance().getStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
+        btnWind.setText(Game.getInstance().isWindActive() ? "Wind" : "No wind");
+        btnStorePlayerNames.setText(Game.getInstance().isStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
         btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound on");
 
         //Max ist Gravitationsbeschleunigung des Jupiters
