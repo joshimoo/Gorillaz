@@ -53,16 +53,16 @@ public class InGamePause extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         btnNewGame.setSize(128, 32);
-        btnNewGame.setPosition((Gorillas.FRAME_WIDTH / 2) - 64, 150);
+        btnNewGame.setPosition((Gorillas.FRAME_WIDTH - btnNewGame.getWidth()) / 2, 150);
 
         btnExit.setSize(128, 32);
-        btnExit.setPosition((Gorillas.FRAME_WIDTH / 2) - 64, 225);
+        btnExit.setPosition((Gorillas.FRAME_WIDTH - btnExit.getWidth()) / 2, 225);
 
         btnMute.setSize(64, 64);
         btnMute.setPosition(0, paneHeight - btnMute.getHeight());
 
         btnMainMenu.setSize(128,32);
-        btnMainMenu.setPosition((Gorillas.FRAME_WIDTH / 2) - 64, 300);
+        btnMainMenu.setPosition((Gorillas.FRAME_WIDTH - btnMainMenu.getWidth()) / 2, 300);
     }
 
     @Override

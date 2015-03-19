@@ -98,28 +98,28 @@ public class OptionState extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         valueGravity.setSize(128, 32);
-        valueGravity.setPosition(Gorillas.FRAME_WIDTH / 2 - 64, 20);
+        valueGravity.setPosition((Gorillas.FRAME_WIDTH - valueGravity.getWidth()) / 2, 20);
 
         btnInvertKeyControl.setSize(256, 32);
-        btnInvertKeyControl.setPosition(Gorillas.FRAME_WIDTH / 2 - 128, 60);
+        btnInvertKeyControl.setPosition((Gorillas.FRAME_WIDTH - btnInvertKeyControl.getWidth()) / 2, 60);
 
         btnWind.setSize(128, 32);
-        btnWind.setPosition(Gorillas.FRAME_WIDTH / 2 - 64,100);
+        btnWind.setPosition((Gorillas.FRAME_WIDTH - btnWind.getWidth()) / 2,100);
 
         valueSound.setSize(128, 32);
-        valueSound.setPosition(Gorillas.FRAME_WIDTH / 2 - 64, 140);
+        valueSound.setPosition((Gorillas.FRAME_WIDTH - valueSound.getWidth()) / 2, 140);
 
         btnStorePlayerNames.setSize(168, 32);
-        btnStorePlayerNames.setPosition(Gorillas.FRAME_WIDTH / 2 - 84,180);
+        btnStorePlayerNames.setPosition((Gorillas.FRAME_WIDTH - btnStorePlayerNames.getWidth()) / 2,180);
 
         btnMute.setSize(80, 32);
-        btnMute.setPosition(Gorillas.FRAME_WIDTH / 2 - 40,220);
+        btnMute.setPosition((Gorillas.FRAME_WIDTH - btnMute.getWidth()) / 2,220);
 
         resolution.setSize(100, 32);
-        resolution.setPosition(Gorillas.FRAME_WIDTH / 2 - 50,260);
+        resolution.setPosition((Gorillas.FRAME_WIDTH - resolution.getWidth()) / 2,260);
 
         btnOK.setSize(128, 32);
-        btnOK.setPosition(Gorillas.FRAME_WIDTH / 2 -64, 300);
+        btnOK.setPosition((Gorillas.FRAME_WIDTH - btnOK.getWidth()) / 2, 300);
 
         lError.setSize(128, 64);
         lError.setPosition(Gorillas.FRAME_WIDTH / 2 - 250, 340);

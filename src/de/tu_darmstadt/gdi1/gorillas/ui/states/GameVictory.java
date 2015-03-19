@@ -63,13 +63,13 @@ public class GameVictory extends BasicTWLGameState {
         int paneWidth = this.getRootPane().getWidth();
 
         lWin.setSize(128, 32);
-        lWin.setPosition((Gorillas.FRAME_WIDTH >> 1) - 64, 150);
+        lWin.setPosition((Gorillas.FRAME_WIDTH - lWin.getWidth()) / 2, 150);
 
         btnNewGame.setSize(128, 32);
-        btnNewGame.setPosition((Gorillas.FRAME_WIDTH >> 1) - 64, 450);
+        btnNewGame.setPosition((Gorillas.FRAME_WIDTH - btnNewGame.getWidth()) / 2, 450);
 
         btnMainMenu.setSize(128,32);
-        btnMainMenu.setPosition((Gorillas.FRAME_WIDTH >> 1) - 64, 500);
+        btnMainMenu.setPosition((Gorillas.FRAME_WIDTH - btnMainMenu.getWidth()) / 2, 500);
     }
 
     @Override
