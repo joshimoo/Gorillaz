@@ -56,7 +56,7 @@ public class GorillasTestAdapterMinimal {
         // Set the native library path (depending on the operating system)
         Utils.setNativePath();
 
-        // Initialisiere das Spiel im Debug-Modus (ohne UI-Ausgabe)
+        // Initialisiere das Spiel im Test-Modus (ohne UI-Ausgabe)
         gorillas = new TestGorillas(true);
 
         // Initialisiere die statische Klasse Map
