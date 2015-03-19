@@ -5,7 +5,7 @@ import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-
+import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
 import java.net.URL;
 
 /**
@@ -28,22 +28,22 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public static final int HIGHSCORESTATE = 3;
     public static final int OPTIONSTATE = 4;
     public static final int INSTRUCTIONSSTATE = 5;
+    // TODO: your new
+    public static final int INGAMEPAUSE     = 6;
+    public static final int HELPSTATE       = 7;
+    public static final int GAMEVICTORY     = 8;
 
     public static boolean debug = false;
 
-    public TestGorillas(boolean debug) {
-        super("Gorillas");
-        setDebug(debug);
-    }
+	public TestGorillas(boolean debug) {
+		super("Gorillas");
+		setDebug(debug);
+	}
 
-    public void setDebug(boolean debug){
-        this.debug = debug;
-        Game.getInstance().enableTestMode(debug);
-    }
-
-    public boolean getDebug(boolean debug){
-        return this.debug;
-    }
+	public static void setDebug(boolean debuging) {
+		debug = debuging;
+        Game.getInstance().enableTestMode(debuging);
+	}
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
