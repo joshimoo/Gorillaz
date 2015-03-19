@@ -6,6 +6,8 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.assets.Assets;
 import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterFloat;
+import de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjusterInt;
 import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import de.tu_darmstadt.gdi1.gorillas.utils.KeyMap;
 import org.newdawn.slick.*;
@@ -16,8 +18,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class OptionState extends BasicTWLGameState {
 
     private Image background;
-    private ValueAdjusterFloat valueGravity;
-    private ValueAdjusterInt valueSound;
+    private AdvancedValueAdjusterFloat valueGravity;
+    private AdvancedValueAdjusterInt valueSound;
     private Button btnOK;
     private Label lError;
     private StateBasedGame game;
@@ -45,8 +47,8 @@ public class OptionState extends BasicTWLGameState {
     @Override
     protected RootPane createRootPane() {
         RootPane rp = super.createRootPane();
-        valueGravity = new ValueAdjusterFloat();
-        valueSound = new ValueAdjusterInt();
+        valueGravity = new AdvancedValueAdjusterFloat();
+        valueSound = new AdvancedValueAdjusterInt();
         btnInvertKeyControl = new Button("");
         btnStorePlayerNames = new Button("");
         btnWind = new Button("");
