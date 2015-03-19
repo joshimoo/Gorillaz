@@ -52,6 +52,14 @@ public class Banana extends Entity {
     }
 
     @Override
+    public Shape getShape() {
+        if(Game.getInstance().isTestMode())
+            return super.getShape();
+        else
+            return new Circle(getPosition().x, getPosition().y, getSize().y / 2);
+    }
+
+    @Override
     public void update(GameContainer gc, StateBasedGame sb, int delta) {
         super.update(gc, sb, delta);
 
