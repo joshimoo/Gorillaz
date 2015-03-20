@@ -29,16 +29,20 @@
  */
 package de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster;
 
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.GUI;
 import de.matthiasmann.twl.model.FloatModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * This is a slightly changed version of Matthias Mann's {@link de.matthiasmann.twl.ValueAdjusterInt}
  * class.
  * <p>
  * It just extends {@link de.tu_darmstadt.gdi1.gorillas.ui.widgets.valueadjuster.AdvancedValueAdjuster} instead of {@link de.matthiasmann.twl.ValueAdjuster}
- * and overrides {@link handleEditCallback(int key)}. This method's body makes
+ * and overrides {@link .handleEditCallback(int key)}. This method's body makes
  * sure that nothing but an int bigger or equal than <code>minValue</code> and smaller
  * or equal than <code>maxValue</code> is accepted.
  *
@@ -124,12 +128,13 @@ public class AdvancedValueAdjusterFloat extends AdvancedValueAdjuster {
 
     @Override
     protected boolean onEditEnd(String text) {
-        try {
+        if (getIsDotValid(text)) try {
             setValue(Float.parseFloat(text));
             return true;
         } catch (NumberFormatException ex) {
             return false;
         }
+        else return false;
     }
 
     @Override
@@ -232,6 +237,11 @@ public class AdvancedValueAdjusterFloat extends AdvancedValueAdjuster {
                 cancelEdit();
                 break;
 
+            case Event.KEY_BACKSLASH:
+                String valueEditField = editField.getText();
+                editField.setText(valueEditField.substring(0, valueEditField.length() - 2));
+                break;
+
             case 0:
                 String inputText = editField.getText();
 
@@ -240,21 +250,26 @@ public class AdvancedValueAdjusterFloat extends AdvancedValueAdjuster {
                 }
 
                 char inputChar = inputText.charAt(inputText.length() - 1);
-                boolean numberOrPoint = Character.isDigit(inputChar) || (Character.compare(inputChar ,'.') == 0);
 
-                if ( !numberOrPoint || Float.parseFloat(inputText) > maxValue || Float.parseFloat(inputText) < minValue) {
+                boolean dotOK = ((Character.compare(inputChar, '.') == 0) && !isDotInsert(inputText) && (inputText.length() > 0));
+
+                boolean numberOrPoint = Character.isDigit(inputChar) || dotOK;
+
+                if (!numberOrPoint || (Float.parseFloat(inputText) > maxValue || Float.parseFloat(inputText) < minValue)) {
+
                     // a call of setText on an EditField triggers the callback, so
                     // remove callback before and add it again after the call
                     // editField.removeCallback(callback);
-
+                    // Checks if
+                    if ((Character.compare(inputChar, '.') == 0)) {
+                        editField.setText(inputText.substring(0, inputText.length() - 1));
+                    }
                     // Set to max if the entered number is to big
-                    if(numberOrPoint && Float.parseFloat(inputText) > maxValue)
-                    {
+                    else if (numberOrPoint && Float.parseFloat(inputText) > maxValue) {
                         editField.setText(Float.toString(getMaxValue()));
                     }
                     // Set to min if the entered number is to small
-                    else if(numberOrPoint && Float.parseFloat(inputText) < minValue)
-                    {
+                    else if (numberOrPoint && Float.parseFloat(inputText) < minValue) {
                         editField.setText(Float.toString(getMinValue()));
                     }
                     else {
@@ -265,6 +280,38 @@ public class AdvancedValueAdjusterFloat extends AdvancedValueAdjuster {
 
             default:
                 // editField.setErrorMessage(validateEdit(editField.getText()));
+        }
+    }
+
+    public boolean getIsDotValid(String inputText) {
+        return (Character.compare(inputText.charAt(0), '.') != 0) && (Character.compare(inputText.charAt(inputText.length() - 1), '.') != 0);
+    }
+
+    public boolean isDotInsert(String text) {
+        if(text.substring(0,text.length()-2).contains(new dotC())){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    class dotC implements CharSequence
+    {
+        @Override public int length () {
+            return 1;
+        }
+
+        @Override public char charAt ( int index){
+             return '.';
+        }
+        public dotC()
+        {
+
+        }
+
+        @Override public CharSequence subSequence ( int start, int end) {
+            return new dotC();
         }
     }
 }
