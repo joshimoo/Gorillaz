@@ -1,7 +1,9 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import de.matthiasmann.twl.slick.TWLStateBasedGame;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -9,80 +11,58 @@ import org.newdawn.slick.SlickException;
 
 import java.net.URL;
 
-/**
- * Main class of the gorilla game
- *
- * @author Peter Kloeckner, Sebastian Fach
- * @version 1.0
- */
 public class Gorillas extends TWLStateBasedGame {
 
-    // Each state is represented by an integer value
-    public static final int MAINMENUSTATE = 0;
-    public static final int GAMESETUPSTATE = 1;
-    public static final int GAMEPLAYSTATE = 2;
-    public static final int HIGHSCORESTATE = 3;
-    public static final int OPTIONSTATE = 4;
-    public static final int INSTRUCTIONSSTATE = 5;
+    public static Gorillas game;
 
-    public static final int FRAME_WIDTH = 800;
-    public static final int FRAME_HEIGHT = 600;
+    /* Global Parameters */
+    public static int FRAME_WIDTH   = Database.getInstance().getDisplayWidth();
+    public static int FRAME_HEIGHT  = Database.getInstance().getDisplayHeight();
+    public static int CANVAS_WIDTH  = Database.getInstance().getCanvasWidth();
+    public static int CANVAS_HEIGHT = Database.getInstance().getCanvasHeight();
+    public static int TARGET_FPS    = 120;
 
-    public static final int TARGET_FRAME_RATE = 120;
+    public static final String THEME    = "/theme.xml";
 
-    public static boolean debug = false;
-
-    public Gorillas(boolean debug) {
+    public Gorillas() {
         super("Gorillas");
-        setDebug(debug);
-    }
-
-    public static void setDebug(boolean debuging) {
-        debug = debuging;
+        Game.getInstance().enableTestMode(false);
+        Database.getInstance().readFromFile();
+        Database.getInstance().restoreConfigFromFile();
     }
 
     public static void main(String[] args) throws SlickException {
-
-        // Set the native library path (depending on the operating system)
-        // @formatter:off
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/windows");
-        }
-        else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/macosx");
-        }
-        else {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/" + System.getProperty("os.name").toLowerCase());
-        }
-
-        System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "false");
-        System.err.println(System.getProperty("os.name") + ": " + System.getProperty("org.lwjgl.librarypath"));
-        // @formatter:on
-
-        // Insert this StateBasedGame into an AppContainer (a window)
-        AppGameContainer app = new AppGameContainer(new Gorillas(false));
-
-        // Set window properties and start it
-        app.setShowFPS(false);
+        Utils.setNativePath();
+        AppGameContainer app = new AppGameContainer(new Gorillas());
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
-        app.setTargetFrameRate(TARGET_FRAME_RATE);
+        app.setTargetFrameRate(TARGET_FPS);
         app.start();
     }
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+        this.addState(new MainMenuState());
+        this.addState(new GameSetupState());
+        this.addState(new GamePlayState());
+        this.addState(new HighScoreState());
+        this.addState(new InGamePause());
+        this.addState(new HelpState());
+        this.addState(new GameVictory());
+        this.addState(new OptionState());
 
-        // Add states to the StateBasedGame
-        this.addState(new MainMenuState(MAINMENUSTATE));
-        // TODO: Add the other states...
-
-        // Add states to the StateBasedEntityManager
-        StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
-        // TODO: Add the other states...
+        StateBasedEntityManager.getInstance().addState(Game.MAINMENUSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMESETUPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEPLAYSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.HIGHSCORESTATE);
+        StateBasedEntityManager.getInstance().addState(Game.INGAMEPAUSE);
+        StateBasedEntityManager.getInstance().addState(Game.HELPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEVICTORY);
+        StateBasedEntityManager.getInstance().addState(Game.OPTIONSTATE);
     }
 
     @Override
     protected URL getThemeURL() {
-        return getClass().getResource("/theme.xml");
+        return getClass().getResource(THEME);
     }
+
 }

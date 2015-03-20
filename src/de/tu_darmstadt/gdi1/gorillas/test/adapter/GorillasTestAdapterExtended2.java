@@ -1,5 +1,9 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.entities.Banana;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import org.newdawn.slick.geom.Vector2f;
 
 public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
@@ -43,9 +47,11 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
      * @return the next position of the shot
      */
     public Vector2f getNextShotPosition(Vector2f startPosition, int angle, int speed, int wind, boolean fromLeftToRight, int deltaTime) {
+        angle = fromLeftToRight ? angle : 180 - angle;
+        Banana banana = new Banana(startPosition, angle, speed, 10, wind);
+        banana.update(null, null, deltaTime);
+        return banana.getPosition();
 
-        // TODO: Implement
-        return null;
     }
 
     /**
@@ -56,7 +62,7 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
      * @return the wind scaling factor for the parabolic flight calculation
      */
     public float getWindScalingFactor() {
-        return -1;
+        return Game.getInstance().getWindScale();
     }
 
     /**
@@ -66,7 +72,14 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
      * otherwise false
      */
     public boolean isSunAstonished() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+
+            // For normal GamePlay our sun is only Astonished while beeing in contact with the projectile.
+            // But the test requires that the sun is astonished for a whole round if it was hit before.
+            return state.getSun().isAstonished();
+        }
+
         return false;
     }
 

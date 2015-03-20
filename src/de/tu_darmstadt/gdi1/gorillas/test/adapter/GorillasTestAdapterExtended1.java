@@ -1,28 +1,30 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.main.Map;
+import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+import de.tu_darmstadt.gdi1.gorillas.utils.Database;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 
 public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 
+    // Caches our Map, till we are ready to start it.
+    private Map map;
+    Database db = Database.getInstance();
     public GorillasTestAdapterExtended1() {
         super();
     }
 
     @Override
     public void rememberGameData() {
-
-        // TODO: Implement
-
         super.rememberGameData();
     }
 
     @Override
     public void restoreGameData() {
-
-        // TODO: Implement
-
         super.restoreGameData();
     }
 
@@ -54,8 +56,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @param frameHeight the height of the frame/screen of the gorillas game
      */
     public void createRandomMap(int frameWidth, int frameHeight, int gorillaWidth, int gorillaHeight) {
-
-        // TODO: Implement
+        map = Map.createRandomMap(frameWidth, frameHeight, gorillaWidth, gorillaHeight);
+        Game.getInstance().setWind(false);
     }
 
     /**
@@ -69,8 +71,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @param rightGorillaCoordinate the coordinate of the right gorilla
      */
     public void createCustomMap(int paneWidth, int paneHeight, int yOffsetCity, ArrayList<Vector2f> buildingCoordinates, Vector2f leftGorillaCoordinate, Vector2f rightGorillaCoordinate) {
-
-        // TODO: Implement
+        // We assume all of these values are set correctly no null values
+        map = Map.createMap(paneWidth, paneHeight, yOffsetCity, buildingCoordinates, leftGorillaCoordinate, rightGorillaCoordinate);
     }
 
     /**
@@ -79,7 +81,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * should be set as current map in the game, if the game is in GamePlayState
      */
     public void startCurrrentMap() {
-        // TODO: Implement
+        // If we are in GamePlayState and we want to load a new map
+        // We need to recreate the city
+        if(getStateBasedGame().getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) getStateBasedGame().getCurrentState();
+            state.loadMap(map);
+        }
     }
 
     /**
@@ -89,8 +96,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * current map, ordered from left to right
      */
     public ArrayList<Vector2f> getBuildingCoordinates() {
-        // TODO: Implement
-        return null;
+        // Requires that a map was created in one of the testcases,
+        // otherwise map will be null, during gameplay we are guaranteed to have a map created
+        return map.getBuildings();
     }
 
     /**
@@ -99,8 +107,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the center coordinate of the left gorilla
      */
     public Vector2f getLeftGorillaCoordinate() {
-        // TODO: Implement
-        return null;
+        return map.getLeftGorillaCoordinate();
     }
 
     /**
@@ -109,8 +116,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the center coordinate of the right gorilla
      */
     public Vector2f getRightGorillaCoordinate() {
-        // TODO: Implement
-        return null;
+        return map.getRightGorillaCoordinate();
     }
 
     /**
@@ -119,8 +125,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the frameWidth which was used to create the current map
      */
     public float getMapFrameWidth() {
-        // TODO: Implement
-        return -1;
+        return map.getMapFrameWidth();
     }
 
     /**
@@ -129,8 +134,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the frameHeight which was used to create the current map
      */
     public float getMapFrameHeight() {
-        // TODO: Implement
-        return -1;
+        return map.getMapFrameHeight();
     }
 
     /**
@@ -140,8 +144,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the gorillaHeight which was used to create the current map
      */
     public float getGorillaHeight() {
-        // TODO: Implement
-        return -1;
+        return map.getGorillaHeight();
     }
 
     /**
@@ -150,8 +153,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return the gorillaWidth which was used to create the current map
      */
     public float getGorillaWidth() {
-        // TODO: Implement
-        return -1;
+        return map.getGorillaWidth();
     }
 
     /**
@@ -163,7 +165,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @param bananasThrown  the number of bananas the player has thrown
      */
     public void addHighscore(String name, int numberOfRounds, int roundsWon, int bananasThrown) {
-        // TODO: Implement
+        db.setHighScore(name,numberOfRounds,roundsWon,bananasThrown);
     }
 
     /**
@@ -171,7 +173,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * {@link #getHighscoreCount()} should return 0.
      */
     public void resetHighscore() {
-        // TODO: Implement
+        db.clearHighScore();
     }
 
     /**
@@ -180,8 +182,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * @return number of highscore entries
      */
     public int getHighscoreCount() {
-        // TODO: Implement
-        return -1;
+        return db.getHighScore().length;
     }
 
     /**
@@ -195,8 +196,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * if position is invalid
      */
     public String getNameAtHighscorePosition(int position) {
-        // TODO: Implement
-        return null;
+        String[] score = db.getHighScore(position);
+        if(score.length != 0)
+            return score[0];
+        else
+            return null;
     }
 
     /**
@@ -210,8 +214,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * passed position or -1 if position is invalid
      */
     public int getRoundsPlayedAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[] score = db.getHighScore(position);
+        if(score.length >= position) {
+            return Integer.parseInt(score[1]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -225,8 +233,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * position or -1 if position is invalid
      */
     public int getRoundsWonAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[]score = db.getHighScore(position);
+        if(score.length >= position) {
+            return Integer.parseInt(score[2]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -240,8 +252,13 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * position or -1 if position is invalid
      */
     public int getPercentageWonAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[] score = db.getHighScore(position);
+
+        if(score.length >= position) {
+            return Integer.parseInt(score[3]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -255,8 +272,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * if position is invalid
      */
     public double getMeanAccuracyAtHighscorePosition(int position) {
-        // TODO: Implement
-        return -1;
+        String[]score = db.getHighScore(position);
+        if(position < score.length && position > 0) {
+            return Double.parseDouble(score[4]);
+        }
+        else
+            return -1;
     }
 
     /**
@@ -267,7 +288,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * GamePlayState
      */
     public int getPlayer1Score() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(0).getWin();
+        }
+
         return -1;
     }
 
@@ -279,7 +303,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * GamePlayState
      */
     public int getPlayer2Score() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(1).getWin();
+        }
+
         return -1;
     }
 
@@ -295,7 +322,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * turn of anyone
      */
     public boolean isPlayer1Turn() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(0) == Game.getInstance().getActivePlayer();
+            // TODO: Turn of anyone does that mean if we are currently having an active banana?
+        }
+
         return false;
     }
 
@@ -311,7 +342,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
      * turn of anyone
      */
     public boolean isPlayer2Turn() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            return  Game.getInstance().getPlayer(1) == Game.getInstance().getActivePlayer();
+            // TODO: Turn of anyone does that mean if we are currently having an active banana?
+        }
+
         return false;
     }
 }
