@@ -92,4 +92,50 @@ public class ParameterInputTest {
 
         assertEquals(211, adapter.getAngleInput());
     }
+
+    @Test
+    public void testVelocityMixedInput() {
+        // Valid should be true after having received 1 valid character,
+        // before that it should be false and getValue should return -1
+        adapter.fillVelocityInput('a'); // still invalid
+        adapter.fillVelocityInput('b'); // still invalid
+        adapter.fillVelocityInput('c'); // still invalid
+        assertEquals(-1, adapter.getVelocityInput());
+
+        // become valid
+        adapter.fillVelocityInput('1'); // valid
+        adapter.fillVelocityInput('@'); // still valid, we just ignore this character
+        adapter.fillVelocityInput('1'); // still valid
+        assertEquals(11, adapter.getVelocityInput());
+
+        // Back to invalid
+        adapter.resetPlayerWidget();
+        adapter.fillVelocityInput('X'); // still invalid
+        adapter.fillVelocityInput('2'); // valid
+        adapter.fillVelocityInput('X'); // still valid
+        assertEquals(2, adapter.getVelocityInput());
+    }
+
+    @Test
+    public void testAngleMixedInput() {
+        // Valid should be true after having received 1 valid character,
+        // before that it should be false and getValue should return -1
+        adapter.fillAngleInput('a'); // still invalid
+        adapter.fillAngleInput('b'); // still invalid
+        adapter.fillAngleInput('c'); // still invalid
+        assertEquals(-1, adapter.getAngleInput());
+
+        // become valid
+        adapter.fillAngleInput('1'); // valid
+        adapter.fillAngleInput('@'); // still valid, we just ignore this character
+        adapter.fillAngleInput('1'); // still valid
+        assertEquals(11, adapter.getAngleInput());
+
+        // Back to invalid
+        adapter.resetPlayerWidget();
+        adapter.fillAngleInput('X'); // still invalid
+        adapter.fillAngleInput('2'); // valid
+        adapter.fillAngleInput('X'); // still valid
+        assertEquals(2, adapter.getAngleInput());
+    }
 }

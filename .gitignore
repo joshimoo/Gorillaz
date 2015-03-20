@@ -134,3 +134,9 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
+# Useless project files
+# Highscore-DB
+data_gorillas.hsc
+# Last PlayerNames
+player_gorillas.data
+

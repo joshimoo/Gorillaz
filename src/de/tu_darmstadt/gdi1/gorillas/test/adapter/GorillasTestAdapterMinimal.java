@@ -1,8 +1,13 @@
 package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
+import de.tu_darmstadt.gdi1.gorillas.entities.Banana;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
+import de.tu_darmstadt.gdi1.gorillas.utils.Utils;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -19,6 +24,17 @@ public class GorillasTestAdapterMinimal {
 
     public GorillasTestAdapterMinimal() {
         super();
+
+        Game game = Game.getInstance();
+
+        // Setzen der Debug-Ausgaben
+        game.setDebug(false);
+
+        // Einschalten  des Testmode fuer das ganze Spiel (ohne UI-Ausgabe)
+        game.enableTestMode(true);
+
+        // Ausschalten des Spielernamens in der SQL-Datenbank
+        game.setStorePlayerNames(false);
     }
 
     /* ***************************************************
@@ -38,22 +54,9 @@ public class GorillasTestAdapterMinimal {
     public void initializeGame() {
 
         // Set the native library path (depending on the operating system)
-        // @formatter:off
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/windows");
-        }
-        else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/macosx");
-        }
-        else {
-            System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/" + System.getProperty("os.name").toLowerCase());
-        }
+        Utils.setNativePath();
 
-        System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "false");
-        System.err.println(System.getProperty("os.name") + ": " + System.getProperty("org.lwjgl.librarypath"));
-        // @formatter:on
-
-        // Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
+        // Initialisiere das Spiel im Test-Modus (ohne UI-Ausgabe)
         gorillas = new TestGorillas(true);
 
         // Initialisiere die statische Klasse Map
@@ -64,7 +67,6 @@ public class GorillasTestAdapterMinimal {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -102,7 +104,7 @@ public class GorillasTestAdapterMinimal {
      * player names).
      */
     public void rememberGameData() {
-        // TODO: Implement
+        // we do not need them
     }
 
     /**
@@ -110,7 +112,7 @@ public class GorillasTestAdapterMinimal {
      * should make sure that
      */
     public void restoreGameData() {
-        // TODO: Implement
+        // we do not need them
     }
 
     /**
@@ -121,7 +123,10 @@ public class GorillasTestAdapterMinimal {
      * @param player2Name the name of player 2
      */
     public void setPlayerNames(String player1Name, String player2Name) {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
+            GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+            state.setPlayerNames(player1Name, player2Name);
+        }
     }
 
     /**
@@ -131,7 +136,10 @@ public class GorillasTestAdapterMinimal {
      * GamePlayState. Otherwise it should stay in the GameSetupState.
      */
     public void startGameButtonPressed() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMESETUPSTATE) {
+            GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+            state.startGame();
+        }
     }
 
     /**
@@ -143,7 +151,10 @@ public class GorillasTestAdapterMinimal {
      * @param charac the input character
      */
     public void fillVelocityInput(char charac) {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.fillVelocityInput(charac);
+        }
     }
 
     /**
@@ -151,8 +162,15 @@ public class GorillasTestAdapterMinimal {
      * nothing was put in the method should return -1.
      */
     public int getVelocityInput() {
-        // TODO: Implement
-        return -1;
+        // In our Game we are setting sensible default angle and speed values
+        // So returning -1 makes no sense.
+        int velocity = -1;
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            velocity = state.getVelocity();
+        }
+
+        return velocity;
     }
 
     /**
@@ -164,7 +182,10 @@ public class GorillasTestAdapterMinimal {
      * @param charac the input character
      */
     public void fillAngleInput(char charac) {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.fillAngleInput(charac);
+        }
     }
 
     /**
@@ -172,8 +193,15 @@ public class GorillasTestAdapterMinimal {
      * was put in the method should return -1.
      */
     public int getAngleInput() {
-        // TODO: Implement
-        return -1;
+        // In our Game we are setting sensible default angle and speed values
+        // So returning -1 makes no sense.
+        int angle = -1;
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            angle = state.getAngle();
+        }
+
+        return angle;
     }
 
     /**
@@ -181,11 +209,17 @@ public class GorillasTestAdapterMinimal {
      * player. Both angle value and velocity value should then be -1.
      */
     public void resetPlayerWidget() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.resetPlayerWidget();
+        }
     }
 
     public void shootButtonPressed() {
-        // TODO: Implement
+        if(gorillas.getCurrentStateID() == TestGorillas.GAMEPLAYSTATE) {
+            GamePlayState state = (GamePlayState) gorillas.getCurrentState();
+            state.throwBanana();
+        }
     }
 
     /**
@@ -209,9 +243,10 @@ public class GorillasTestAdapterMinimal {
      * @return the next position of the shot
      */
     public Vector2f getNextShotPosition(Vector2f startPosition, int angle, int speed, boolean fromLeftToRight, int deltaTime) {
-
-        // TODO: Implement
-        return null;
+        angle = fromLeftToRight ? angle : 180 - angle;
+        Banana banana = new Banana(startPosition, angle, speed, 10, 0);
+        banana.update(null, null, deltaTime);
+        return banana.getPosition();
     }
 
     /**
@@ -222,8 +257,7 @@ public class GorillasTestAdapterMinimal {
      * @return the time scaling factor for the parabolic flight calculation
      */
     public float getTimeScalingFactor() {
-        // TODO: Implement
-        return -1;
+        return Game.getInstance().getTimeScale();
     }
 
     /**
@@ -234,8 +268,8 @@ public class GorillasTestAdapterMinimal {
      * left empty and the start game button is pressed
      */
     public String getEmptyError() {
-        // TODO: Implement
-        return null;
+        // TODO: Placeholder implementation refactor after, translator implementation
+        return GameSetupState.ERROR_IS_EMPTY;
     }
 
     /**
@@ -246,8 +280,8 @@ public class GorillasTestAdapterMinimal {
      * the start game button is pressed
      */
     public String getEqualError() {
-        // TODO: Implement
-        return null;
+        // TODO: Placeholder implementation refactor after, translator implementation
+        return GameSetupState.ERROR_DUPLICATE;
     }
 
     /**
@@ -258,8 +292,9 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer1Error() {
-        // TODO: Implement
-        return null;
+        if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
+        GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+        return state.getPlayer1Error();
     }
 
     /**
@@ -270,8 +305,9 @@ public class GorillasTestAdapterMinimal {
      * GameSetupState
      */
     public String getPlayer2Error() {
-        // TODO: Implement
-        return null;
+        if(gorillas.getCurrentStateID() != TestGorillas.GAMESETUPSTATE) { return null; }
+        GameSetupState state = (GameSetupState) gorillas.getCurrentState();
+        return state.getPlayer2Error();
     }
 
     /**

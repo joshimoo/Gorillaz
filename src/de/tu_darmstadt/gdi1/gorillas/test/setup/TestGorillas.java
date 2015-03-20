@@ -1,10 +1,11 @@
 package de.tu_darmstadt.gdi1.gorillas.test.setup;
 
-import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
+import de.tu_darmstadt.gdi1.gorillas.main.Game;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.*;
 import eea.engine.entity.StateBasedEntityManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-
+import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
 import java.net.URL;
 
 /**
@@ -18,34 +19,54 @@ import java.net.URL;
 public class TestGorillas extends TWLTestStateBasedGame {
 
     // Each state is represented by an integer value
+    // Normally we could remove these and use Game.StateXXX
+    // But we don't know if the private tests use these.
+    // TODO: so make sure that these are the same as Game.StateXXX
     public static final int MAINMENUSTATE = 0;
     public static final int GAMESETUPSTATE = 1;
     public static final int GAMEPLAYSTATE = 2;
     public static final int HIGHSCORESTATE = 3;
     public static final int OPTIONSTATE = 4;
     public static final int INSTRUCTIONSSTATE = 5;
+    // non default
+    public static final int INGAMEPAUSE     = 6;
+    public static final int HELPSTATE       = 7;
+    public static final int GAMEVICTORY     = 8;
 
     public static boolean debug = false;
 
-    public TestGorillas(boolean debug) {
-        super("Gorillas");
-        setDebug(debug);
-    }
+	public TestGorillas(boolean debug) {
+		super("Gorillas");
+		setDebug(debug);
+	}
 
-    public static void setDebug(boolean debuging) {
-        debug = debuging;
-    }
+	public static void setDebug(boolean debuging) {
+		debug = debuging;
+        Game.getInstance().enableTestMode(debuging);
+	}
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
 
         // Add states to the StateBasedGame
-        this.addState(new MainMenuState(MAINMENUSTATE));
-        // TODO: Add the other states...
+        this.addState(new MainMenuState());
+        this.addState(new GameSetupState());
+        this.addState(new GamePlayState());
+        this.addState(new HighScoreState());
+        this.addState(new InGamePause());
+        this.addState(new HelpState());
+        this.addState(new GameVictory());
+        this.addState(new OptionState());
 
         // Add states to the StateBasedEntityManager
-        StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
-        // TODO: Add the other states...
+        StateBasedEntityManager.getInstance().addState(Game.MAINMENUSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMESETUPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEPLAYSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.HIGHSCORESTATE);
+        StateBasedEntityManager.getInstance().addState(Game.INGAMEPAUSE);
+        StateBasedEntityManager.getInstance().addState(Game.HELPSTATE);
+        StateBasedEntityManager.getInstance().addState(Game.GAMEVICTORY);
+        StateBasedEntityManager.getInstance().addState(Game.OPTIONSTATE);
     }
 
     @Override

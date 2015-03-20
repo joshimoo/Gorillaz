@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gdi1-project" default="test">
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.lib.classpath">
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <pathelement location="${basedir}/lib/lwjgl-2.9.1/lwjgl.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module gdi1-project -->
+  
+  <dirname property="module.gdi1-project.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.gdi1-project" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
+  
+  <property name="gdi1-project.output.dir" value="${module.gdi1-project.basedir}/bin"/>
+  <property name="gdi1-project.testoutput.dir" value="${module.gdi1-project.basedir}/bin"/>
+  
+  <path id="gdi1-project.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gdi1-project.module.production.classpath">
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="gdi1-project.runtime.production.module.classpath">
+    <pathelement location="${gdi1-project.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="gdi1-project.module.classpath">
+    <pathelement location="${gdi1-project.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="gdi1-project.runtime.module.classpath">
+    <pathelement location="${gdi1-project.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gdi1-project">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gdi1-project">
+    <patternset refid="excluded.from.module.gdi1-project"/>
+  </patternset>
+  
+  <path id="gdi1-project.module.sourcepath">
+    <dirset dir="${module.gdi1-project.basedir}">
+      <include name="src"/>
+      <include name="theme"/>
+      <include name="assets"/>
+    </dirset>
+  </path>
+  
+
+  <target name="compile" description="Compile all">
+
+    <mkdir dir="${gdi1-project.output.dir}"/>
+
+    <javac destdir="${gdi1-project.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.gdi1-project}"/>
+      <bootclasspath refid="gdi1-project.module.bootclasspath"/>
+      <classpath refid="gdi1-project.module.production.classpath"/>
+      <src refid="gdi1-project.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gdi1-project"/>
+    </javac>
+
+    <copy todir="${gdi1-project.output.dir}">
+      <fileset dir="${module.gdi1-project.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.gdi1-project.basedir}/theme">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.gdi1-project.basedir}/assets">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+
+    <echo message="Build done" />
+  </target>
+
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" description="cleanup all">
+    <delete dir="${gdi1-project.output.dir}"/>
+    <delete dir="${gdi1-project.testoutput.dir}"/>
+  </target>
+  
+  <target name="build" depends="init, clean, compile" description="build all"/>
+
+  <target name="test" depends="build" description="run unit tests" unless="skip.tests">
+    <junit printsummary="on" haltonfailure="yes">
+      <classpath>
+        <path refid="gdi1-project.module.classpath" />
+        <pathelement location="${gdi1-project.testoutput.dir}"/>
+      </classpath>
+      <formatter type="brief" usefile="false" />
+
+      <!-- Only executes the next test suite after the prior test suite completed successfully -->
+      <test name="de.tu_darmstadt.gdi1.gorillas.test.students.suites.GorillasTestsuiteMinimal"/>
+      <test name="de.tu_darmstadt.gdi1.gorillas.test.students.suites.GorillasTestsuiteExtended1"/>
+      <test name="de.tu_darmstadt.gdi1.gorillas.test.students.suites.GorillasTestsuiteExtended2"/>
+      <test name="de.tu_darmstadt.gdi1.gorillas.test.students.suites.GorillasTestsuiteExtended3"/>
+      <test name="de.tu_darmstadt.gdi1.gorillas.test.students.suites.GorillasTestsuiteAll"/>
+
+    </junit>
+  </target>
+
+  <target name="all" depends="build, test" description="build and test all"/>
+</project>
