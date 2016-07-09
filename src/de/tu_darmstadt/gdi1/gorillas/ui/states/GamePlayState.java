@@ -426,30 +426,7 @@ public class GamePlayState extends BasicTWLGameState {
                 if(skyline.collides(banana)) {
                     state = STATES.DAMAGE;
                     debugCollisions.add(new Circle(banana.getPosition().x, banana.getPosition().y, Game.getInstance().getExplosionRadius()));
-                   if(getActivePlayer() == Game.getInstance().getPlayer(1)){
-                       if(banana.getPosition().getX() > gorilla.getPosition().getX() + 64)
-                           comment = "Da wirft meine Oma ja weiter!";
-                       else if(banana.getPosition().getX() < gorilla.getPosition().getX() - 64)
-                           comment = "Da hinten steht doch niemand!";
-                       if(banana.getPosition().getY() > gorilla.getPosition().getY() + 64)
-                           comment += " Mehr Höhe!";
-                       else if(banana.getPosition().getY() < gorilla.getPosition().getY() - 64)
-                           comment += " Hochmut kommt vor dem Fall!";
-
-                       if(comment.isEmpty()) comment = "Knapp daneben ist leider auch vorbei!";
-                   }
-                    else{
-                       if(banana.getPosition().getX() > gorillb.getPosition().getX() + 64)
-                           comment = "Da hinten steht doch niemand!";
-                       else if(banana.getPosition().getX() < gorillb.getPosition().getX() - 64)
-                           comment = "Da wirft meine Oma ja weiter!";
-                       if(banana.getPosition().getY() > gorillb.getPosition().getY() + 64)
-                           comment += " Mehr Höhe!";
-                       else if(banana.getPosition().getY() < gorillb.getPosition().getY() - 64)
-                           comment += " Hochmut kommt vor dem Fall!";
-
-                       if(comment.isEmpty()) comment = "Knapp daneben ist leider auch vorbei!";
-                   }
+                    getThrowComments();
                     Game.getInstance().toggleNextPlayerActive();
                 }
 
@@ -735,4 +712,29 @@ public class GamePlayState extends BasicTWLGameState {
         }
     }
 
+    /**
+     * comments on the hits
+     */
+    public void getThrowComments()
+    {
+        int invert = -1;
+        Gorilla gorilla = this.gorilla;
+        if(getActivePlayer() == Game.getInstance().getPlayer(1)) {
+            invert = 1;
+            gorilla = this.gorillb;
+        }
+
+        int distance = invert * 180;
+        if (banana.getPosition().getX() < gorilla.getPosition().getX() + distance)      comment = "Knapp daneben ist leider auch vorbei!";
+        else if(banana.getPosition().getX() > gorilla.getPosition().getX() + distance * 2)  comment = "Da wirft meine Oma ja weiter!";
+        else if(banana.getPosition().getX() < gorilla.getPosition().getX() - distance * 2)  comment = "Da hinten steht doch niemand!";
+        else if(banana.getPosition().getY() < gorilla.getPosition().getY() - distance * 2)  comment += " Hochmut kommt vor dem Fall!";
+
+        if(banana.getPosition().getY() > gorilla.getPosition().getY() + distance * 2)       comment += " Mehr Höhe!";
+        else if(banana.getPosition().getY() > gorilla.getPosition().getY() - distance * 2)       comment += " Zu Hoch!";
+        // Default
+        if(comment.isEmpty()) comment = "Beim nächsten mal vielleicht!";
+
+        System.out.println("G=" + gorilla.getPosition().getX() +"|"+ gorilla.getPosition().getY() + " B= " + banana.getPosition().getX() +"|"+ banana.getPosition().getY() +" Dist=" + (gorilla.getPosition().getX() - banana.getPosition().getX()) + "|" + (gorilla.getPosition().getY() - banana.getPosition().getY()) + "|" +distance);
+    }
 }

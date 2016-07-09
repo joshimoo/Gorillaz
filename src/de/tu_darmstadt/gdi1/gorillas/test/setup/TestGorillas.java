@@ -30,8 +30,7 @@ public class TestGorillas extends TWLTestStateBasedGame {
     public static final int INSTRUCTIONSSTATE = 5;
     // non default
     public static final int INGAMEPAUSE     = 6;
-    public static final int HELPSTATE       = 7;
-    public static final int GAMEVICTORY     = 8;
+    public static final int GAMEVICTORY     = 7;
 
     public static boolean debug = false;
 

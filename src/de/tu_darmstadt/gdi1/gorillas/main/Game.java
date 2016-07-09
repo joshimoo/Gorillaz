@@ -19,8 +19,8 @@ public class Game {
     public static final int GAMEPLAYSTATE   = 2;
     public static final int HIGHSCORESTATE  = 3;
     public static final int OPTIONSTATE     = 4;
-    public static final int INGAMEPAUSE     = 5;
-    public static final int HELPSTATE       = 6;
+    public static final int HELPSTATE       = 5;
+    public static final int INGAMEPAUSE     = 6;
     public static final int GAMEVICTORY     = 7;
 
     /* Constants */
