@@ -28,7 +28,7 @@ public class OptionState extends BasicTWLGameState {
     private Button btnStorePlayerNames;
     private Button btnMute;
     private Button btnSaveToFile;
-    private EditField resolution;
+    private Button resolution;
 
     @Override
     public int getID() {
@@ -56,23 +56,21 @@ public class OptionState extends BasicTWLGameState {
         btnSaveToFile = new Button("Save Configuration to File");
         btnOK = new Button("OK");
         lError = new Label("");
-        resolution = new EditField();
-        resolution.setMaxTextLength(9);
-        // TODO: reactivate if all GUI can scale
-        resolution.setVisible(false);
-        resolution.setEnabled(false);
+        resolution = new Button();
 
         resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
         btnInvertKeyControl.setText(Game.getInstance().getInverseControlKeys() ? "UP-Down: Speed - Left-Right: Angle" : "UP-Down: Angle - Left-Right: Speed");
         btnWind.setText(Game.getInstance().isWindActive() ? "Wind" : "No wind");
         btnStorePlayerNames.setText(Game.getInstance().isStorePlayerNames() ? "Store PlayerNames" : "Random PlayerNames");
         btnMute.setText(Game.getInstance().isMute() ? "Sound off" : "Sound off");
+
         btnOK.addCallback(this::returnToPrevScreen);
         btnInvertKeyControl.addCallback(this::toggleInverseControlKeys);
         btnWind.addCallback(this::toggleWind);
         btnStorePlayerNames.addCallback(this::toggleStorePlayerNames);
         btnMute.addCallback(this::toggleMute);
         btnSaveToFile.addCallback(this::saveConfigToFile);
+        resolution.addCallback(this::setResolution);
 
         //Max ist Gravitationsbeschleunigung des Jupiters
         valueGravity.setMinMaxValue(Game.GRAVITY_MIN, Game.GRAVITY_MAX);
@@ -155,41 +153,63 @@ public class OptionState extends BasicTWLGameState {
     }
 
     private void returnToPrevScreen() {
-
-        if(resolution.isVisible()) {
-            String resolutionString = resolution.getText();
-            int splitter = resolutionString.indexOf("x");
-            int x = Integer.parseInt(resolutionString.substring(0, splitter));
-            int y = Integer.parseInt(resolutionString.substring(splitter + 1, resolutionString.length()));
-
-            if (checkResolution(x, y)) {
-                Database db = Database.getInstance();
-                db.setDisplayWidth(x);
-                db.setDisplayHeight(y);
-
-            float scale = 1024 / 800;
-            db.setCanvasWidth(db.getDisplayWidth() * (int) scale);
-            db.setCanvasHeight(db.getDisplayWidth() * (int) scale);
-            }
-            else {
-                lError.setText("No valid resolution.\n" +
-                        "Use 4/3 300x225 600x450 800x600 1024x768 1280x960 1600x1200 1920x1440\n" +
-                        "or 16/10        600x375 800x500 1024x640 1280x800 1600x1000 1920x1200\n" +
-                        "or 16/9                 800x450 1024x576 1280x720  1600x900 1920x1080\n");
-
-                return;
-            }
-        }
         Game.getInstance().setGravity(valueGravity.getValue());
         Game.getInstance().setSoundVolume(valueSound.getValue() / 100f);
         game.enterLastState();
     }
 
+    private void setResolution()
+    {
+        String resolutionString = Database.getInstance().getDisplayWidth() == 800 ? "1024x768" : "800x600";
+
+        int splitter = resolutionString.indexOf("x");
+        int x = 0;
+        int y = 0;
+        if(splitter != -1) {
+            x = Integer.parseInt(resolutionString.substring(0, splitter));
+            y = Integer.parseInt(resolutionString.substring(splitter + 1, resolutionString.length()));
+        }
+        if (checkResolution(x, y)) {
+            Database db = Database.getInstance();
+            db.setDisplayWidth(x);
+            db.setDisplayHeight(y);
+
+            resolution.setText(Database.getInstance().getDisplayWidth() + "x" + Database.getInstance().getDisplayHeight());
+            // TODO: Canvas vs Frame
+            /*
+            Static to 1024 maybe later insert
+
+            float scale = 1024 / 800;
+            db.setCanvasWidth(db.getDisplayWidth() * (int) scale);
+            db.setCanvasHeight(db.getDisplayWidth() * (int) scale);
+            */
+        }
+        else {
+            lError.setText("No valid resolution.\n" +
+                    "Use 4/3 800x600 or 1024x768\n");
+
+            //TODO: let it or remove
+                /*
+                Maybe later insert
+
+                lError.setText("No valid resolution.\n" +
+                        "Use 4/3 300x225 600x450 800x600 1024x768 1280x960 1600x1200 1920x1440\n" +
+                        "or 16/10        600x375 800x500 1024x640 1280x800 1600x1000 1920x1200\n" +
+                        "or 16/9                 800x450 1024x576 1280x720  1600x900 1920x1080\n");
+                */
+        }
+    }
+
     private boolean checkResolution(int x ,int y)
     {
+        boolean result = ( x == 800 && y == 600 ) || ( x == 1024 || y == 768 );
+        /*
+        Maybe later insert
+
         boolean result = y > 100 &&
                         ((x == 480) || (x == 480) || (x == 600) || (x == 800) || (x == 1024) || (x == 1280) || (x == 1600) || (x == 1920)) &&
                         ((x / y == 4/3) || (x / y == 10/9) || (x / y == 16/9));
+        */
         if (Game.getInstance().isDebugMode()) { System.out.println("Resolution valid: "+result + " x="+x + " y=" +y); }
         return result;
     }
