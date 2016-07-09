@@ -70,7 +70,7 @@ public class SqlGorillas {
         String sql = "SELECT PlayerName, NumberRounds, NumberWinRounds," +
                 "CAST(ROUND((CAST(NumberWinRounds AS real) * 100 / NumberRounds),0) AS int) AS WinRate," +
                 "ROUND((CAST(NumberThrows as real) / NumberWinRounds),2) AS HitRate " +
-                "FROM " + tableHighScore + " ORDER BY WinRate DESC, HitRate DESC LIMIT 0,10;";
+                "FROM " + tableHighScore + " ORDER BY WinRate DESC, HitRate ASC LIMIT 0,10;";
 
         // get the result list
         ArrayList list = db.queryArrayList(sql);
