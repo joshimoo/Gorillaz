@@ -13,18 +13,18 @@ Gorillas is a remake of and old [dos game](https://en.wikipedia.org/wiki/Gorilla
 
 ## Screenshots
 
-<img src="doc/screenshots/Screenshot_MainMenue.png" width="30%"></img> <img src="doc/screenshots/Screenshot_Options.png.png" width="30%"></img> <img src="doc/screenshots/Screenshot_SlowMo.png.png" width="30%"></img>
+<img src="doc/screenshots/Screenshot_MainMenue.png" width="30%"></img> <img src="doc/screenshots/Screenshot_Options.png" width="30%"></img> <img src="doc/screenshots/Screenshot_SlowMo.png" width="30%"></img>
 
-<img src="doc/screenshots/Screenshot_Sun.png" width="30%"></img> <img src="doc/screenshots/Screenshot_Explosion.png.png" width="30%"></img> <img src="doc/screenshots/Screenshot_Treffer.png.png" width="30%"></img>
+<img src="doc/screenshots/Screenshot_Sun.png" width="30%"></img> <img src="doc/screenshots/Screenshot_Explosion.png" width="30%"></img> <img src="doc/screenshots/Screenshot_Treffer.png" width="30%"></img>
 
 
 ## Implementation Overview
 We went for an hybrid entity component based implementation, with a small inheritance chain.
 
-Game State Machine
+### Game State Machine
 ![Game State Machine](doc/diagrams/diagram_fsm.png)
 
-Game Architecture
+### Game Architecture
 ![Game Architecture Overview](doc/diagrams/diagram_overview_white.png)
 
 
