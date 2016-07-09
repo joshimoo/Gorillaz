@@ -21,18 +21,18 @@ Gorillas is a remake of and old [dos game](https://en.wikipedia.org/wiki/Gorilla
 ## Implementation Overview
 We went for an hybrid entity component based implementation, with a small inheritance chain.
 
-### Game State Machine
-![Game State Machine](doc/diagrams/diagram_fsm.png)
+#### Game Play FSM
+![Game Play FSM](doc/diagrams/diagram_fsm.png)
 
-### Game Architecture
+#### Game Architecture
 ![Game Architecture Overview](doc/diagrams/diagram_overview_white.png)
 
 
 ## Frameworks
-[Slick2D] (http://slick.ninjacave.com/)
-[LwJGL] (http://www.lwjgl.org/)
-[SQLite JDBC Driver] (https://github.com/xerial/sqlite-jdbc)
-[EEA Framework] (https://www.linkedin.com/in/guidoroessling)
+- [Slick2D] (http://slick.ninjacave.com/)
+- [LwJGL] (http://www.lwjgl.org/)
+- [SQLite JDBC Driver] (https://github.com/xerial/sqlite-jdbc)
+- [EEA Framework] (https://www.linkedin.com/in/guidoroessling)
 
 
 ## Disclaimer
