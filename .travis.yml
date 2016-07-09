@@ -2,6 +2,9 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+  # cannot run, lwjgl2 inside of travis
+  # would require an upgrade to lwjgl3 which is not compatible with the abandoned slick2d
+  # so for now I am disabling travis
 
 language: java
 jdk:
