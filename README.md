@@ -2,8 +2,6 @@
 Gorillas was the final project for the Intro To Computer science class (GDI1) in the Winter Semester 2014 (WS2014) at Tu Darmstadt
 Gorillas is a remake of and old [dos game](https://en.wikipedia.org/wiki/Gorillas_(video_game))
 
-[![Build Status](https://travis-ci.org/joshimoo/gdi1-project.svg?branch=master)](https://travis-ci.org/joshimoo/gdi1-project)
-
 
 ## Major Features
 - Procedural Map Generation
