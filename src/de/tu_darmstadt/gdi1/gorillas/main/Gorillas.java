@@ -36,6 +36,7 @@ public class Gorillas extends TWLStateBasedGame {
         AppGameContainer app = new AppGameContainer(new Gorillas());
         app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
         app.setTargetFrameRate(TARGET_FPS);
+        app.setShowFPS(false);
         app.start();
     }
 
