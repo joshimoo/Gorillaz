@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/gdi1-project.iml" filepath="$PROJECT_DIR$/gdi1-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gorillaz.iml" filepath="$PROJECT_DIR$/gorillaz.iml" />
     </modules>
   </component>
 </project>
