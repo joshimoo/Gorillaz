@@ -1,6 +1,6 @@
-# Gorillas
-Gorillas was the final project for the Intro To Computer science class (GDI1) in the Winter Semester 2014 (WS2014) at Tu Darmstadt
-Gorillas is a remake of and old [dos game](https://en.wikipedia.org/wiki/Gorillas_(video_game))
+# Gorillaz
+Gorillaz is an artillery-style game with procedural map generation, it's a remake of the classical [DOS Game] (https://en.wikipedia.org/wiki/Gorillas_(video_game))
+Gorillaz was the final project for the Intro To Computer science class (GDI1) in the Winter Semester 2014 (WS2014) at Tu Darmstadt
 
 
 ## Major Features
